@@ -1,0 +1,27 @@
+{
+    "name": "opstool-gmaMatrix",
+    "version": "0.0.0",
+    "description": "(plugin) An Ops Portal tool for working with your GMA Information.",
+    "main": "module.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "make test",
+        "postinstall": "node setup/setup.js",
+        "postupdate": "node setup/setup.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/appdevdesigns/opstool-gmaMatrix.git"
+    },
+    "author": "Johnny Hausman",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/appdevdesigns/opstool-gmaMatrix/issues"
+    },
+    "homepage": "https://github.com/appdevdesigns/opstool-gmaMatrix",
+    "dependencies": {
+        "ad-utils": "git://github.com/appdevdesigns/ad-utils"
+    }
+}

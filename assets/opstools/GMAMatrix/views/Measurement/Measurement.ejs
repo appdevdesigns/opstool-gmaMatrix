@@ -1,0 +1,16 @@
+<div class="bubble-container">
+    <div class="question-bubble well">
+        <h3 class="navbar-inner"><%= item.label() %></h3>
+        <div class="question">
+        
+            <p><%= item.description() %></p>
+            <fieldset>
+                <input type="number" decimal="0" min="0" value="<%= item.value() %>" />
+            </fieldset>
+        </div>
+        <div class="definition">
+            <h3><%= item.label() %></h3>
+            <p><%= item.lmiObj.definition() %></p>
+        </div>
+    </div>
+</div>
