@@ -15,9 +15,9 @@
 module.exports = {
 
 //    'opstool-gmaMatrix/YourController': {
-//        method: ['isAuthenticatedService'],
+//        method: ['sessionAuth'],
 //        auth: [],
-//        sync:[ 'isAuthenticatedService',
+//        sync:[ 'sessionAuth',
 //               'NSServerDevelopTools',
 //               'NSServerValidateUser',
 //               'NSServerDownloadFromMothership',

@@ -14,10 +14,21 @@
 module.exports = {
 /*
 
-     // list any directories that need to be created in the base sails path
-     directories:[
-         '/data/[moduleName]'
-     ],
+    // list any directories that need to be created in the base sails path
+    directories:[
+        '/data/[moduleName]'
+    ],
+
+
+    // list any files to copy into sails directory:
+    // paths assume they are relative to the [plugin] and [sails] roots:
+    // you can rename the file as well:
+    copyFiles: {
+        // [plugin/path/to/File] :  [sails/path/to/file]
+        // 'config/specialConfig.js':'config/specialConfig.js',
+        // 'config/specialConfig2.js': config/differentName.js'
+    },
+
 
 
      // list the directories to create symbolic links to:
@@ -63,6 +74,13 @@ module.exports = {
      // list the files that should be excluded from the above default actions
      // if you want to keep
      ignore:{
+
+
+        // do any of the above files that get linked to in dirLinks need to be ignored?
+        dirLinks:{
+            // "path/to/file.js": 1
+            "/config/ignoreFile.js":1
+        },
 
         // this is the default config/local.js  merge with all the non standard config files
         // in your config directory.  If you don't want one of those files merged into
