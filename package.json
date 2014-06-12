@@ -1,6 +1,6 @@
 {
   "name": "opstool-gmaMatrix",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "description": "(plugin) An Ops Portal tool for working with your GMA Information.",
   "main": "module.js",
   "directories": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/appdevdesigns/opstool-gmaMatrix",
   "dependencies": {
-    "ad-utils": "git://github.com/appdevdesigns/ad-utils#v10"
+    "ad-utils": "git://github.com/appdevdesigns/ad-utils"
   },
   "devDependencies": {
     "chai": "^1.9.1",
