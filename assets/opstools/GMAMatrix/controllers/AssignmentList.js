@@ -46,25 +46,25 @@ function(){
             AD.comm.hub.subscribe('gmamatrix.resize', function (key, data) {
                 self.element.css("height", data.height + "px");
 
-                self.list.resize(data.height);
-            });
+                //self.list.resize(data.height);
+            }); 
         },
 
 
 
         initDOM: function () {
 
-//            this.element.html(can.view(this.options.templateDOM, {} ));
+            this.element.html(can.view(this.options.templateDOM, {} ));
 
             // add in the GenericList to our report list div
-            this.list = new AD.controllers.GenericList(this.element, {
+/*            this.list = new AD.controllers.GenericList(this.element, {
                 title:'Assignments',
                 description: 'Choose the GMA nodes you are allowed to report on.',
 //                dataSource:[],  //this.dataSource,
                 templateItem:'//opstools/GMAMatrix/views/AssignmentList/item.ejs',
                 notification_selected:'gmamatrix.assignment.selected',
 //                onAdd:function() { self.addItem();  }
-            });
+            });*/
         },
 
 

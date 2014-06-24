@@ -25,14 +25,16 @@ function(){
             this.options = options;
 
             // Call parent init
-            AD.classes.opsportal.OpsTool.prototype.init.apply(this, arguments);
+//            AD.classes.opsportal.OpsTool.prototype.init.apply(this, arguments);
 
 
-            this.dataSource = this.options.dataSource; // AD.models.Projects;
+  //          this.dataSource = this.options.dataSource; // AD.models.Projects;
 
             this.initDOM();
 
             this.setupPage();
+
+			this.gmaMatrixDragDrop();
 
         },
 
@@ -50,7 +52,7 @@ function(){
 
 
 
-
+/*
             this.loadingIconInitial = new AD.widgets.ad_icon_busy(this.element.find('#dummy-loading-indicator'), {
                 style:'circle',
                 color:'grey'
@@ -61,7 +63,7 @@ function(){
                 style:'circle',
                 color:'grey'
             });
-
+*/
             //// Attach the ReportList object
             new AD.controllers.opstools.GMAMatrix.AssignmentList( this.element.find('.gmamatrix-assignment-chooser'));
 
@@ -187,6 +189,8 @@ function(){
 
             */
 
+
+
         },
 
 
@@ -195,6 +199,45 @@ function(){
 
             ev.preventDefault();
         },
+
+		'gmaMatrixDragDrop': function() {
+
+			/* Setup draggable categories */
+			var numbers = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+			
+			for ( var i=0; i<10; i++ ) {
+			    $('<div class="gmamatrix-draggable">Category ' + numbers[i] + '</div>').data( 'catNumber', numbers[i] ).attr( 'id', 'gmamatrix-cat-'+numbers[i] ).appendTo( '#gmamatrix-affix' ).draggable( {
+			      containment: 'document',
+			      stack: '.gmamatrix-container',
+			      cursor: 'move',
+				  scroll: true,
+			      revert: true
+			    } );
+			  }
+						
+			$('.gmamatrix-droppable').droppable({
+				accept: '.gmamatrix-draggable',
+				drop: this.handleDropEvent,
+				hoverClass: "gmamatrix-container-hover"
+			});
+			
+		},
+		
+		'handleDropEvent': function( event, ui ) {
+			var lmiContainer = $(this).html();
+			var category = ui.draggable.data( 'number' );
+			
+			//ui.draggable.position( { of: $(this), my: 'left top', at: 'left top' } );
+			ui.draggable.draggable( 'option', 'revert', false );
+			if (lmiContainer == "Staff") {
+				$(this).parents('.gmamatrix-container').children('ul.gmamatrix-li-staff').append('<li class="gmamatrix-draggable">' +  ui.draggable.html() +'</li>');
+			} else {
+				$(this).parents('.gmamatrix-container').children('ul.gmamatrix-li-disciple').append('<li class="gmamatrix-draggable">' +  ui.draggable.html() +'</li>');
+			}
+			
+			ui.draggable.remove();
+			//alert( 'The square with ID "' + draggable.attr('id') + '" was dropped onto me!' );
+		},
 
 
     });
