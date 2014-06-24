@@ -1,167 +1,196 @@
-<%
-    //// TODO: initial port of view to canJS client side:
-var data = {};
-data.labels = {};
-data.labels.getLabel = function(key) {
-    var result = key.replace('[','').replace(']','');
-    console.log(result);
-    return result;
-}
+<!-- begin gmamatrix-stage area  -->
 
-%>            <!-- begin gmamatrix-stage area -->
-            <div class="gmamatrix-stage-loading">
-                <p> loading ... </p>
-            </div>
-            <div class="gmamatrix-stage-instructions">
-            <p> Begin by selecting a Report to view.</p>
-            </div>
-            <div class="gmamatrix-stage-report" >
-            
-                <!-- begin gmamatrix-stage-report  area -->
-                <div class="navbar navbar-fixed-top">  
-                  <div class="navbar-inner">  
-                    <div class="row"> 
-                      <div class=" col-xs-4">
-                        <div class='gmamatrix-report-reportlist'></div>
-                        <div class='gmamatrix-report-strategylist'></div>
-                        <!-- <div id="language-switcher"></div> -->
-                      </div>  
-                      <div class=" col-xs-7">
-                        <h1 class="gmamatrix-header" ><%= data.labels.getLabel('[Power of the Holy Spirit]') %></h1>
-                      </div>
-                      
-                      <div class="reset">
-                        <i class="icon-fast-backward"></i>
-                      </div>
-            
-                    </div>  
-                  </div>  
-                </div>  
-                
-                <!-- This is the matrix grid table -->
-                <table width="100%">
-                  <thead>
-                    <tr class="row-header">
-                        <th width="8%"></th>
-                        <th width="23%">
-                            <%= data.labels.getLabel('[FAITH ACTIONS]') %>
-                            <span class="subtitle"><%= data.labels.getLabel('[Primarily Done By...]') %></span>
-                        </th>
-                        <th width="23%"><%= data.labels.getLabel('[FRUITS]') %></th>
-                        <th width="23%"id="outcome-heading"><%= data.labels.getLabel('[OUTCOME]') %></th>
-                        <th width="23%">
-                            <!-- <span class="questions"><%= data.labels.getLabel('[QUESTIONS]') %></span> -->
-                        </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="row-win">
-                        <th><%= data.labels.getLabel('[WIN]') %></th>
-                        <td id="win-faith" class="gmamatrix-measurement-location" ></td>
-                        <td id="win-fruits" class="gmamatrix-measurement-location" ></td>
-                        <td id="outcome-outcome" rowspan="3" class="gmamatrix-measurement-location" ></td>
-                        <td id="col-questions" rowspan="3">
-                            <div class="gmamatrix-stage-notplaced">
-                                all items are placed: <a class="button"> ok </a>
-                                <div class="gmamatrix-stage-notplaced-items"></div>
-                            </div>
-                            <div class="content"></div>
-                            <div class="submitting">
-                                <!-- <img src="/theme/default/images/loading.gif" /> --> <div class="gmamatrix-loading-icon"></div>
-                                <i><%= data.labels.getLabel('[loading from GMA...]') %></i>
-                            </div>
-                            <div class="submit">
-                                <!-- <p><%= data.labels.getLabel('[Data submitted]') %></p> -->
-                                <button class="btn" id="submit"><%= data.labels.getLabel('[Submit]') %></button>
-                                
-                                <hr />
-                                
-                                <p><%= data.labels.getLabel('[Select different date]') %></p>
-                                <form method="GET" action="">
-                                <button type="submit" class="btn" id="reselect"><%= data.labels.getLabel('[Reselect]') %></button>
-                                </form>
-                            </div>
-                            <div class="filler"></div>
-                        </td>
-                    </tr>
-                    <tr class="row-build">
-                        <th><%= data.labels.getLabel('[BUILD]') %></th>
-                        <td id="build-faith" class="gmamatrix-measurement-location" ></td>
-                        <td id="build-fruits" class="gmamatrix-measurement-location" ></td>
-                        <!-- td#col-outcome continued -->
-                        <!-- td#col-questions continued -->
-                    </tr>
-                    <tr class="row-send">
-                        <th><%= data.labels.getLabel('[SEND]') %></th>
-                        <td id="send-faith" class="gmamatrix-measurement-location" ></td>
-                        <td id="send-fruits" class="gmamatrix-measurement-location" ></td>
-                        <!-- td#col-outcome continued -->
-                        <!-- td#col-questions continued -->
-                    </tr>
-            
-                    <tr>
-                        <!-- this is a spacer row -->
-                        <td colspan="5">&nbsp;</td>
-                    </tr>
-            
-                    <tr class="row-extra">
-                        <th><%= data.labels.getLabel('[Extra]') %></th>
-                        <td id="extra-extra" colspan="3" class="gmamatrix-measurement-location" ></td>
-                    </tr>
-                  </tbody>
-                </table>
-                
-                  <div class="navbar navbar-fixed-bottom">  
-                      <div class="navbar-inner"> 
-                         <div class="row-fluid" id="prayer-faith">
-                            <div class="span4" align="left" id="prayer-buttons">
-                            <!-- placeholder -->
-                            </div>
-                            <div class="span4" align="center" style="margin-top: 5px">
-                                <h1 id="prayer-title">
-                                <!-- placeholder -->
-                                </h1>
-                            </div>
-                          </div>
-                      </div>
-                  </div>
-            
-            
-            
-                <div id="outcome-results">
-                <!--
-                -->
-                </div>
-            
-            
-                <!-- report selection dialog box -->
-                <div class="modal" id="report-selector" style="display:none" role="dialog">
-                    <div class="modal-header">
-                        <div class="loading">
-                            <!-- <img src="/theme/default/images/loading.gif" />  --> <div class="gmamatrix-loading-icon"></div>
-                            <i><%= data.labels.getLabel('[loading from GMA...]') %></i>
-                        </div>
-                        <h3><%= data.labels.getLabel('[Select Report]') %></h3>
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" id="reports-date" />
-                        <button class="btn"><i class="icon-ok"></i></button>
-                        
-                        <hr />
-                        
-                        <select id="reports-list">
-                            <option value="">--</option>
-                        </select>
-                        
-                        <hr/>
-                        
-                        <select id="mcc-list">
-                            <option value="">--</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- end gmamatrix-stage-report  area -->
-            </div>
-            
-            <!-- end gmamatrix-stage area -->
+<div class="opsportal-stage-container opsportal-padding-bottom-2x" style="position: relative;">
+
+	<div class="gen-btn-list">
+	    <h2 class="opsportal-stage-title">Power of the Holy Spirit</h2>
+        <ul class="list-unstyled list-inline">
+        <li><a href="" class="btn opsportal-btn opsportal-btn-dk active-btn" role="button">Dashboard</a></li>
+        <li><a href="" class="btn opsportal-btn opsportal-btn-dk" role="button">Layout</a></li>
+        <li><a href="" class="btn opsportal-btn opsportal-btn-dk" role="button">Entry</a></li>
+        </ul>
+    </div>
+  
+	<div class="opsportal-stage-main">
+	<div class="row">
+		<div class="col-xs-10">
+			<div class="gmamatrix-container-grid">
+			<div class="row">
+				<div class="col-xs-1"></div>
+				<div class="col-xs-4 gmamatrix-grid-bb"><h4>Faith Actions</h4></div>
+				<div class="col-xs-4 gmamatrix-grid-bb"><h4>Fruits</h4></div>
+				<div class="col-xs-3 gmamatrix-grid-bb"><h4>Outcome</h4></div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-1"><h4>Win</h4></div>
+				<div class="col-xs-4 gmamatrix-grid-bl">
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Exposing through mass means</h5>
+						<ul class="gmamatrix-li-staff"></ul>
+						<ul class="gmamatrix-li-disciple"></ul>
+						<div class="row" style="clear: both;">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+					
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Initiating Gospel conversations</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+					
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Presenting the Gospel</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>New Professing believers</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<!-- container -->
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-1"><h4>Build</h4></div>
+				<div class="col-xs-4 gmamatrix-grid-bl">
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Following up</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+					
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Presenting the Holy Spirit</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Engaged disciples</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Movement Progress</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-1"><h4>Send</h4></div>
+				<div class="col-xs-4 gmamatrix-grid-bl">
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Training for action</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Sending lifetime laborers</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Developing local resources</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+					
+				</div>
+				<div class="col-xs-4">
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Multiplying disciples</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+					<!-- container -->
+					<div class="gmamatrix-container">
+						<h5>Locally generated resources</h5>
+						<div class="row">
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-staff">Staff</div>
+						  <div class="col-xs-6 gmamatrix-droppable gmamatrix-disciple">Disciple</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<!-- container -->
+				</div>
+			</div>
+			
+			
+			
+			</div> <!-- gmamatrix-container-grid -->
+			
+			<!-- Other container -->
+			<div class="row">
+				<div class="col-xs-12 gmamatrix-droppable gmamatrix-other">
+					<h4>Other</h4>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-2" style="position: relative;">
+			<div class="jumbotron gmamatrix-cat-container gmamatrix-droppable" id="gmamatrix-affix">
+				<h4>Categories</h4>
+				<!-- <div id="gmamatrix-cat-1" class="gmamatrix-draggable">Category 1</div>
+				<div id="gmamatrix-cat-2" class="gmamatrix-draggable">Category 2</div>
+				<div id="gmamatrix-cat-3" class="gmamatrix-draggable">Category 3</div>
+				<div id="gmamatrix-cat-4" class="gmamatrix-draggable">Category 4</div>
+				<div id="gmamatrix-cat-5" class="gmamatrix-draggable">Category 5</div> -->
+			</div>
+		</div>
+	</div>
+	
+		
+	</div>
+	
+	
+
+</div>
+

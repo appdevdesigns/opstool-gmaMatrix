@@ -26,25 +26,24 @@ function(){
             }, options);
 
             // Call parent init
-            AD.classes.UIController.apply(this, arguments);
+//            AD.classes.UIController.apply(this, arguments);
 
 
             // keep track of the currently selected reports and
             // strategies in order to know what to display.
-            this.report = null;
-            this.strategy = null;
+//            this.report = null;
+//            this.strategy = null;
 
 
-            this.locations = null;
-            this.lmiDefsLoaded = null;
-            this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
+//            this.locations = null;
+//            this.lmiDefsLoaded = null;
+//            this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
 
             this.initDOM();
-            this.loadLMI();
+//            this.loadLMI();
 
 
-            this.setupComponents();
-
+//            this.setupComponents();
 
             // listen for resize notifications
             AD.comm.hub.subscribe('gmamatrix.resize', function (key, data) {
@@ -52,6 +51,20 @@ function(){
             });
 
 
+/*			$('[data-clampedwidth]').each(function () {
+			    var elem = $(this);
+			    var parentPanel = elem.data('clampedwidth');
+			    var resizeFn = function () {
+			        var sideBarNavWidth = $(parentPanel).width() - parseInt(elem.css('paddingLeft')) - parseInt(elem.css('paddingRight')) - parseInt(elem.css('marginLeft')) - parseInt(elem.css('marginRight')) - parseInt(elem.css('borderLeftWidth')) - parseInt(elem.css('borderRightWidth'));
+			        elem.css('width', sideBarNavWidth);
+			    };
+
+			    resizeFn();
+			    $(window).resize(resizeFn);
+			});*/
+
+
+/*
             AD.comm.hub.subscribe('gmamatrix.assignment.selected', function(key, data){
                 self.selectedAssignment(data.model);
             });
@@ -65,6 +78,7 @@ function(){
             AD.comm.hub.subscribe('gmamatrix.strategy.selected', function(key, data){
                 self.selectedStrategy(data.strategy);
             });
+*/
         },
 
 
@@ -73,13 +87,16 @@ function(){
 
             this.element.html(can.view(this.options.templateDOM, {} ));
 
-            this.reportList = new AD.controllers.opstools.GMAMatrix.ReportList(this.element.find('.gmamatrix-report-reportlist'));
-            this.strategyList = new AD.controllers.opstools.GMAMatrix.StrategyList(this.element.find('.gmamatrix-report-strategylist'));
 
-            this.locations = this.element.find('.gmamatrix-measurement-location');
+
+
+//            this.reportList = new AD.controllers.opstools.GMAMatrix.ReportList(this.element.find('.gmamatrix-report-reportlist'));
+//            this.strategyList = new AD.controllers.opstools.GMAMatrix.StrategyList(this.element.find('.gmamatrix-report-strategylist'));
+
+//            this.locations = this.element.find('.gmamatrix-measurement-location');
 //            this.locations.droppable({disable:true});
 
-            this.notPlacedList = new AD.controllers.opstools.GMAMatrix.NotPlacedList(this.element.find('.gmamatrix-stage-notplaced'));
+//            this.notPlacedList = new AD.controllers.opstools.GMAMatrix.NotPlacedList(this.element.find('.gmamatrix-stage-notplaced'));
         },
 
 
