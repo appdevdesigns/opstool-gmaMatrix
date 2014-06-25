@@ -34,7 +34,7 @@ function(){
             AD.classes.gmamatrix.GMAAssignment.assignments()
             .then(function(list){
                 self.dataSource = list;
-                self.list.data(list);
+//                self.list.data(list);
             })
             .fail(function(err){
                 console.error(err);

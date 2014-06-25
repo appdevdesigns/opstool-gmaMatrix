@@ -25,7 +25,7 @@ function(){
             this.options = options;
 
             // Call parent init
-//            AD.classes.opsportal.OpsTool.prototype.init.apply(this, arguments);
+            AD.classes.opsportal.OpsTool.prototype.init.apply(this, arguments);
 
 
   //          this.dataSource = this.options.dataSource; // AD.models.Projects;
@@ -35,6 +35,7 @@ function(){
             this.setupPage();
 
 			this.gmaMatrixDragDrop();
+
 
         },
 

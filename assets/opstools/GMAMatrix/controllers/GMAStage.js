@@ -8,6 +8,7 @@ steal(
         '//opstools/GMAMatrix/controllers/Measurement.js',
         '//opstools/GMAMatrix/controllers/LMIDefinition.js',
         '//opstools/GMAMatrix/controllers/NotPlacedList.js',
+        '//opstools/GMAMatrix/controllers/ADAffix.js',
 //        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
 //        'opstools/GMAMatrix/views/GMAStage/GMAStage.ejs',
 function(){
@@ -42,12 +43,20 @@ function(){
             this.initDOM();
 //            this.loadLMI();
 
+            this.listAffix = null;
+
+            $(window).scroll(function(){
+                console.log('!! window.scroll() !!');
+            });
+
+
 
 //            this.setupComponents();
 
             // listen for resize notifications
             AD.comm.hub.subscribe('gmamatrix.resize', function (key, data) {
                 self.element.css("height", data.height + "px");
+
             });
 
 
@@ -88,6 +97,12 @@ function(){
             this.element.html(can.view(this.options.templateDOM, {} ));
 
 
+
+            // for testing purposes:
+            // trying to work out bootstrap.affix()
+            this.notPlacedList = new AD.controllers.opstools.GMAMatrix.ADAffix(this.element.find('#gmamatrix-affix'), {
+                scrollingObj:'.gmamatrix-stage'     // jquery selector of obj on page that will fire the scroll() event
+            });
 
 
 //            this.reportList = new AD.controllers.opstools.GMAMatrix.ReportList(this.element.find('.gmamatrix-report-reportlist'));
