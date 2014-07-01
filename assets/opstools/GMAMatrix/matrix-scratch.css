@@ -1,40 +1,58 @@
 .gmamatrix-cat-container { margin-right: 15px !important; background: #f0f0f0; padding: 15px; }
+.gmamatrix-cat-container div { 
+	font-size: 16px; border: 1px solid #c0c0c0; padding: 5px; text-align: center; margin: 0.75em 0; 
+	opacity:.75;-webkit-transition:opacity .3s ease-out;-moz-transition:opacity .3s ease-out;-o-transition:opacity .3s ease-out;transition:opacity .3s ease-out;
+}
+.gmamatrix-cat-container .cat-unassigned { background: #444444; color: #fff; }
+.gmamatrix-cat-container .cat-unassigned:hover { opacity: 1; }
 
-.gmamatrix-draggable { font-size: 16px; border: 1px solid #c0c0c0; padding: 5px; text-align: center; margin: 0.75em 0; }
-.gmamatrix-draggable:hover, .gmamatrix-staff:hover, .gmamatrix-disciple:hover { background-color: rgb(220,220,220); font-weight: bold; }
+.gmamatrix-cat-container .cat-assigned { color: #000; background: transparent; }
+.gmamatrix-cat-container .cat-assigned:hover { color: #fff; background: #444444; }
+
+
+.gmamatrix-draggable { 
+
+}
+.gmamatrix-draggable:hover {  }
+.gmamatrix-staff:hover, .gmamatrix-disciple:hover { background-color: rgb(220,220,220); font-weight: bold; }
 
 
 .gmamatrix-container-grid { position: relative; border: 1px solid #f0f0f0; padding: 0.75em; }
-.gmamatrix-container-grid h4, .gmamatrix-other h4 { text-transform: uppercase; font-weight: bold; font-size: 16px; text-align: center; }
-.gmamatrix-other h4 { text-align: left; }
+.gmamatrix-container-grid h4, .gmamatrix-other h4 { text-transform: uppercase; font-weight: bold; font-size: 16px; text-align: left; }
+.gmamatrix-grid-bb h4 { text-align: center; }
+.gmamatrix-container-grid .opsportal-showhide {  }
+
 
 .gmamatrix-grid { background: #fff; }
 .gmamatrix-container-grid .gmamatrix-grid-bb { border-bottom: 1px solid #e3e3e3; padding-bottom: 0.75em; }
 .gmamatrix-container-grid .gmamatrix-grid-br { border-right: 1px solid #e3e3e3; padding-right: 0.75em; }
 .gmamatrix-container-grid .gmamatrix-grid-bl { border-left: 1px solid #e3e3e3; padding-left: 0.75em; }
 .gmamatrix-container { position: relative; background: #f0f0f0; border: 1px solid #e3e3e3; text-align: left; margin: 0.75em 0; /*min-height: 45px;*/ padding: 0;}
-.gmamatrix-container .row { /*display: table;*/ margin: 0; }
-.gmamatrix-container h5 { padding: 15px 5px; text-align: center; }
+.gmamatrix-container .row { /*display: table;*/ margin: 0; clear: both !important; }
+.gmamatrix-container h5 { padding: 15px 5px; text-align: center; font-weight: bold; }
 .gmamatrix-container ul { display: block; margin: 0 5px auto; position: relative; }
 .gmamatrix-container ul:after { clear: both; }
 .gmamatrix-container ul.gmamatrix-li-staff { display: block; position: relative; float: left !important; width: 50%; border-right: 1px solid #e3e3e3; margin: 0;}
 .gmamatrix-container ul.gmamatrix-li-disciple { display: block; position: relative; float: right !important; width: 50%; border-left: 1px solid #e3e3e3; margin: 0; }
-.gmamatrix-container ul li { list-style: none; margin: 5px auto; padding: 5px; display: block; border: 1px solid #c0c0c0; text-align: center; width: 90%; }
-.gmamatrix-staff, .gmamatrix-disciple { border-top: 1px solid #e3e3e3; text-align: center; padding: 15px; font-weight: bold; position: relative; }
+.gmamatrix-container ul li { list-style: none; margin: 5px auto; padding: 5px; display: block; border: 1px solid #c0c0c0; text-align: center; width: 90%; background: transparent; color: #000;}
+.gmamatrix-staff, .gmamatrix-disciple { border-top: 1px solid #e3e3e3; text-align: center; padding: 15px; font-weight: normal; position: relative; }
 /*.gmamatrix-container .row .gmamatrix-droppable { float: none; display: table-cell; vertical-align: middle; }*/
 .gmamatrix-staff { border-right: 1px solid #e3e3e3; }
 .gmamatrix-other { border: 1px solid #c0c0c0; min-height: 150px; background: #f0f0f0; margin: 1.5em 0; }
 .gmamatrix-other:hover { background-color: rgb(220,220,220); }
+.gmamatrix-other .gmamatrix-li-other { }
+.gmamatrix-other .gmamatrix-li-other li { 
+	float: left; position: relative; display: block; margin: 15px; list-style: none; padding: 5px; display: block; 
+	border: 1px solid #c0c0c0; text-align: center; background: transparent; color: #000; width: 150px;
+}
 
 .gmamatrix-container-hover { background-color: rgb(220,220,220); }
 
-#gmamatrix-affix {
-	position: relative;
-   /* position: fixed !important;
-	right: -15px !important;
-	margin: 0 !important;
-	z-index: 20;*/
-}
+#gmamatrix-affix { position: relative; padding: 0 0 15px; }
+#gmamatrix-affix h4 { border-bottom: 1px solid #e3e3e3; padding: 15px; text-align: center; font-size: 14px; text-transform: uppercase; width: 100%; line-height: 14px; margin: 0; }
+#gmamatrix-affix div { margin: 15px; }
 
-#gmamatrix-affix h4 { position: absolute; top: 0; left: 0; border-bottom: 1px solid #e3e3e3; padding: 15px; text-align: center; font-size: 14px; text-transform: uppercase; width: 100%; line-height: 14px; margin: 0; }
-#gmamatrix-affix #gmamatrix-cat-1 { margin-top: 44px; }
+.gmamatrix-showhide { padding: 0 15px; opacity: 1 !important; }
+.gmamatrix-showhide:hover, .gmamatrix-showhide:active { background-color: rgb(220,220,220); text-decoration: none; }
+.gmamatrix-showhide h4 { font-size: 16px; padding: 15px 0; }
+.gmamatrix-showhide i { font-size: 16px; float: right; display: block; padding: 15px 0; }
