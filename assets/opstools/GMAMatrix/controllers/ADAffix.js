@@ -81,7 +81,7 @@ function(){
 
 
             // if the position of the element is < the position of scrollObj then affix-top
-            if (posScrollObj.top > position.top) {
+            if (posScrollObj.top + offsetTop > position.top) {
                 affix = false;
             } else {
                 affix = 'top';
