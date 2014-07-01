@@ -203,42 +203,112 @@ function(){
 
 		'gmaMatrixDragDrop': function() {
 
-			/* Setup draggable categories */
+			/* Setup testing draggable categories */
 			var numbers = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
 			
 			for ( var i=0; i<10; i++ ) {
-			    $('<div class="gmamatrix-draggable">Category ' + numbers[i] + '</div>').data( 'catNumber', numbers[i] ).attr( 'id', 'gmamatrix-cat-'+numbers[i] ).appendTo( '#gmamatrix-affix' ).draggable( {
-			      containment: 'document',
-			      stack: '.gmamatrix-container',
-			      cursor: 'move',
-				  scroll: true,
-			      revert: true
+			    //$('<div class="gmamatrix-draggable">Category ' + numbers[i] + '</div>').data( 'catNumber', numbers[i] ).attr( 'id', 'gmamatrix-cat-'+numbers[i] ).appendTo( '#gmamatrix-affix' ).draggable( {
+				$('<div class="cat-unassigned gmamatrix-draggable">Category ' + numbers[i] + '</div>').data( 'catInfo', { catID: numbers[i], catAssigned: false, catAssignedOther: false, catAssignedNum: 0 } ).attr( 'id', 'gmamatrix-cat-'+numbers[i] ).appendTo( '#gmamatrix-affix' ).draggable( {
+					containment: 'document',
+					stack: '.gmamatrix-draggable',
+					cursor: 'move',
+					cursorAt: { top: 16, left: 55 },
+					scroll: true,
+					revert: true,
+					revertDuration: 1,
+					opacity: 0.7, 
+					helper: "clone"
 			    } );
 			  }
 						
-			$('.gmamatrix-droppable').droppable({
+			$('.gmamatrix-droppable-lmi').droppable({
 				accept: '.gmamatrix-draggable',
-				drop: this.handleDropEvent,
+				drop: this.handleDropLMIEvent,
 				hoverClass: "gmamatrix-container-hover"
 			});
 			
+			$('.gmamatrix-droppable-other').droppable({
+				accept: '.gmamatrix-draggable',
+				drop: this.handleDropOtherEvent,
+				hoverClass: "gmamatrix-container-hover"
+			});
+			
+			$('.gmamatrix-droppable-cat').droppable({
+				accept: '.gmamatrix-return-draggable',
+				drop: this.handleDropReturnEvent,
+				hoverClass: "gmamatrix-container-hover"
+			});
 		},
 		
-		'handleDropEvent': function( event, ui ) {
-			var lmiContainer = $(this).html();
-			var category = ui.draggable.data( 'number' );
+		'handleDropLMIEvent': function( event, ui ) {
+			var lmiDropCat = $(this).html() == "Staff" ? 'staff' : 'disciple'; // Determine if user dropped category on 'Staff' or 'Disciple'
+			var catID = ui.draggable.data( 'catInfo' ).catID; // Determine the category ID
+
+			if ($(this).parent().siblings('ul.gmamatrix-li-' + lmiDropCat).children('#gmamatrix-return-cat-' + catID).length == 0 && ui.draggable.data('catInfo').catAssignedOther == false) {
+				ui.draggable.data('catInfo').catAssigned = true; // Category has now been assigned to at least one LMI element
+				ui.draggable.data('catInfo').catAssignedNum++; // Track number of LMI elements to which the category has been assigned
+				
+				$(this).parents('.gmamatrix-container').children('ul.gmamatrix-li-' + lmiDropCat).append('<li class="gmamatrix-return-draggable" id="gmamatrix-return-cat-' + catID + '">' +  ui.draggable.html() +'</li>');
+				$(this).parent().siblings('ul.gmamatrix-li-' + lmiDropCat).children('#gmamatrix-return-cat-' + catID).data( 'catReturnInfo', { catReturnID: catID }).draggable( {
+					containment: 'document',
+					stack: '.gmamatrix-return-draggable',
+					cursor: 'move',
+					cursorAt: { top: 16, left: 55 },
+					revert: true,
+					revertDuration: 1,
+					opacity: 0.7,
+					helper: "clone"
+			    } );
 			
-			//ui.draggable.position( { of: $(this), my: 'left top', at: 'left top' } );
-			ui.draggable.draggable( 'option', 'revert', false );
-			if (lmiContainer == "Staff") {
-				$(this).parents('.gmamatrix-container').children('ul.gmamatrix-li-staff').append('<li class="gmamatrix-draggable">' +  ui.draggable.html() +'</li>');
-			} else {
-				$(this).parents('.gmamatrix-container').children('ul.gmamatrix-li-disciple').append('<li class="gmamatrix-draggable">' +  ui.draggable.html() +'</li>');
+				if (ui.draggable.hasClass('cat-unassigned')) {
+					ui.draggable.removeClass('cat-unassigned').addClass('cat-assigned');
+				}
 			}
 			
-			ui.draggable.remove();
-			//alert( 'The square with ID "' + draggable.attr('id') + '" was dropped onto me!' );
 		},
+		
+		'handleDropReturnEvent': function( event, ui ) {
+			var catReturnID = ui.draggable.data( 'catReturnInfo' ).catReturnID;
+			var catObj = $(this).children('#gmamatrix-cat-' + catReturnID);
+			catObj.data( 'catInfo' ).catAssignedNum--;
+			catObj.data( 'catInfo' ).catAssigned = catObj.data( 'catInfo' ).catAssignedNum == 0 ? false : true;
+			catObj.data( 'catInfo' ).catAssignedOther = false;
+			if (!catObj.data( 'catInfo' ).catAssigned) {
+				if (catObj.hasClass('cat-assigned')) {
+					catObj.removeClass('cat-assigned').addClass('cat-unassigned');
+				}
+			}
+			
+			// Remove <li> element from LMI container
+			ui.draggable.remove();
+
+		},
+		
+		'handleDropOtherEvent': function( event, ui ) {
+			var catID = ui.draggable.data( 'catInfo' ).catID; // Determine the category ID
+			if ($(this).find('#gmamatrix-return-cat-' + catID).length == 0 && ui.draggable.data('catInfo').catAssigned == false) {
+				ui.draggable.data('catInfo').catAssignedOther = true; // Category has now been assigned to the "Other" element
+				ui.draggable.data('catInfo').catAssignedNum++; // Track number of LMI elements to which the category has been assigned
+				
+				$(this).children('ul.gmamatrix-li-other').append('<li class="gmamatrix-return-draggable" id="gmamatrix-return-cat-' + catID + '">' +  ui.draggable.html() +'</li>');
+				$(this).find('#gmamatrix-return-cat-' + catID).data( 'catReturnInfo', { catReturnID: catID }).draggable( {
+					containment: 'document',
+					stack: '.gmamatrix-return-draggable',
+					cursor: 'move',
+					cursorAt: { top: 16, left: 55 },
+					revert: true,
+					revertDuration: 1,
+					opacity: 0.7,
+					helper: "clone"
+			    } );
+			
+				if (ui.draggable.hasClass('cat-unassigned')) {
+					ui.draggable.removeClass('cat-unassigned').addClass('cat-assigned');
+				}
+				
+				//ui.draggable.disable();
+			}
+		}
 
 
     });
