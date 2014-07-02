@@ -101,7 +101,8 @@ function(){
             // for testing purposes:
             // trying to work out bootstrap.affix()
             this.notPlacedList = new AD.controllers.opstools.GMAMatrix.ADAffix(this.element.find('#gmamatrix-affix'), {
-                scrollingObj:'.gmamatrix-stage'     // jquery selector of obj on page that will fire the scroll() event
+                scrollingObj:'.gmamatrix-stage',     // jquery selector of obj on page that will fire the scroll() event
+                offset:10
             });
 
 

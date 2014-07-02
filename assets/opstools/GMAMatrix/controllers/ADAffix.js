@@ -45,6 +45,8 @@ function(){
 
                 this.$element = $(this.element);
 
+                this.unpin = 1;
+
                 // perform initial position check
                 this.checkPosition();
 
@@ -79,14 +81,31 @@ function(){
             if (typeof offsetTop == 'function') offsetTop = offset.top()
             if (typeof offsetBottom == 'function') offsetBottom = offset.bottom()
 
+            // if we were affixed
+            if ( this.affixed == false) {
 
-            // if the position of the element is < the position of scrollObj then affix-top
-            if (posScrollObj.top + offsetTop > position.top) {
                 affix = false;
-            } else {
-                affix = 'top';
-            }
-            // else if 
+                
+                // if we are < unpin pos
+                if (scrollTop < this.unpin) {
+                    
+                    affix = 'top';
+
+                }// end if
+
+            } else { 
+
+                // if the position of the element is < the position of scrollObj then affix-top
+                if (posScrollObj.top + offsetTop > position.top) {
+                    affix = false;
+                    this.unpin = scrollTop;
+
+                } else {
+                    affix = 'top';
+//                    this.unpin = null;
+                }
+
+            }// else if 
 /*
             affix = this.unpin != null && (scrollTop + this.unpin <= position.top) ?
               false    : offsetBottom != null && (position.top + this.$element.height() >= scrollHeight - offsetBottom) ?
@@ -96,7 +115,7 @@ function(){
             if (this.affixed === affix) return
 
             this.affixed = affix
-            this.unpin = affix == 'bottom' ? position.top - scrollTop : null
+//            this.unpin = affix == 'bottom' ? position.top - scrollTop : null
 
             this.$element.removeClass(reset).addClass('affix' + (affix ? '-' + affix : ''))
 
