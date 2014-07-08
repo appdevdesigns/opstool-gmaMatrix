@@ -32,12 +32,14 @@
 .gmamatrix-container h5 { padding: 15px 5px; text-align: center; font-weight: bold; }
 .gmamatrix-container ul { display: block; margin: 0 5px auto; position: relative; }
 .gmamatrix-container ul:after { clear: both; }
-.gmamatrix-container ul.gmamatrix-li-staff { display: block; position: relative; float: left !important; width: 50%; border-right: 1px solid #e3e3e3; margin: 0;}
+.gmamatrix-container ul.gmamatrix-li-staff { display: block; position: relative; float: left !important; width: 50%; border-right: 1px solid #e3e3e3; margin: 0; }
 .gmamatrix-container ul.gmamatrix-li-disciple { display: block; position: relative; float: right !important; width: 50%; border-left: 1px solid #e3e3e3; margin: 0; }
 .gmamatrix-container ul li { list-style: none; margin: 5px auto; padding: 5px; display: block; border: 1px solid #c0c0c0; text-align: center; width: 90%; background: transparent; color: #000;}
-.gmamatrix-staff, .gmamatrix-disciple { border-top: 1px solid #e3e3e3; text-align: center; padding: 15px; font-weight: normal; position: relative; }
+.gmamatrix-staff, .gmamatrix-disciple { border-top: 1px solid #e3e3e3; text-align: center; padding: 15px; font-weight: normal; position: relative; overflow: visible !important; margin-top: 14px; }
 /*.gmamatrix-container .row .gmamatrix-droppable { float: none; display: table-cell; vertical-align: middle; }*/
 .gmamatrix-staff { border-right: 1px solid #e3e3e3; }
+.gmamatrix-lmi-selected { background-color: rgb(220,220,220); font-weight: bold; }
+.gmamatrix-lmi-selected a { opacity: 1 !important; }
 .gmamatrix-other { border: 1px solid #c0c0c0; min-height: 150px; background: #f0f0f0; margin: 1.5em 0; }
 .gmamatrix-other:hover { background-color: rgb(220,220,220); }
 .gmamatrix-other .gmamatrix-li-other { }
@@ -48,14 +50,28 @@
 
 .gmamatrix-container-hover { background-color: rgb(220,220,220); }
 
-#gmamatrix-affix { position: relative; padding: 0 0 15px; }
+#gmamatrix-affix { /*position: relative;*/ padding: 0 0 15px; }
 #gmamatrix-affix h4 { border-bottom: 1px solid #e3e3e3; padding: 15px; text-align: center; font-size: 14px; text-transform: uppercase; width: 100%; line-height: 14px; margin: 0; }
 #gmamatrix-affix div { margin: 15px; }
 
-.affix { top: 75px; position: fixed; }
+.affix { top: 75px; position: fixed !important; }
 
 .gmamatrix-showhide { padding: 0 15px; opacity: 1 !important; }
 .gmamatrix-showhide:hover, .gmamatrix-showhide:active { background-color: rgb(220,220,220); text-decoration: none; }
 .gmamatrix-showhide h4 { font-size: 16px; padding: 15px 0; }
 .gmamatrix-showhide i { font-size: 16px; float: right; display: block; padding: 15px 0; }
 
+.gmamatrix-lmi-input { position: relative; width: 100%; clear: right; }
+.gmamatrix-lmi-input input { width: 100% !important; display: block; margin: 0; border-radius: 0 !important; padding: 6px 10px; }
+.gmamatrix-lmi-input label { line-height: 34px; text-align: left; display: inline-block; white-space: normal; width: 100%; }
+
+.gmamatrix-li-staff-form li, .gmamatrix-li-disciple-form li { border: 0 !important; }
+
+.triangle-up {
+	width: 0;
+	height: 0;
+	border-left: 9px solid transparent;
+	border-right: 9px solid transparent;
+	border-bottom: 14px solid rgb(220,220,220);
+}
+.triangle-up.triangle-selected { position: absolute; top: -14px; left: 45%; z-index: 101; }

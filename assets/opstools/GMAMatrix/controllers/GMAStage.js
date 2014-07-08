@@ -386,13 +386,19 @@ function(){
 			}
 				
 			ev.preventDefault();
+		},
+		
+		'.gmamatrix-lmi-filter-tag click':function($el, ev) {
+			var self = this,
+			activatedFilter = self.element.find($el).data('lmi-filter');
+						
+			/* $("#" + activatedFilter).siblings('ul').animate({ height: 'toggle', opacity: 'toggle' }, 'slow');
+			$('#' + activatedFilter).delay(1000).fadeToggle(1000); */
+			$("#" + activatedFilter).siblings('ul').toggle();
+			$('#' + activatedFilter).toggle();
+			self.element.find($el).parent().addClass('gmamatrix-lmi-selected').children('.triangle-up').toggle();
+			self.element.find($el).parent().siblings('div').removeClass('gmamatrix-lmi-selected').children('.triangle-up').toggle();
 		}
-
-
-
-
-
-
     });
 
 
