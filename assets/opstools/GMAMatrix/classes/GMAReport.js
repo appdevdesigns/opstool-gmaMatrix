@@ -66,8 +66,13 @@ function(){
 
 
         label: function() {
-
-            return this.nodeName;
+            //return this.nodeName;
+            
+            // Since reports are displayed after choosing an assignment node,
+            // we can assume the node name is already displayed elsewhere.
+            // So to differentiate one report from the next, we use the date
+            // range as the report label.
+            return this.startDate + ' \u2014 ' + this.endDate;
         },
 
 
