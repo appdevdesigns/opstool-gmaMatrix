@@ -83,11 +83,45 @@ module.exports = {
              nodeName  : "Assignment 1",
              startDate : "2014/2/01",
              endDate   : "2014/2/31"
+          },
+
+        {
+           reportId  : 4,
+           nodeId    : 2,
+           nodeName  : "Assignment 2",
+           startDate : "2013/12/01",
+           endDate   : "2013/12/31"
+        },
+
+        {
+            reportId  : 5,
+            nodeId    : 2,
+            nodeName  : "Assignment 2",
+            startDate : "2014/1/01",
+            endDate   : "2014/1/31"
+         },
+
+         {
+             reportId  : 6,
+             nodeId    : 3,
+             nodeName  : "Assignment 3",
+             startDate : "2014/2/01",
+             endDate   : "2014/2/31"
           }
 
-      ];
 
-      ADCore.comm.success(res, data);
+      ];
+      
+      // Filter data by Node ID
+      var results = [];
+      var nodeId = req.param('nodeId');
+      for (var i=0; i<data.length; i++) {
+          if (data[i]['nodeId'] == nodeId) {
+              results.push( data[i] );
+          }
+      }
+
+      ADCore.comm.success(res, results);
   }
 
 
