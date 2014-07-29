@@ -2,7 +2,7 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
-        'js/GenericList.js',
+        'opstools/GMAMatrix/controllers/GMAList.js',
         'opstools/GMAMatrix/classes/GMAAssignment.js',
 //        'opstools/GMAMatrix/models/Projects.js',
 //        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
@@ -34,37 +34,39 @@ function(){
             AD.classes.gmamatrix.GMAAssignment.assignments()
             .then(function(list){
                 self.dataSource = list;
-//                self.list.data(list);
+                self.list.data(list);
             })
             .fail(function(err){
                 console.error(err);
             });
 
 
-
             // listen for resize notifications
+            // Why?
+            /*
             AD.comm.hub.subscribe('gmamatrix.resize', function (key, data) {
                 self.element.css("height", data.height + "px");
 
                 //self.list.resize(data.height);
             }); 
+            */
         },
 
 
 
         initDOM: function () {
 
-            this.element.html(can.view(this.options.templateDOM, {} ));
+            //this.element.html(can.view(this.options.templateDOM, {} ));
 
             // add in the GenericList to our report list div
-/*            this.list = new AD.controllers.GenericList(this.element, {
+            this.list = new AD.controllers.GMAList(this.element, {
                 title:'Assignments',
                 description: 'Choose the GMA nodes you are allowed to report on.',
-//                dataSource:[],  //this.dataSource,
-                templateItem:'//opstools/GMAMatrix/views/AssignmentList/item.ejs',
+                //dataSource: this.dataSource,
+                //templateItem:'//opstools/GMAMatrix/views/AssignmentList/item.ejs',
                 notification_selected:'gmamatrix.assignment.selected',
-//                onAdd:function() { self.addItem();  }
-            });*/
+                onAdd:function() { self.addItem();  }
+            });
         },
 
 

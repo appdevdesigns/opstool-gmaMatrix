@@ -18,8 +18,7 @@ function(){
         init: function (element, options) {
             var self = this;
             options = AD.defaults({
-                templateDOM: '//opstools/GMAMatrix/views/ReportList/ReportList.ejs',
-                templateItem: '//opstools/GMAMatrix/views/ReportList/item.ejs'
+                templateDOM: '//opstools/GMAMatrix/views/ReportList/ReportList.ejs'
             }, options);
             this.options = options;
 
@@ -104,22 +103,33 @@ function(){
 
 
 
-        data:function(data){
+        data: function(data) {
+            this.list.data(data);
+            /*
             this.dataSource = data;
             this.clearData();
             this.createContent();
             this.chooseDefault();
+            */
         },
 
 
 
         initDOM: function () {
 
-            this.element.html(can.view(this.options.templateDOM, {} ));
+            // this.element.html(can.view(this.options.templateDOM, {} ));
 
-            // .itemContent = <select>
-            this.itemContent =
-                this.element.find('.gmamatrix-report-reportlist-items');
+            // this.itemContent = this.element.find('.gmamatrix-report-reportlist-items');
+
+            // add in the GenericList to our report list div
+            this.list = new AD.controllers.GMAList(this.element, {
+                title:'Reports',
+                description: 'Choose the reporting period.',
+                //dataSource: this.dataSource,
+                //templateItem:'//opstools/GMAMatrix/views/AssignmentList/item.ejs',
+                notification_selected:'gmamatrix.report.selected',
+                onAdd:function() { self.addItem();  }
+            });
 
         },
 
