@@ -207,6 +207,34 @@ function(){
 
             ev.preventDefault();
         },
+        
+        
+        // Handle switching tabs between Layout / Entry
+        '#gmamatrix-stage-tabs ul li a click': function ($el, ev) {
+            // toggle active tab state
+            this.element.find('#gmamatrix-stage-tabs ul li a.active-btn').removeClass('active-btn');
+            $el.addClass('active-btn');
+            
+            // hide other sections
+            this.element.find('.gmamatrix-stage-section').hide();
+            
+            // show the selected section
+            var target = $el.attr('href');
+            switch (target) {
+                case '#dashboard':
+                    // ...
+                    break;
+                case '#layout':
+                    $('#gmamatrix-layout').show();
+                    break;
+                case '#entry':
+                    $('#gmamatrix-entry').show();
+                    break;
+            }
+            
+            ev.preventDefault();
+        },
+        
 
 		'gmaMatrixDragDrop': function() {
 
