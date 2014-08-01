@@ -86,10 +86,13 @@ function(){
 
 
         data:function(data){
+            this.list.data(data);
+            /*
             this.dataSource = data;
             this.clearData();
             this.createContent();
             this.chooseDefault();
+            */
         },
 
 

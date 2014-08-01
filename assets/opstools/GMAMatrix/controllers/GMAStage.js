@@ -73,17 +73,15 @@ function(){
 			});*/
 
 
-/*
             AD.comm.hub.subscribe('gmamatrix.assignment.selected', function(key, data){
                 self.selectedAssignment(data.model);
             });
 
-
             AD.comm.hub.subscribe('gmamatrix.report.selected', function(key, data){
-                self.selectedReport(data.report);
+                self.selectedReport(data.model);
             });
 
-
+/*
             AD.comm.hub.subscribe('gmamatrix.strategy.selected', function(key, data){
                 self.selectedStrategy(data.strategy);
             });
@@ -225,9 +223,9 @@ function(){
         selectedAssignment: function(assignment) {
 //            var self = this;
 
-            this.stageInstructions.hide();
+//            this.stageInstructions.hide();
 //            this.stageReport.hide();
-            this.stageLoading.show();
+//            this.stageLoading.show();
 
             // a new Assignment was selected, so reset our report/strategy
             this.report = null;
@@ -246,8 +244,8 @@ function(){
         selectedReport: function(report) {
             var self = this;
 
-            this.stageInstructions.hide();
-            this.stageReport.show();
+            //this.stageInstructions.hide();
+            //this.stageReport.show();
 //            this.stageLoading.show();
 
             // if this is a new report
