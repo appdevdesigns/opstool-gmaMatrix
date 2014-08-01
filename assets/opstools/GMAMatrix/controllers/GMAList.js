@@ -47,8 +47,29 @@ function(){
         },
 
 
-
+        /**
+         * Sets the data source for the list.
+         *
+         * @param array dataList
+         *      Either an array of model object instances
+         *      or an array of strings/numbers
+         */
         data:function(dataList) {
+            // Simple constructor for creating objects that resemble models 
+            var liteModel = function (val) {
+                this.value = val;
+            };
+            liteModel.prototype.getID = function() { return this.value; };
+            liteModel.prototype.label = function() { return this.value; };
+            
+            for (var i=0; i<dataList.length; i++) {
+                // Convert primitve data elements into objects that
+                // can be used by the GMAList.
+                if (typeof dataList[i] != 'object') {
+                    dataList[i] = new liteModel(dataList[i]);
+                }
+            }
+        
             this.dataSource = dataList;
             this.loadItems();
         },
@@ -109,7 +130,6 @@ function(){
             if (!listArea) {
                 listArea = this.element.find(this.options.dom_listarea);
             }
-console.log(item);
             var domFrag = can.view(this.options.templateItem, { item: item });
             listArea[0].appendChild(domFrag);
 
@@ -142,7 +162,6 @@ console.log(item);
             var listArea = this.element.find(this.options.dom_listarea);
 
             this.clearItemList();
-
             if (this.dataSource) {
                 for (var i=0; i<this.dataSource.length; i++) {
                     this.loadItem(this.dataSource[i], listArea);
