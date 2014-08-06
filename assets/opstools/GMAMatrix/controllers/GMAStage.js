@@ -6,6 +6,7 @@ steal(
         '//opstools/GMAMatrix/controllers/ReportList.js',
         '//opstools/GMAMatrix/controllers/StrategyList.js',
         '//opstools/GMAMatrix/controllers/Measurement.js',
+        '//opstools/GMAMatrix/controllers/LayoutMeasurement.js',
         '//opstools/GMAMatrix/controllers/LMIDefinition.js',
         '//opstools/GMAMatrix/controllers/NotPlacedList.js',
         '//opstools/GMAMatrix/controllers/ADAffix.js',
@@ -73,21 +74,17 @@ function(){
 			});*/
 
 
-/*
             AD.comm.hub.subscribe('gmamatrix.assignment.selected', function(key, data){
                 self.selectedAssignment(data.model);
             });
 
-
             AD.comm.hub.subscribe('gmamatrix.report.selected', function(key, data){
-                self.selectedReport(data.report);
+                self.selectedReport(data.model);
             });
-
 
             AD.comm.hub.subscribe('gmamatrix.strategy.selected', function(key, data){
-                self.selectedStrategy(data.strategy);
+                self.selectedStrategy(data.model);
             });
-*/
         },
 
 
@@ -148,17 +145,28 @@ function(){
         },
 
 
-
+        // Adds the measurements onto the page
         loadMeasurements: function() {
-            if (this.strategy) {
 
+            if (this.strategy) {
+                console.log('loadMeasurements:', this.measurements);
 
                 // if our strategy exists in our measurements
-                if (this.measurements[this.strategy.id]) {
+                if (this.measurements[this.strategy.getID()]) {
+
+                    // Populate the layout tab
+                    var measurements = this.measurements[this.strategy.getID()];
+                    for (var i=0; i<measurements.length; i++) {
+                        new AD.controllers.opstools.GMAMatrix.LayoutMeasurement(null, {
+                            'measurement': measurements[i]
+                        });
+                    }
+                    return;
+
 
                     // if there are any measurements that don't have any
                     // placements?
-                    var noPlacements = this.report.measurementsWithoutPlacements(this.strategy.id);
+                    var noPlacements = this.report.measurementsWithoutPlacements(this.strategy.getID());
                     if (noPlacements.length > 0) {
 
                         // oops ... well switch to placement mode:
@@ -173,7 +181,7 @@ function(){
 
 
                         // ok, we are ready to show em:
-                        var measurements = this.measurements[this.strategy.id];
+                        var measurements = this.measurements[this.strategy.getID()];
                         // for each measurement
                         for (var i=0; i<measurements.length; i++) {
 
@@ -225,9 +233,9 @@ function(){
         selectedAssignment: function(assignment) {
 //            var self = this;
 
-            this.stageInstructions.hide();
+//            this.stageInstructions.hide();
 //            this.stageReport.hide();
-            this.stageLoading.show();
+//            this.stageLoading.show();
 
             // a new Assignment was selected, so reset our report/strategy
             this.report = null;
@@ -242,12 +250,16 @@ function(){
         },
 
 
-
+        /**
+         * When a report is selected, we parse it to find out what strategies
+         * are represented in it. This will allow the strategies list to
+         * be updated.
+         */
         selectedReport: function(report) {
             var self = this;
 
-            this.stageInstructions.hide();
-            this.stageReport.show();
+            //this.stageInstructions.hide();
+            //this.stageReport.show();
 //            this.stageLoading.show();
 
             // if this is a new report
@@ -303,9 +315,9 @@ function(){
 
         selectedStrategy: function(strategy) {
 
-            this.stageInstructions.hide();
-            this.stageReport.show();
-            this.stageLoading.hide();
+            //this.stageInstructions.hide();
+            //this.stageReport.show();
+            //this.stageLoading.hide();
 
             // if this is a new strategy
             //      or this is not the currently selected strat
@@ -342,32 +354,6 @@ function(){
             this.stageReport = this.element.find('.gmamatrix-stage-report');
 //            this.stageReport.hide();
 
-            // Start by displaying the datepicker for the user to choose which
-            // time period the GMA reports will be selected from.
-/*
-            var $date = this.element.find('#reports-date');
-            $date.kendoDatePicker({
-                format: "yyyy-MM-dd",
-                change: function(e) {
-                    var widget = $date.data('kendoDatePicker');
-
-                    // Don't allow the date to be changed again
-                    widget.enable(false);
-                    widget.close();
-
-                    // Get value and convert to a Ymd string
-                    var dateObj = widget.value();
-                    var selectedDate = dateObj.getFullYear()
-                        + String(dateObj.getMonth()+1).replace(/^(.)$/, '0$1')
-                        + String(dateObj.getDate()).replace(/^(.)$/, '0$1');
-
-                    //doFetchReportList(selectedDate);
-
-                    AD.comm.hub.publish('gmamatrix.date.selected', { date: selectedDate });
-
-                }
-            });
-*/
         },
 
 		'.opsportal-filter-tag click':function($el, ev) {

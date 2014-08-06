@@ -17,8 +17,7 @@ function(){
         init: function (element, options) {
             var self = this;
             this.options = AD.defaults({
-                templateDOM: '//opstools/GMAMatrix/views/StrategyList/StrategyList.ejs',
-                templateItem: '//opstools/GMAMatrix/views/StrategyList/item.ejs',
+                templateDOM: '//opstools/GMAMatrix/views/StrategyList/StrategyList.ejs'
             }, options);
 
             // Call parent init
@@ -87,21 +86,32 @@ function(){
 
 
         data:function(data){
+            this.list.data(data);
+            /*
             this.dataSource = data;
             this.clearData();
             this.createContent();
             this.chooseDefault();
+            */
         },
 
 
 
         initDOM: function () {
 
-            this.element.html(can.view(this.options.templateDOM, {} ));
+            //this.element.html(can.view(this.options.templateDOM, {} ));
 
-            // .itemContent = <select>
-            this.itemContent =
-                this.element.find('.gmamatrix-report-strategylist-items');
+            // this.itemContent = this.element.find('.gmamatrix-report-strategylist-items');
+
+            // add in the GenericList to our report list div
+            this.list = new AD.controllers.GMAList(this.element, {
+                title:'Strategy',
+                description: 'Choose the strategy.',
+                //dataSource: this.dataSource,
+                //templateItem:'//opstools/GMAMatrix/views/AssignmentList/item.ejs',
+                notification_selected:'gmamatrix.strategy.selected',
+                onAdd:function() { self.addItem();  }
+            });
 
         },
 

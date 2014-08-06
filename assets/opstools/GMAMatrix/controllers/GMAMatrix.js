@@ -5,6 +5,8 @@ steal(
 //        'opstools/GMAMatrix/models/Projects.js',
         'appdev/widgets/ad_icon_busy/ad_icon_busy.js',
         '//opstools/GMAMatrix/controllers/AssignmentList.js',
+        '//opstools/GMAMatrix/controllers/StrategyList.js',
+        '//opstools/GMAMatrix/controllers/ReportList.js',
         '//opstools/GMAMatrix/controllers/GMAStage.js',
 //        'opstools/GMAMatrix/views/GMAMatrix/GMAMatrix.ejs',
 function(){
@@ -67,6 +69,11 @@ function(){
 */
             //// Attach the ReportList object
             new AD.controllers.opstools.GMAMatrix.AssignmentList( this.element.find('.gmamatrix-assignment-chooser'));
+
+            new AD.controllers.opstools.GMAMatrix.StrategyList( this.element.find('.gmamatrix-strategy-chooser'));
+
+            new AD.controllers.opstools.GMAMatrix.ReportList( this.element.find('.gmamatrix-report-chooser'));
+
 
 
             //// Attach the GMA Stage
@@ -200,10 +207,41 @@ function(){
 
             ev.preventDefault();
         },
+        
+        
+        // Handle switching tabs between Layout / Entry
+        '#gmamatrix-stage-tabs ul li a click': function ($el, ev) {
+            // toggle active tab state
+            this.element.find('#gmamatrix-stage-tabs ul li a.active-btn').removeClass('active-btn');
+            $el.addClass('active-btn');
+            
+            // hide other sections
+            this.element.find('.gmamatrix-stage-section').hide();
+            
+            // show the selected section
+            var target = $el.attr('href');
+            switch (target) {
+                case '#dashboard':
+                    // ...
+                    break;
+                case '#layout':
+                    $('#gmamatrix-layout').show();
+                    break;
+                case '#entry':
+                    $('#gmamatrix-entry').show();
+                    break;
+            }
+            
+            ev.preventDefault();
+        },
+        
 
 		'gmaMatrixDragDrop': function() {
 
 			/* Setup testing draggable categories */
+			// See GMAStage.js loadMeasurements()
+			// See LayoutMeasurements.js
+			/*
 			var numbers = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
 			
 			for ( var i=0; i<10; i++ ) {
@@ -220,6 +258,7 @@ function(){
 					helper: "clone"
 			    } );
 			  }
+            */
 						
 			$('.gmamatrix-droppable-lmi').droppable({
 				accept: '.gmamatrix-draggable',
