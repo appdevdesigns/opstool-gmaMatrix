@@ -1,3 +1,4 @@
+<!-- 
 <div class="bubble-container">
     <div class="question-bubble well">
         <h3 class="navbar-inner"><%= item.label() %></h3>
@@ -14,3 +15,13 @@
         </div>
     </div>
 </div>
+-->
+
+    <div class="row input-group gmamatrix-lmi-input">
+        <div class="col-xs-9" title="<%= item.description() %>">
+            <label for="measurement-<%= item.getID() %>"><%= item.label() %></label>
+        </div>
+        <div class="col-xs-3">
+            <input type="text" class="form-control" id="measurement-<%= item.getID() %>" maxlength="2" value="<%= item.value() %>">
+        </div>
+    </div>

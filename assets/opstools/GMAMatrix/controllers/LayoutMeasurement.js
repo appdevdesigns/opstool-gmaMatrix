@@ -29,9 +29,9 @@ function(){
 
             this.initDOM();
 
-            //AD.comm.hub.subscribe('gmamatrix.strategy.selected', function(key, data){
-            //    self.selectedStrategy(data.strategy);
-            //});
+            AD.comm.hub.subscribe('gmamatrix.measurements.clear', function(key, data){
+                self.clear();
+            });
         },
 
 
@@ -70,6 +70,11 @@ function(){
             
             this.element.appendTo('#gmamatrix-affix');
             
+        },
+        
+
+        clear: function () {
+            $('#gmamatrix-affix .gmamatrix-draggable').remove();
         }
 
 });
