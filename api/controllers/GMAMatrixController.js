@@ -207,7 +207,29 @@ module.exports = {
               measurementId:3,
               matrixLocation:'npb',
               order:1
+          },
+          {
+            id:4,
+            reportId:1,
+            measurementId:4,
+            matrixLocation:'npb',
+            order:1
+          },
+          {
+            id:5,
+            reportId:1,
+            measurementId:5,
+            matrixLocation:'pths',
+            order:1
+          },
+          {
+            id:6,
+            reportId:6,
+            measurementId:6,
+            matrixLocation:'npb',
+            order:1
           }
+          
       ];
 
       ADCore.comm.success(res, data);
@@ -254,6 +276,78 @@ module.exports = {
               inputType:'integer',
               chartLocation:'win-fruits',
               locationKey:'npb'
+          },
+          {
+              id:5,
+              name:'Following Up',
+              definition:'A: ',
+              summaryType:'total',
+              inputType:'integer',
+              chartLocation:'build-faith',
+              locationKey:'fu'
+          },
+          {
+              id:6,
+              name:'Presenting the Holy Spirit',
+              definition:'A: ',
+              summaryType:'total',
+              inputType:'integer',
+              chartLocation:'build-faith',
+              locationKey:'pths'
+          },
+          {
+              id:7,
+              name:'Engaged Disciples',
+              definition:'A: ',
+              summaryType:'total',
+              inputType:'integer',
+              chartLocation:'build-fruits',
+              locationKey:'ed'
+          },
+          {
+              id:8,
+              name:'Training for Action',
+              definition:'A: ',
+              summaryType:'total',
+              inputType:'integer',
+              chartLocation:'send-faith',
+              locationKey:'tfa'
+          },
+          {
+              id:9,
+              name:'Sending Lifetime Laborers',
+              definition:'A: ',
+              summaryType:'total',
+              inputType:'integer',
+              chartLocation:'send-faith',
+              locationKey:'sll'
+          },
+          {
+              id:10,
+              name:'Developing Local Resources',
+              definition:'A: ',
+              summaryType:'total',
+              inputType:'integer',
+              chartLocation:'send-faith',
+              locationKey:'dlr'
+          },
+          {
+              id:11,
+              name:'Multiplying Disciples',
+              definition:'A: ',
+              summaryType:'total',
+              inputType:'integer',
+              chartLocation:'send-fruits',
+              locationKey:'md'
+          },
+          {
+              id:12,
+              name:'Movement Progress',
+              definition:'A: ',
+              summaryType:'total',
+              inputType:'integer',
+              chartLocation:'outcome',
+              locationKey:'mp'
           },
 
 
