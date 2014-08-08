@@ -30,7 +30,7 @@
 .gmamatrix-container { position: relative; background: #f0f0f0; border: 1px solid #e3e3e3; text-align: left; margin: 0.75em 0; /*min-height: 45px;*/ padding: 0;}
 .gmamatrix-container .row { /*display: table;*/ margin: 0; clear: both !important; }
 .gmamatrix-container h5 { padding: 15px 5px; text-align: center; font-weight: bold; border-bottom: 1px solid #e3e3e3; }
-.gmamatrix-container ul { display: block; margin: 0 5px auto; position: relative; }
+.gmamatrix-container ul { display: block; margin: 0 5px auto; position: relative; min-height: 3em; }
 .gmamatrix-container ul:after { clear: both; }
 .gmamatrix-container ul.gmamatrix-li-staff { display: block; position: relative; float: left !important; width: 50%; border-right: 1px solid #e3e3e3; margin: 0; }
 .gmamatrix-container ul.gmamatrix-li-disciple { display: block; position: relative; float: right !important; width: 50%; border-left: 1px solid #e3e3e3; margin: 0; }

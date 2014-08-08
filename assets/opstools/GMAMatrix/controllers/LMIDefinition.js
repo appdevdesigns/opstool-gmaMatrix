@@ -32,18 +32,23 @@ function(){
 
         },
 
-
+        
+        /**
+         * @param Model measurement
+         */
         addMeasurement:function(measurement) {
-
+            
             // make sure measurement is linked to this LMI definition
             measurement.lmiDefinition( this.options.definition);
-
-            // append a new Measurement to my LMI location
+            
             var tag = 'gmamatrix-measurement-div-'+measurement.getID();
-            var div = $('<div class="'+tag+'" ></div>');
-            this.element.append(div);
+            var $container = this.element.find('.gmamatrix-li-form');
+            var $li = $('<li class="'+tag+'" ></li>');
+            
+            // append a new Measurement to my LMI location
+            $container.append($li);
             new AD.controllers.opstools.GMAMatrix
-            .Measurement(this.element.find('.'+tag), { measurement: measurement} );
+            .Measurement($li, { measurement: measurement} );
 
         },
 

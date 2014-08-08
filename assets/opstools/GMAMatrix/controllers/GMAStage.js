@@ -37,12 +37,12 @@ function(){
 //            this.strategy = null;
 
 
-//            this.locations = null;
-//            this.lmiDefsLoaded = null;
-//            this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
+            this.locations = null;
+            this.lmiDefsLoaded = null;
+            this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
 
             this.initDOM();
-//            this.loadLMI();
+            this.loadLMI();
 
             this.listAffix = null;
 
@@ -130,11 +130,17 @@ function(){
                     var key = definition.key();
 
                     // append a new definition to the Win-Build-Send chart
+                    /*
                     var tag = 'gmamatrix-stage-lmi-'+key;
                     var div = $('<div class="'+tag+'" ></div>');
                     self.element.find('#'+placement).append(div);
+                    */
+                    
+                    var $lmiContainer = self.element.find(".lmi-box[lmikey='" + key + "']");
+                    
                     self.lmiDefs[key] = new AD.controllers.opstools.GMAMatrix
-                    .LMIDefinition(self.element.find('.'+tag), { definition: definition } );
+                    .LMIDefinition($lmiContainer, { definition: definition } );
+                    //.LMIDefinition(self.element.find('.'+tag), { definition: definition } );
                 }
 
             })
@@ -149,24 +155,23 @@ function(){
         loadMeasurements: function() {
 
             if (this.strategy) {
-                console.log('loadMeasurements:', this.measurements);
-
+                
+                var strategyID = this.strategy.getID();
+                
                 // if our strategy exists in our measurements
-                if (this.measurements[this.strategy.getID()]) {
+                if (this.measurements[strategyID]) {
 
                     // Populate the layout tab
-                    var measurements = this.measurements[this.strategy.getID()];
+                    var measurements = this.measurements[strategyID];
                     for (var i=0; i<measurements.length; i++) {
                         new AD.controllers.opstools.GMAMatrix.LayoutMeasurement(null, {
                             'measurement': measurements[i]
                         });
                     }
-                    return;
-
 
                     // if there are any measurements that don't have any
                     // placements?
-                    var noPlacements = this.report.measurementsWithoutPlacements(this.strategy.getID());
+                    var noPlacements = this.report.measurementsWithoutPlacements(strategyID);
                     if (noPlacements.length > 0) {
 
                         // oops ... well switch to placement mode:
@@ -181,7 +186,7 @@ function(){
 
 
                         // ok, we are ready to show em:
-                        var measurements = this.measurements[this.strategy.getID()];
+                        var measurements = this.measurements[strategyID];
                         // for each measurement
                         for (var i=0; i<measurements.length; i++) {
 
