@@ -35,6 +35,7 @@
 .gmamatrix-container ul.gmamatrix-li-staff { display: block; position: relative; float: left !important; width: 50%; border-right: 1px solid #e3e3e3; margin: 0; }
 .gmamatrix-container ul.gmamatrix-li-disciple { display: block; position: relative; float: right !important; width: 50%; border-left: 1px solid #e3e3e3; margin: 0; }
 .gmamatrix-container ul li { list-style: none; margin: 5px auto; padding: 5px; display: block; border: 1px solid #c0c0c0; text-align: center; width: 90%; background: transparent; color: #000;}
+.gmamatrix-container.gmamatrix-dashboard-container .row { padding: 15px; }
 .gmamatrix-staff, .gmamatrix-disciple { border-top: 1px solid #e3e3e3; text-align: center; padding: 15px; font-weight: normal; position: relative; overflow: visible !important; margin-top: 14px; }
 /*.gmamatrix-container .row .gmamatrix-droppable { float: none; display: table-cell; vertical-align: middle; }*/
 .gmamatrix-staff { border-right: 1px solid #e3e3e3; }
