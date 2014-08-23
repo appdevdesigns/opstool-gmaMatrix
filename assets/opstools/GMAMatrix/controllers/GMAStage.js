@@ -50,8 +50,12 @@ function(){
                 console.log('!! window.scroll() !!');
             });
 
-
-
+			
+			var wijmodata = [33, 11, 15, 26, 16, 27, 37, -13, 8, -8, -3, 17, 0, 22, -13, -29, 19, 8]; 
+			//this.element.find('#wijsparklineDefault').wijsparkline({ data: wijmodata }); 
+			$('#chartDiv').wijsparkline({ data: wijmodata });
+			
+			
 //            this.setupComponents();
 
             // listen for resize notifications
@@ -366,12 +370,12 @@ function(){
 				myFilter = self.element.find($el).data('hris-filter');
 			
 			if (self.element.find($el).hasClass('filter-on')) {
-				self.element.find($el).removeClass('filter-on').children('i').removeClass('fa-minus-square').addClass('fa-plus-square');
+				self.element.find($el).removeClass('filter-on').children('i').removeClass('fa-minus').addClass('fa-plus');
 				
 				//$('#'+myFilter).hide(2000);
 				$('#'+myFilter).slideUp(1000);
 			} else {
-				self.element.find($el).addClass('filter-on').children('i').removeClass('fa-plus-square').addClass('fa-minus-square');
+				self.element.find($el).addClass('filter-on').children('i').removeClass('fa-plus').addClass('fa-minus');
 				//$('#'+myFilter).show();
 				$('#'+myFilter).slideDown(1000);
 			}
