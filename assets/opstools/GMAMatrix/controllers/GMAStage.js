@@ -51,10 +51,57 @@ function(){
             });
 
 			
-			var wijmodata = [33, 11, 15, 26, 16, 27, 37, -13, 8, -8, -3, 17, 0, 22, -13, -29, 19, 8]; 
-			//this.element.find('#wijsparklineDefault').wijsparkline({ data: wijmodata }); 
-			$('#chartDiv').wijsparkline({ data: wijmodata });
+			//var wijmodata = [33, 11, 15, 26, 16, 27, 37, -13, 8, -8, -3, 17, 0, 22, -13, -29, 19, 8];
+			//this.element.find('#chartDiv').wijsparkline({ data: wijmodata });
+			var data = [{ month: "January", score: 73 }, { month: "February", score: 95 }, { month: "March", score: 89 },
+			            { month: "April", score: 66 }, { month: "May", score: 50 }, { month: "June", score: 65 },
+			            { month: "July", score: 70 }, { month: "August", score: 43 }, { month: "September", score: 65 },
+			            { month: "October", score: 27 }, { month: "November", score: 77 }, { month: "December", score: 58 }];
+			this.element.find(".gmaSparkline").wijsparkline({
+				data: data,
+				bind: "score",
+				tooltipContent: function(){
+	                return this.month + ': ' +  this.score;
+	            },
+		        type: "area",
+				seriesStyles: [
+				            {
+				                fill: "#4381B8",
+				 				stroke: "#4381B8"
+				            }
+				        ]
+		    });
+
+			// See https://github.com/minddust/bootstrap-progressbar for docs
+			this.element.find('.progress .progress-bar').progressbar({
+				use_percentage: false,
+				display_text: 'fill',
+				amount_format: function(amount_part, amount_total) { return amount_part + ' / ' + amount_total; }
+			});
+
+			this.element.find('.gma-sparkline').popover({
+			    html : true,
+				trigger : 'focus',
+				placement : 'right',
+			    title: function() {
+			      return self.element.find('.gma-sparkline-title').html();
+			    },
+			    content: function() {
+			      return self.element.find('.gma-sparkline-content').html();
+			    }
+			});
 			
+			this.element.find('.gma-progressbar').popover({
+			    html : true,
+				trigger : 'focus',
+				placement : 'right',
+			    title: function() {
+			      return self.element.find('.gma-progress-title').html();
+			    },
+			    content: function() {
+			      return self.element.find('.gma-progress-content').html();
+			    }
+			});
 			
 //            this.setupComponents();
 

@@ -35,7 +35,7 @@
 .gmamatrix-container ul.gmamatrix-li-staff { display: block; position: relative; float: left !important; width: 50%; border-right: 1px solid #e3e3e3; margin: 0; }
 .gmamatrix-container ul.gmamatrix-li-disciple { display: block; position: relative; float: right !important; width: 50%; border-left: 1px solid #e3e3e3; margin: 0; }
 .gmamatrix-container ul li { list-style: none; margin: 5px auto; padding: 5px; display: block; border: 1px solid #c0c0c0; text-align: center; width: 90%; background: transparent; color: #000;}
-.gmamatrix-container.gmamatrix-dashboard-container .row { padding: 15px; }
+.gmamatrix-container.gmamatrix-dashboard-container .row { padding: 5px; }
 .gmamatrix-staff, .gmamatrix-disciple { border-top: 1px solid #e3e3e3; text-align: center; padding: 15px; font-weight: normal; position: relative; overflow: visible !important; margin-top: 14px; }
 /*.gmamatrix-container .row .gmamatrix-droppable { float: none; display: table-cell; vertical-align: middle; }*/
 .gmamatrix-staff { border-right: 1px solid #e3e3e3; }
@@ -50,6 +50,9 @@
 }
 
 .gmamatrix-container-hover { background-color: rgb(220,220,220); }
+
+.gmamatrix-dashboard-container .progress { min-width: 200px !important; }
+.gmamatrix-dashboard-container .gma-progress-content .progress-bar.gma-progress-bar { background-color: #ff0000 !important; }
 
 #gmamatrix-affix { /*position: relative;*/ padding: 0 0 15px; }
 #gmamatrix-affix h4 { border-bottom: 1px solid #e3e3e3; padding: 15px; text-align: center; font-size: 14px; text-transform: uppercase; width: 100%; line-height: 14px; margin: 0; }
@@ -77,3 +80,15 @@
 	border-bottom: 14px solid rgb(220,220,220);
 }
 .triangle-up.triangle-selected { position: absolute; top: -14px; left: 45%; z-index: 101; }
+
+.gma-sparkline, .gma-progressbar { opacity: 1; }
+.gma-sparkline:hover, .gma-progressbar:hover { text-decoration: none; }
+
+/* gmamatrix using bootstrap progress bar plus code from https://github.com/minddust/bootstrap-progressbar */
+.progress .bar {
+    -webkit-transition: width 2s ease-in-out;
+    -moz-transition: width 2s ease-in-out;
+    -ms-transition: width 2s ease-in-out;
+    -o-transition: width 2s ease-in-out;
+    transition: width 2s ease-in-out;
+}
