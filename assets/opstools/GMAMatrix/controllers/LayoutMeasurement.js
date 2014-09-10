@@ -13,68 +13,70 @@ function(){
         init: function (element, options) {
             var self = this;
             this.options = AD.defaults({
-                    measurement: null // must pass in a GMAMeasurement instance
-                    //templateDOM: '<%= item.label() %>'
+                    // This is a GMAMeasurement instance that provides all the
+                    // measurement's information.
+                    measurement: null,
+                    templateDOM: '//opstools/GMAMatrix/views/Measurement/LayoutMeasurement.ejs',
+                    // The drag-n-drop motion will not be allowed to go beyond
+                    // this element's boundary.
+                    boundaryElement: document.body
             }, options);
             
-
+            
             // Call parent init
             AD.classes.UIController.apply(this, arguments);
             
-            // If no element was passed in to contain this, create a DIV from scratch
-            if (this.element.length == 0) {
-                this.element = $('<div>');
-            }
-
-
             this.initDOM();
 
-            AD.comm.hub.subscribe('gmamatrix.measurements.clear', function(key, data){
-                self.clear();
-            });
+            this.subscriptions = [];
+
+            this.subscriptions.push(
+                AD.comm.hub.subscribe('gmamatrix.measurements.clear', function(key, data){
+                    self.clear();
+                })
+            );
         },
 
-
+        
         initDOM: function () {
             
-            /*
             this.element.html(can.view(this.options.templateDOM, {
                 item: this.options.measurement
             } ));
-            */
-            var label = this.options.measurement.label() || 'Measurement';
+
             var desc = this.options.measurement.description() || '';
-            this.element.html( label );
             this.element.attr('title', desc);
-            
+
             this.element.addClass('cat-unassigned');
             this.element.addClass('gmamatrix-draggable');
             this.element.attr('measurementId', this.options.measurement.getID());
-            this.element.data('catInfo', {
-                catID: this.options.measurement.getID(),
-                catAssigned: false,
-                catAssignedOther: false,
-                catAssignedNum: 0
-            });
+            
             this.element.draggable( {
-                containment: 'document',
                 stack: '.gmamatrix-draggable',
                 cursor: 'move',
                 cursorAt: { top: 16, left: 55 },
                 scroll: true,
                 revert: true,
                 revertDuration: 1,
+                // These settings affect the helper element that is used
+                // while the drag is in progress:
+                helper: "clone",
                 opacity: 0.7, 
-                helper: "clone"
+                zIndex: 100,
+                containment: this.options.boundaryElement,
+                appendTo: this.options.boundaryElement
             } );
-            
-            this.element.appendTo('#gmamatrix-affix');
             
         },
         
 
+        // Remove self from the Layout panel
         clear: function () {
-            $('#gmamatrix-affix .gmamatrix-draggable').remove();
+            this.element.remove();
+            // unsubscribe us from any subscriptions
+            for (var s=0; s<this.subscriptions.length; s++){
+                AD.comm.hub.unsubscribe(this.subscriptions[s]);
+            }
         }
 
 });

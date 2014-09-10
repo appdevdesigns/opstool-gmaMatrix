@@ -10,8 +10,9 @@ steal(
         '//opstools/GMAMatrix/controllers/LMIDefinition.js',
         '//opstools/GMAMatrix/controllers/NotPlacedList.js',
         '//opstools/GMAMatrix/controllers/ADAffix.js',
-//        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
-//        'opstools/GMAMatrix/views/GMAStage/GMAStage.ejs',
+        '//opstools/GMAMatrix/controllers/GMAStage-Entry.js',
+        '//opstools/GMAMatrix/controllers/GMAStage-Layout.js',
+        '//opstools/GMAMatrix/controllers/GMAStage-Dashboard.js',
 function(){
 
     // Namespacing conventions:
@@ -33,8 +34,8 @@ function(){
 
             // keep track of the currently selected reports and
             // strategies in order to know what to display.
-//            this.report = null;
-//            this.strategy = null;
+            this.report = null;
+            this.strategy = null;
 
 
             this.locations = null;
@@ -42,66 +43,18 @@ function(){
             this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
 
             this.initDOM();
+            
+            // Initialize the three panels
+            this.panels = {
+                '#layout': new AD.controllers.opstools.GMAMatrix.GMAStage_Layout(this.element.find('#gmamatrix-layout')),
+                '#entry': new AD.controllers.opstools.GMAMatrix.GMAStage_Entry(this.element.find('#gmamatrix-entry')),
+                '#dashboard': new AD.controllers.opstools.GMAMatrix.GMAStage_Dashboard(this.element.find('#gmamatrix-dashboard'))
+            };
+
             this.loadLMI();
 
             this.listAffix = null;
 
-            $(window).scroll(function(){
-                console.log('!! window.scroll() !!');
-            });
-
-			
-			//var wijmodata = [33, 11, 15, 26, 16, 27, 37, -13, 8, -8, -3, 17, 0, 22, -13, -29, 19, 8];
-			//this.element.find('#chartDiv').wijsparkline({ data: wijmodata });
-			var data = [{ month: "January", score: 73 }, { month: "February", score: 95 }, { month: "March", score: 89 },
-			            { month: "April", score: 66 }, { month: "May", score: 50 }, { month: "June", score: 65 },
-			            { month: "July", score: 70 }, { month: "August", score: 43 }, { month: "September", score: 65 },
-			            { month: "October", score: 27 }, { month: "November", score: 77 }, { month: "December", score: 58 }];
-			this.element.find(".gmaSparkline").wijsparkline({
-				data: data,
-				bind: "score",
-				tooltipContent: function(){
-	                return this.month + ': ' +  this.score;
-	            },
-		        type: "area",
-				seriesStyles: [
-				            {
-				                fill: "#4381B8",
-				 				stroke: "#4381B8"
-				            }
-				        ]
-		    });
-
-			// See https://github.com/minddust/bootstrap-progressbar for docs
-			this.element.find('.progress .progress-bar').progressbar({
-				use_percentage: false,
-				display_text: 'fill',
-				amount_format: function(amount_part, amount_total) { return amount_part + ' / ' + amount_total; }
-			});
-
-			this.element.find('.gma-sparkline').popover({
-			    html : true,
-				trigger : 'focus',
-				placement : 'right',
-			    title: function() {
-			      return self.element.find('.gma-sparkline-title').html();
-			    },
-			    content: function() {
-			      return self.element.find('.gma-sparkline-content').html();
-			    }
-			});
-			
-			this.element.find('.gma-progressbar').popover({
-			    html : true,
-				trigger : 'focus',
-				placement : 'right',
-			    title: function() {
-			      return self.element.find('.gma-progress-title').html();
-			    },
-			    content: function() {
-			      return self.element.find('.gma-progress-content').html();
-			    }
-			});
 			
 //            this.setupComponents();
 
@@ -153,9 +106,6 @@ function(){
                 offset:10
             });
 
-
-//            this.reportList = new AD.controllers.opstools.GMAMatrix.ReportList(this.element.find('.gmamatrix-report-reportlist'));
-//            this.strategyList = new AD.controllers.opstools.GMAMatrix.StrategyList(this.element.find('.gmamatrix-report-strategylist'));
 
 //            this.locations = this.element.find('.gmamatrix-measurement-location');
 //            this.locations.droppable({disable:true});
@@ -212,13 +162,20 @@ function(){
                 // if our strategy exists in our measurements
                 if (this.measurements[strategyID]) {
 
-                    // Populate the layout tab
                     var measurements = this.measurements[strategyID];
+                    
+                    // Populate the Layout tab
+                    this.panels['#layout'].removeAll();
                     for (var i=0; i<measurements.length; i++) {
-                        new AD.controllers.opstools.GMAMatrix.LayoutMeasurement(null, {
-                            'measurement': measurements[i]
-                        });
+                        this.panels['#layout'].addMeasurement( measurements[i] );
                     }
+                    
+                    // Populate the Entry tab
+                    this.panels['#entry'].removeAll();
+                    for (var i=0; i<measurements.length; i++) {
+                        this.panels['#entry'].addMeasurement( measurements[i] );
+                    }
+                    
 
                     // if there are any measurements that don't have any
                     // placements?
@@ -228,12 +185,15 @@ function(){
                         // oops ... well switch to placement mode:
 
                         // areas droppable
-                        this.locations.enable();
+                        //this.locations.enable();
 
                         // list noPlacements in column
                         AD.comm.hub.publish('gmamatrix.noplacements.list', {list:noPlacements});
 
-                    } else {
+                    } 
+                    
+                    /*
+                    else {
 
 
                         // ok, we are ready to show em:
@@ -261,18 +221,11 @@ function(){
 
 
                             }
-/*
-                            // append a new Measurement to the location
-                            var tag = 'gmamatrix-measurement-div-'+measurement.getID();
-                            var div = $('<div class="'+tag+'" ></div>');
-                            this.element.find('#'+location).append(div);
-                            new AD.controllers.opstools.GMAMatrix
-                            .Measurement(this.element.find('.'+tag), { measurement: measurement} );
-*/
 
                         }// next
 
                     }
+                    */
 
                 } else {
 
@@ -289,19 +242,13 @@ function(){
         selectedAssignment: function(assignment) {
 //            var self = this;
 
-//            this.stageInstructions.hide();
-//            this.stageReport.hide();
-//            this.stageLoading.show();
-
             // a new Assignment was selected, so reset our report/strategy
             this.report = null;
 //            this.strategy = null;  // let's keep strategy and reuse
 
-
             // a new assignment was selected, so notify any existing
             // Measurements to remove themselves:
             AD.comm.hub.publish('gmamatrix.measurements.clear', {});
-
 
         },
 
@@ -313,10 +260,6 @@ function(){
          */
         selectedReport: function(report) {
             var self = this;
-
-            //this.stageInstructions.hide();
-            //this.stageReport.show();
-//            this.stageLoading.show();
 
             // if this is a new report
             //  or it has changed
@@ -371,18 +314,12 @@ function(){
 
         selectedStrategy: function(strategy) {
 
-            //this.stageInstructions.hide();
-            //this.stageReport.show();
-            //this.stageLoading.hide();
-
             // if this is a new strategy
             //      or this is not the currently selected strat
             if ((this.strategy == null)
                 || (this.strategy != strategy)) {
 
-
                 this.strategy = strategy;       // each report has a strategy
-
 
                 // a new strategy was selected, so notify any existing
                 // Measurements to remove themselves:
@@ -392,7 +329,6 @@ function(){
                 // by this point, we should already have measurements
                 // and placements loaded, so now show the Measurements
                 this.loadMeasurements();
-
 
             }
 
@@ -412,35 +348,29 @@ function(){
 
         },
 
-		'.opsportal-filter-tag click':function($el, ev) {
-			var self = this,
-				myFilter = self.element.find($el).data('hris-filter');
-			
-			if (self.element.find($el).hasClass('filter-on')) {
-				self.element.find($el).removeClass('filter-on').children('i').removeClass('fa-minus').addClass('fa-plus');
-				
-				//$('#'+myFilter).hide(2000);
-				$('#'+myFilter).slideUp(1000);
-			} else {
-				self.element.find($el).addClass('filter-on').children('i').removeClass('fa-plus').addClass('fa-minus');
-				//$('#'+myFilter).show();
-				$('#'+myFilter).slideDown(1000);
-			}
-				
-			ev.preventDefault();
-		},
-		
-		'.gmamatrix-lmi-filter-tag click':function($el, ev) {
-			var self = this,
-			activatedFilter = self.element.find($el).data('lmi-filter');
-						
-			/* $("#" + activatedFilter).siblings('ul').animate({ height: 'toggle', opacity: 'toggle' }, 'slow');
-			$('#' + activatedFilter).delay(1000).fadeToggle(1000); */
-			$("#" + activatedFilter).siblings('ul').toggle();
-			$('#' + activatedFilter).toggle();
-			self.element.find($el).parent().addClass('gmamatrix-lmi-selected').children('.triangle-up').toggle();
-			self.element.find($el).parent().siblings('div').removeClass('gmamatrix-lmi-selected').children('.triangle-up').toggle();
-		}
+
+        // Handle switching tabs between Layout / Entry
+        '#gmamatrix-stage-tabs ul li a click': function ($el, ev) {
+            // toggle active tab state
+            this.element.find('#gmamatrix-stage-tabs ul li a.active-btn').removeClass('active-btn');
+            $el.addClass('active-btn');
+
+            var target = $el.attr('href');
+            
+            // hide other panels
+            this.element.find('.opsportal-stage-main').children().hide();
+            for (var p in this.panels) {
+                if (p != target) {
+                    this.panels[p].hide();
+                }
+            }
+            
+            // show the selected panel
+            this.panels[target].show();
+            
+            ev.preventDefault();
+        }
+
     });
 
 
