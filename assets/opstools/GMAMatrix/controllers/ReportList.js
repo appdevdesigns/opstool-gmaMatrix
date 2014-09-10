@@ -14,6 +14,14 @@ function(){
     if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
     AD.controllers.opstools.GMAMatrix.ReportList = AD.classes.UIController.extend({
 
+        defaults: {
+            busy: function (isBusy) {
+                // This does nothing and is meant to be overidden by passing in
+                // a replacement function.
+            }
+        }
+
+    }, {
 
         init: function (element, options) {
             var self = this;
@@ -38,6 +46,7 @@ function(){
 
                 AD.sal.setImmediate( function() {
 
+                    self.options.busy(true);
                     data.model.reports()
                         .then(function(list){
                             self.data(list);
@@ -45,6 +54,9 @@ function(){
                         .fail(function(err){
                             console.error('Error retrieving reports from ');
                             console.log(data.model);
+                        })
+                        .always(function(){
+                            self.options.busy(false);
                         });
 
                 });

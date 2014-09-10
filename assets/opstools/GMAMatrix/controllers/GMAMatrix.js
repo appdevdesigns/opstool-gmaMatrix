@@ -53,26 +53,37 @@ function(){
 
         setupPage: function() {
 
-
-
-/*
-            this.loadingIconInitial = new AD.widgets.ad_icon_busy(this.element.find('#dummy-loading-indicator'), {
+            var self = this;
+            
+            // Initialize the busy indicator widget to be used by the
+            // sidebar lists.
+            this.busyIndicator = new AD.widgets.ad_icon_busy(this.element.find('.busy-indicator'), {
                 style:'circle',
                 color:'grey'
             });
-            this.loadingIconInitial.show();
+            var showBusyIndicator = function(isBusy) {
+                if (isBusy) {
+                    self.busyIndicator.show();
+                } else {
+                    self.busyIndicator.hide();
+                }
+            }
 
-            this.loadingIcons = new AD.widgets.ad_icon_busy(this.element.find('.gmamatrix-loading-icon'), {
-                style:'circle',
-                color:'grey'
-            });
-*/
-            //// Attach the ReportList object
-            new AD.controllers.opstools.GMAMatrix.AssignmentList( this.element.find('.gmamatrix-assignment-chooser'));
+            //// Initialize the sidebar list widgets
+            new AD.controllers.opstools.GMAMatrix.AssignmentList(
+                this.element.find('.gmamatrix-assignment-chooser'),
+                { busy: showBusyIndicator }
+            );
 
-            new AD.controllers.opstools.GMAMatrix.StrategyList( this.element.find('.gmamatrix-strategy-chooser'));
+            new AD.controllers.opstools.GMAMatrix.StrategyList(
+                this.element.find('.gmamatrix-strategy-chooser'),
+                { busy: showBusyIndicator }
+            );
 
-            new AD.controllers.opstools.GMAMatrix.ReportList( this.element.find('.gmamatrix-report-chooser'));
+            new AD.controllers.opstools.GMAMatrix.ReportList(
+                this.element.find('.gmamatrix-report-chooser'),
+                { busy: showBusyIndicator }
+            );
 
 
 

@@ -13,7 +13,15 @@ function(){
     if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
     AD.controllers.opstools.GMAMatrix.StrategyList = AD.classes.UIController.extend({
 
-
+        defaults: {
+            busy: function (isBusy) {
+                // This does nothing and is meant to be overidden by passing in
+                // a replacement function.
+            }
+        }
+    
+    }, {
+    
         init: function (element, options) {
             var self = this;
             this.options = AD.defaults({

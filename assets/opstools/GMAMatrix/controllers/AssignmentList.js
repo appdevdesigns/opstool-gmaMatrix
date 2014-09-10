@@ -15,11 +15,19 @@ function(){
     if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
     AD.controllers.opstools.GMAMatrix.AssignmentList = AD.classes.UIController.extend({
 
+        defaults: {
+            busy: function (isBusy) {
+                // This does nothing and is meant to be overidden by passing in
+                // a replacement function.
+            }
+        }
+
+    }, {
 
         init: function (element, options) {
             var self = this;
             options = AD.defaults({
-                    templateDOM: '//opstools/GMAMatrix/views/AssignmentList/AssignmentList.ejs',
+                    templateDOM: '//opstools/GMAMatrix/views/AssignmentList/AssignmentList.ejs'
             }, options);
             this.options = options;
 
@@ -30,7 +38,8 @@ function(){
             this.dataSource = this.options.dataSource; // AD.models.Projects;
 
             this.initDOM();
-
+            
+            self.options.busy(true);
             AD.classes.gmamatrix.GMAAssignment.assignments()
             .then(function(list){
                 self.dataSource = list;
@@ -38,6 +47,9 @@ function(){
             })
             .fail(function(err){
                 console.error(err);
+            })
+            .always(function(){
+                self.options.busy(false);
             });
 
 
