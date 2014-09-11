@@ -2,7 +2,6 @@
  * gmaMatrix_GMA
  */
  
-var $ = require('jquery-deferred');
 var GMA = require('gma-api');
 var AD = require('ad-utils');
 
@@ -42,7 +41,7 @@ module.exports = {
         var id = req.sessionID;
     
         if (id && gmaStore[id]) {
-            var dfd = $.Deferred();
+            var dfd = AD.sal.Deferred();
             // Refresh timestamp
             gmaStore[id].time = new Date();
             // Return the user's old GMA object
@@ -64,7 +63,7 @@ module.exports = {
      * @return GMA
      */
     newSession: function(req) {
-        var dfd = $.Deferred();
+        var dfd = AD.sal.Deferred();
         var id = req.sessionID;
         
         var gma = new GMA({
