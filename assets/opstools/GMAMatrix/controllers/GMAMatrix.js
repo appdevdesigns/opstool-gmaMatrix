@@ -8,6 +8,7 @@ steal(
         '//opstools/GMAMatrix/controllers/StrategyList.js',
         '//opstools/GMAMatrix/controllers/ReportList.js',
         '//opstools/GMAMatrix/controllers/GMAStage.js',
+		'//opstools/GMAMatrix/controllers/GMAFilters.js',
 //        'opstools/GMAMatrix/views/GMAMatrix/GMAMatrix.ejs',
 function(){
 
@@ -29,8 +30,10 @@ function(){
             // Call parent init
             AD.classes.opsportal.OpsTool.prototype.init.apply(this, arguments);
 
-
   //          this.dataSource = this.options.dataSource; // AD.models.Projects;
+
+//			$( "#gmamatrix-start-date" ).datepicker();
+			
 
             this.initDOM();
 
@@ -46,6 +49,8 @@ function(){
         initDOM: function () {
 
             this.element.html(can.view(this.options.templateDOM, {} ));
+
+			
 
         },
 
@@ -68,16 +73,20 @@ function(){
             });
 */
             //// Attach the ReportList object
-            new AD.controllers.opstools.GMAMatrix.AssignmentList( this.element.find('.gmamatrix-assignment-chooser'));
+
+			new AD.controllers.opstools.GMAMatrix.GMAFilters( this.element.find('.gmamatrix-filters'));
+            /*new AD.controllers.opstools.GMAMatrix.AssignmentList( this.element.find('.gmamatrix-assignment-chooser'));
 
             new AD.controllers.opstools.GMAMatrix.StrategyList( this.element.find('.gmamatrix-strategy-chooser'));
 
-            new AD.controllers.opstools.GMAMatrix.ReportList( this.element.find('.gmamatrix-report-chooser'));
+            new AD.controllers.opstools.GMAMatrix.ReportList( this.element.find('.gmamatrix-report-chooser'));*/
 
 
 
             //// Attach the GMA Stage
             new AD.controllers.opstools.GMAMatrix.GMAStage( this.element.find('.gmamatrix-stage'));
+
+			$( ".opsportal-datepicker" ).datepicker();
             /*
              // From initial GMA Matrix:
 

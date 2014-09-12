@@ -50,6 +50,8 @@ function(){
                 console.log('!! window.scroll() !!');
             });
 
+			this.element.find('.tt').tooltip(options);
+
 			
 			//var wijmodata = [33, 11, 15, 26, 16, 27, 37, -13, 8, -8, -3, 17, 0, 22, -13, -29, 19, 8];
 			//this.element.find('#chartDiv').wijsparkline({ data: wijmodata });
@@ -66,49 +68,27 @@ function(){
 		        type: "area",
 				seriesStyles: [
 				            {
-				                fill: "#4381B8",
-				 				stroke: "#4381B8"
+				                //fill: "#4381B8",
+				 				//stroke: "#4381B8"
+								fill: "#999999",
+				 				stroke: "#333333"
 				            }
 				        ]
 		    });
-
+					
 			// See https://github.com/minddust/bootstrap-progressbar for docs
 			this.element.find('.progress .progress-bar').progressbar({
 				use_percentage: false,
 				display_text: 'fill',
 				amount_format: function(amount_part, amount_total) { return amount_part + ' / ' + amount_total; }
 			});
-
-			this.element.find('.gma-sparkline').popover({
-			    html : true,
-				trigger : 'focus',
-				placement : 'right',
-			    title: function() {
-			      return self.element.find('.gma-sparkline-title').html();
-			    },
-			    content: function() {
-			      return self.element.find('.gma-sparkline-content').html();
-			    }
-			});
-			
-			this.element.find('.gma-progressbar').popover({
-			    html : true,
-				trigger : 'focus',
-				placement : 'right',
-			    title: function() {
-			      return self.element.find('.gma-progress-title').html();
-			    },
-			    content: function() {
-			      return self.element.find('.gma-progress-content').html();
-			    }
-			});
 			
 //            this.setupComponents();
 
             // listen for resize notifications
             AD.comm.hub.subscribe('gmamatrix.resize', function (key, data) {
-                self.element.css("height", data.height + "px");
-
+                //self.element.css("height", data.height + "px");
+				self.element.find(".opsportal-stage-container").css("height", data.height + "px");
             });
 
 
@@ -152,8 +132,7 @@ function(){
                 scrollingObj:'.gmamatrix-stage',     // jquery selector of obj on page that will fire the scroll() event
                 offset:10
             });
-
-
+			
 //            this.reportList = new AD.controllers.opstools.GMAMatrix.ReportList(this.element.find('.gmamatrix-report-reportlist'));
 //            this.strategyList = new AD.controllers.opstools.GMAMatrix.StrategyList(this.element.find('.gmamatrix-report-strategylist'));
 
