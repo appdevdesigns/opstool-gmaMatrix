@@ -77,7 +77,10 @@ function(){
 			    $(window).resize(resizeFn);
 			});*/
 
+            
 
+            //// Respond to the user selecting things on the sidebar
+            
             AD.comm.hub.subscribe('gmamatrix.assignment.selected', function(key, data){
                 self.selectedAssignment(data.model);
             });
@@ -152,7 +155,8 @@ function(){
         },
 
 
-        // Adds the measurements onto the page
+        // Adds the measurements onto the page.
+        // This should happen after the user has selected a strategy.
         loadMeasurements: function() {
 
             if (this.strategy) {
@@ -177,6 +181,7 @@ function(){
                     }
                     
 
+                    /*
                     // if there are any measurements that don't have any
                     // placements?
                     var noPlacements = this.report.measurementsWithoutPlacements(strategyID);
@@ -192,7 +197,6 @@ function(){
 
                     } 
                     
-                    /*
                     else {
 
 
@@ -238,10 +242,9 @@ function(){
         },
 
 
-
+        
+        // User has selected an assignment from the sidebar
         selectedAssignment: function(assignment) {
-//            var self = this;
-
             // a new Assignment was selected, so reset our report/strategy
             this.report = null;
 //            this.strategy = null;  // let's keep strategy and reuse
@@ -276,9 +279,8 @@ function(){
                 // we load the measurements and placement values
                 var measurementsLoaded = report.measurements();
                 var placementsLoaded = report.placements();
-                // note: be sure the lmiDefs are already loaded as well:
-                $.when(this.lmiDefsLoaded, measurementsLoaded, placementsLoaded)
-                .then(function(lmiData, measurements, placements){
+                $.when(measurementsLoaded, placementsLoaded)
+                .then(function(measurements, placements){
 
                     self.measurements = measurements;
                     self.placements = placements;
@@ -289,17 +291,9 @@ function(){
                     for (var s in measurements){
                         strategies.push(s);
                     }
-
+                    
+                    // This will go to the StrategyList on the sidebar
                     AD.comm.hub.publish('gmamatrix.strategies.loaded', {strategies:strategies});
-
-
-    /*                // if a strategy was previously selected
-                    if (self.strategy) {
-
-                       self.loadMeasurements();
-
-                    }
-    */
                 })
                 .fail(function(err){
                     console.error(err);

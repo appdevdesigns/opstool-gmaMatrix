@@ -157,8 +157,6 @@ function(){
 
 
         loadItems: function() {
- //           var self = this;
-
             var listArea = this.element.find(this.options.dom_listarea);
 
             this.clearItemList();

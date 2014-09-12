@@ -79,14 +79,7 @@ function(){
                 notification_selected:'gmamatrix.assignment.selected',
                 onAdd:function() { self.addItem();  }
             });
-        },
-
-
-
-        '.ad-item-add click': function ($el, ev) {
-
-            ev.preventDefault();
-        },
+        }
 
 
     });
