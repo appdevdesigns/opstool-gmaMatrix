@@ -125,13 +125,6 @@ function(){
 
 
 
-        '.ad-item-add click': function ($el, ev) {
-
-            ev.preventDefault();
-        },
-
-
-
         'select change': function($el, ev) {
 
             // grab the report object tied to the selected value
