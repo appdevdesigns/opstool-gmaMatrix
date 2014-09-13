@@ -18,6 +18,7 @@ function(){
             var self = this;
             options = AD.defaults({
                     templateDOM: '//opstools/GMAMatrix/views/Measurement/Measurement.ejs',
+                    measurement: {} // must pass in a GMAMeasurement object
             }, options);
             this.options = options;
 
@@ -53,8 +54,6 @@ function(){
 
         remove: function() {
 
-
-
             // if still attached to an element -> remove it.
             if (this.element) {
                 this.element.remove();
@@ -68,15 +67,7 @@ function(){
                 this.subscriptions = [];
             }
 
-        },
-
-
-
-        '.ad-item-add click': function ($el, ev) {
-
-            ev.preventDefault();
-        },
-
+        }
 
     });
 

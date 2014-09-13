@@ -13,7 +13,7 @@ function(){
         measurements:function(reportID, cb) {
             var dfd = AD.sal.Deferred();
 
-            var reportData = { reportID:reportID };
+            var reportData = { reportId:reportID };
             AD.comm.service.get({
                 url:'/opstool-gmaMatrix/gmamatrix/measurements',
                 data:reportData

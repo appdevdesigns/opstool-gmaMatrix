@@ -1,6 +1,6 @@
 .gmamatrix-cat-container { margin-right: 15px !important; background: #f0f0f0; padding: 15px; }
-.gmamatrix-cat-container div { 
-	font-size: 16px; border: 1px solid #c0c0c0; padding: 5px; text-align: center; margin: 0.75em 0; 
+.gmamatrix-cat-container .measurements div { 
+	font-size: .9em; border: 1px solid #c0c0c0; padding: 5px; text-align: center; margin: 0.75em 0; 
 	opacity:.75;-webkit-transition:opacity .3s ease-out;-moz-transition:opacity .3s ease-out;-o-transition:opacity .3s ease-out;transition:opacity .3s ease-out;
 }
 .gmamatrix-cat-container .cat-unassigned { background: #444444; color: #fff; }
@@ -15,6 +15,16 @@
 }
 .gmamatrix-draggable:hover {  }
 .gmamatrix-staff:hover, .gmamatrix-disciple:hover { background-color: rgb(220,220,220); font-weight: bold; }
+
+.gmamatrix-droppable-lmi .measurements {
+    min-height: 2em;
+}
+.gmamatrix-container .gmamatrix-draggable {
+    margin: .5em;
+    border: solid 1px #c0c0c0;
+    padding: 5px;
+    text-align: center;
+}
 
 
 .gmamatrix-container-grid { position: relative; border: 1px solid #f0f0f0; padding: 0.75em; }
@@ -44,7 +54,7 @@
 .gmamatrix-other { border: 1px solid #c0c0c0; min-height: 150px; background: #f0f0f0; margin: 1.5em 0; }
 .gmamatrix-other:hover { background-color: rgb(220,220,220); }
 .gmamatrix-other .gmamatrix-li-other { }
-.gmamatrix-other .gmamatrix-li-other li { 
+.gmamatrix-other .gmamatrix-li-other li, .gmamatrix-other .gmamatrix-draggable { 
 	float: left; position: relative; display: block; margin: 15px; list-style: none; padding: 5px; display: block; 
 	border: 1px solid #c0c0c0; text-align: center; background: transparent; color: #000; width: 150px;
 }
@@ -60,7 +70,7 @@
 
 #gmamatrix-affix { /*position: relative;*/ padding: 0 0 15px; }
 #gmamatrix-affix h4 { border-bottom: 1px solid #e3e3e3; padding: 15px; text-align: center; font-size: 14px; text-transform: uppercase; width: 100%; line-height: 14px; margin: 0; }
-#gmamatrix-affix div { margin: 15px; }
+#gmamatrix-affix .measurements div { margin: 15px; }
 
 .affix { top: 75px; position: fixed !important; }
 
@@ -98,3 +108,7 @@
 }
 
 .gmamatrix-filters-container { margin: 15px; }
+
+#gmamatrix-start-date, #gmamatrix-end-date { background: transparent; border-radius: 0; box-shadow: none; }
+#gmamatrix-end-date { margin-top: 15px; }
+#gmamatrix-start-date:focus, #gmamatrix-end-date:focus {}

@@ -30,17 +30,11 @@ function(){
             // Call parent init
             AD.classes.opsportal.OpsTool.prototype.init.apply(this, arguments);
 
-  //          this.dataSource = this.options.dataSource; // AD.models.Projects;
-
-//			$( "#gmamatrix-start-date" ).datepicker();
+  			// this.dataSource = this.options.dataSource; // AD.models.Projects;
 			
-
             this.initDOM();
-
             this.setupPage();
-
 			this.gmaMatrixDragDrop();
-
 
         },
 
@@ -49,8 +43,6 @@ function(){
         initDOM: function () {
 
             this.element.html(can.view(this.options.templateDOM, {} ));
-
-			
 
         },
 
@@ -74,7 +66,10 @@ function(){
 */
             //// Attach the ReportList object
 
+			// manual output of Dashboard Filters
 			new AD.controllers.opstools.GMAMatrix.GMAFilters( this.element.find('.gmamatrix-filters'));
+			
+			
             /*new AD.controllers.opstools.GMAMatrix.AssignmentList( this.element.find('.gmamatrix-assignment-chooser'));
 
             new AD.controllers.opstools.GMAMatrix.StrategyList( this.element.find('.gmamatrix-strategy-chooser'));
@@ -86,7 +81,11 @@ function(){
             //// Attach the GMA Stage
             new AD.controllers.opstools.GMAMatrix.GMAStage( this.element.find('.gmamatrix-stage'));
 
-			$( ".opsportal-datepicker" ).datepicker();
+			//$( ".opsportal-datepicker" ).datepicker();
+			$( ".opsportal-datepicker" ).datepicker({
+			      changeMonth: true,
+			      changeYear: true
+			    });
             /*
              // From initial GMA Matrix:
 

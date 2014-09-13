@@ -15,6 +15,9 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
+
+var role = 'director';
+
 module.exports = {
 
 
@@ -27,11 +30,45 @@ module.exports = {
 
   _config: {}
 
-  // Fixture Data:
-  // Use this for initial design and testing
   // url:get  /gmamatrix/assignments
   , assignments:function(req, res) {
+      
+      var results = [
+      /*
+        { nodeId: <int>, nodeName: <string> },
+        { nodeId: <int>, nodeName: <string> },
+        ...
+      */
+      ];
+      
+      gmaMatrix_GMA.getSession(req)
+      .fail(function(err){
+        ADCore.comm.error(res, err);
+      })
+      .done(function(gma){
+        
+        console.log('gma:', gma);
+        
+        gma.getAssignments(role)
+        .fail(function(err){
+            ADCore.comm.error(res, err);
+        })
+        .done(function(byID, byName, list){
 
+            for (var id in byID) {
+                results.push({
+                    nodeId: id,
+                    nodeName: byID[id]
+                });
+            }
+            ADCore.comm.success(res, results);
+            
+        });
+        
+      });
+      
+      
+      /*
       var data = [
 
           {
@@ -50,15 +87,59 @@ module.exports = {
       ];
 
       ADCore.comm.success(res, data);
+      */
   }
 
 
 
-  // Fixture Data:
-  // Use this for initial design and testing
   // url:get  /gmamatrix/reports?nodeId=x
   , reports:function(req, res) {
 
+      var nodeId = req.param('nodeId');
+      var results = [
+      /*
+        {
+            reportId: <int>,
+            nodeId: <int>,
+            nodeName: <string>,
+            startDate: "yyyy/mm/dd",
+            endDate: "yyyy/mm/dd"
+        },
+        ...
+      */
+      ];
+      
+      gmaMatrix_GMA.getSession(req)
+      .fail(function(err){
+        ADCore.comm.error(res, err);
+      })
+      .done(function(gma){
+        
+        gma.getReportsForNode(nodeId, role)
+        .fail(function(err){
+            ADCore.comm.error(res, err);
+        })
+        .done(function(reports){
+            
+            // 
+            for (var i=0; i<reports.length; i++) {
+                var report = reports[i];
+                results.push({
+                    reportId: report.id(),
+                    nodeId: report.nodeId,
+                    nodeName: report.nodeName,
+                    startDate: report.startDate,
+                    endDate: report.endDate
+                });
+            }
+            ADCore.comm.success(res, results);
+        
+        })
+        
+      });
+
+      
+      /*
       var data = [
 
         {
@@ -114,7 +195,6 @@ module.exports = {
       
       // Filter data by Node ID
       var results = [];
-      var nodeId = req.param('nodeId');
       for (var i=0; i<data.length; i++) {
           if (data[i]['nodeId'] == nodeId) {
               results.push( data[i] );
@@ -122,13 +202,78 @@ module.exports = {
       }
 
       ADCore.comm.success(res, results);
+      */
   }
 
 
 
   // url:get  /gmamatrix/measurements?reportId=x
   , measurements:function(req, res) {
+      
+      var reportId = req.param('reportId');
 
+      if (!reportId) {
+        ADCore.comm.error(res, new Error("reportId required"));
+        return;
+      }
+      
+      
+      var results = {
+      /*
+        <strategyName>: [
+            {
+                reportId: int,
+                measurementId: int,
+                measurementName: string,
+                measurementDescription: string,
+                measurementValue: number
+            },
+            ...
+        ],
+        <strategyName>: [ ... ],
+        ...
+      */
+      };
+      
+      gmaMatrix_GMA.getSession(req)
+      .fail(function(err){
+        ADCore.comm.error(res, err);
+      })
+      .done(function(gma){
+
+            var report = gma.getReport(reportId, role);
+            report.measurements()
+            .fail(function(err){
+                ADCore.comm.error(res, err);
+            })
+            .done(function(data){
+                
+                // iterate over each strategy
+                for (var strategy in data) {
+                    var measurements = data[strategy];
+                    results[strategy] = [];
+                    
+                    // iterate over each measurement
+                    for (var i=0; i<measurements.length; i++) {
+                        var m = measurements[i];
+                        results[strategy].push({
+                            reportId: reportId,
+                            measurementId: m.id(),
+                            measurementName: m.label(),
+                            measurementDescription: m.measurementDescription,
+                            measurementValue: m.value()
+                        });
+                    }
+                }
+                
+                ADCore.comm.success(res, results);
+            
+            });
+
+      });
+      
+      
+      /*
       var data = {
               'slm': [
                   {
@@ -179,6 +324,7 @@ module.exports = {
       };
 
       ADCore.comm.success(res, data);
+      */
   }
 
 
