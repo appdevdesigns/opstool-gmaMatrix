@@ -69,10 +69,19 @@ function(){
             
         },
         
+        
+        // Saves the measurement's placement location to the server
+        savePlacement: function (locationKey) {
+            var placement = this.options.measurement.placement();
+            placement.setLocation(locationKey).save();
+        },
+        
 
         // Remove self from the Layout panel
         clear: function () {
-            this.element.remove();
+            if (this.element) {
+                this.element.remove();
+            }
             // unsubscribe us from any subscriptions
             for (var s=0; s<this.subscriptions.length; s++){
                 AD.comm.hub.unsubscribe(this.subscriptions[s]);

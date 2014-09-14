@@ -80,7 +80,7 @@ function(){
             }
 
             this.reportObj = null;
-
+            this.placementObj = null;
         },
 
 
@@ -99,7 +99,6 @@ function(){
 
 
         label: function() {
-
             return this.measurementName;
         },
 
@@ -110,13 +109,37 @@ function(){
 
 
         placement:function() {
-            return this.reportObj.placementForMeasurement(this);
+            if (this.placementObj) {
+                return this.placementObj;
+            }
+            else {
+                return this.reportObj.placementForMeasurement(this);
+            }
         },
 
-
-
+        
+        // Create a new GMAPlacement object to be associated with this measurement
+        createPlacement: function(data) {
+            data = data || {};
+        
+            this.placementObj = new AD.classes.gmamatrix.GMAPlacement({
+                measurementId: this.getID(),
+                reportId: data.reportId,
+                nodeId: data.nodeId
+            });
+        },
+        
+        
+        
+        setPlacement: function(obj) {
+            this.placementObj = obj;
+        },
+        
+        
+        
         setReport:function(report) {
             this.reportObj = report;
+            this.reportId = report.getID();
         },
 
 

@@ -62,6 +62,12 @@ function(){
         getID: function(){
             return this.reportId;
         },
+        
+        
+        
+        getNodeID: function(){
+            return this.nodeId;
+        },
 
 
 
@@ -75,7 +81,8 @@ function(){
             return this.startDate + ' \u2014 ' + this.endDate;
         },
 
-
+        
+        // Load this report's measurements from the server
         measurements:function() {
             var self = this;
             var dfd = AD.sal.Deferred();
@@ -108,23 +115,48 @@ function(){
         },
 
 
-
+        // Load the placements of this report's measurements
         placements:function() {
             var self = this;
             var dfd = AD.sal.Deferred();
 
 
             if (this.data.placements == null) {
-                AD.classes.gmamatrix.GMAPlacement.placements( this.getID() )
+                AD.classes.gmamatrix.GMAPlacement.placements({
+                    nodeId:  this.getNodeID() 
+                })
                 .then(function(placements) {
+                    
                     // store this as a lookup hash
                     var entries = {
                             // measurementID: { placement Object }
                     };
-                    for(var p=0; p<placements.length; p++) {
+                    for (var p=0; p<placements.length; p++) {
+                        var measurementID = placements[p].measurementId;
                         placements[p].setReport(self);
-                        entries[placements[p].measurementId] = placements[p];
+                        entries[measurementID] = placements[p];
                     }
+                    
+                    // create a reference to the Placement within each Measurement
+                    for (var strat in self.data.measurements) {
+                        var measurements = self.data.measurements[strat];
+                        for (var m=0; m<measurements.length; m++) {
+                            var measurementID = measurements[m].getID();
+                            // Reference the existing placements
+                            if (entries[measurementID]) {
+                                measurements[m].setPlacement(entries[measurementID]);
+                            }
+                            // when no placement exists for a measurement, create one
+                            else {
+                                measurements[m].createPlacement({
+                                    reportId: self.reportId,
+                                    nodeId: self.nodeId
+                                });
+                            }
+                        }
+                    
+                    }
+                    
                     self.data.placements = entries;
                     dfd.resolve(placements);
                 })

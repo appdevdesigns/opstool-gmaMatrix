@@ -67,27 +67,6 @@ module.exports = {
         
       });
       
-      
-      /*
-      var data = [
-
-          {
-              nodeId    : 1,
-              nodeName  : "Assignment 1"
-          },
-          {
-              nodeId    : 2,
-              nodeName  : "Assignment 2"
-          },
-          {
-               nodeId    : 3,
-               nodeName  : "Assignment 3"
-          }
-
-      ];
-
-      ADCore.comm.success(res, data);
-      */
   }
 
 
@@ -137,72 +116,7 @@ module.exports = {
         })
         
       });
-
       
-      /*
-      var data = [
-
-        {
-           reportId  : 1,
-           nodeId    : 1,
-           nodeName  : "Assignment 1",
-           startDate : "2013/12/01",
-           endDate   : "2013/12/31"
-        },
-
-        {
-            reportId  : 2,
-            nodeId    : 1,
-            nodeName  : "Assignment 1",
-            startDate : "2014/1/01",
-            endDate   : "2014/1/31"
-         },
-
-         {
-             reportId  : 3,
-             nodeId    : 1,
-             nodeName  : "Assignment 1",
-             startDate : "2014/2/01",
-             endDate   : "2014/2/31"
-          },
-
-        {
-           reportId  : 4,
-           nodeId    : 2,
-           nodeName  : "Assignment 2",
-           startDate : "2013/12/01",
-           endDate   : "2013/12/31"
-        },
-
-        {
-            reportId  : 5,
-            nodeId    : 2,
-            nodeName  : "Assignment 2",
-            startDate : "2014/1/01",
-            endDate   : "2014/1/31"
-         },
-
-         {
-             reportId  : 6,
-             nodeId    : 3,
-             nodeName  : "Assignment 3",
-             startDate : "2014/2/01",
-             endDate   : "2014/2/31"
-          }
-
-
-      ];
-      
-      // Filter data by Node ID
-      var results = [];
-      for (var i=0; i<data.length; i++) {
-          if (data[i]['nodeId'] == nodeId) {
-              results.push( data[i] );
-          }
-      }
-
-      ADCore.comm.success(res, results);
-      */
   }
 
 
@@ -272,113 +186,97 @@ module.exports = {
 
       });
       
-      
-      /*
-      var data = {
-              'slm': [
-                  {
-                      reportId:1,
-                      measurementId:1,
-                      measurementName:'measurement name slm 1',
-                      measurementDescription:'description slm 1',
-                      measurementValue:1
-                  },
-                  {
-                      reportId:1,
-                      measurementId:2,
-                      measurementName:'measurement name slm 2',
-                      measurementDescription:'description slm 2',
-                      measurementValue:2
-                  },
-                  {
-                      reportId:1,
-                      measurementId:3,
-                      measurementName:'measurement name slm 3',
-                      measurementDescription:'description slm 3',
-                      measurementValue:3
-                  }
-              ],
-              'llm': [
-                      {
-                          reportId:1,
-                          measurementId:4,
-                          measurementName:'measurement name llm 4',
-                          measurementDescription:'description llm 4',
-                          measurementValue:4
-                      },
-                      {
-                          reportId:1,
-                          measurementId:5,
-                          measurementName:'measurement name llm 5',
-                          measurementDescription:'description llm 5',
-                          measurementValue:5
-                      },
-                      {
-                          reportId:1,
-                          measurementId:6,
-                          measurementName:'measurement name llm 6',
-                          measurementDescription:'description llm 6',
-                          measurementValue:6
-                      }
-                  ]
-      };
+  }
 
-      ADCore.comm.success(res, data);
-      */
+  
+  // url:put /gmamatrix/placements/[measurementId]?reportId=x&nodeId=y&type=z
+  , "savePlacements": function(req, res) {
+      var reportID = req.param('reportId');
+      var measurementID = req.param('measurementId');
+      var nodeID = req.param('nodeId');
+      var type = req.param('type'); // staff vs disciple
+      var location = req.param('location');
+      
+      Placement.find({ measurement_id: measurementID })
+      .then(function(data){
+        // Update existing record
+        if (data && data.length > 0) {
+            // There should only be one record
+            var item = data[0];
+            
+            item.report_id = reportID || item.report_id;
+            item.node_id = nodeID || item.node_id;
+            item.type = type || item.type;
+            item.location = location || item.location;
+
+            Placement.update({ id: item.id }, {
+                report_id: item.report_id,
+                node_id: item.node_id,
+                type: item.type
+            })
+            .then(function(){
+                ADCore.comm.success(res, 'UPDATED');
+            })
+            .fail(function(err){
+                ADCore.comm.error(res, err);
+            })
+            .done();
+            
+        }
+        // Create new record
+        else {
+            Placement.create({
+                measurement_id: measurementID,
+                report_id: reportID,
+                node_id: nodeID,
+                type: type,
+                location: location
+            })
+            .then(function(){
+                ADCore.comm.success(res, 'CREATED');
+            })
+            .fail(function(err){
+                ADCore.comm.error(res, err);
+            })
+            .done();
+        }
+      })
+      .fail(function(err){
+        ADCore.comm.error(res, err);
+      })
+      .done();
+  
   }
 
 
-
-  // url:get  /gmamatrix/placements?reportId=x
+  // url:get  /gmamatrix/placements?measurementId=x
   , placements:function(req, res) {
-
-      var data = [
-          {
-              id:1,
-              reportId:1,
-              measurementId:1,
-              matrixLocation:'etmm', // these are the LMI.locationKeys
-              order:1
-          },
-          {
-              id:2,
-              reportId:1,
-              measurementId:2,
-              matrixLocation:'em',
-              order:2
-          },
-          {
-              id:3,
-              reportId:1,
-              measurementId:3,
-              matrixLocation:'npb',
-              order:1
-          },
-          {
-            id:4,
-            reportId:1,
-            measurementId:4,
-            matrixLocation:'npb',
-            order:1
-          },
-          {
-            id:5,
-            reportId:1,
-            measurementId:5,
-            matrixLocation:'pths',
-            order:1
-          },
-          {
-            id:6,
-            reportId:6,
-            measurementId:6,
-            matrixLocation:'npb',
-            order:1
-          }
-          
-      ];
-
-      ADCore.comm.success(res, data);
+      var reportID = req.param('reportId');
+      var measurementID = req.param('measurementId');
+      var nodeID = req.param('nodeId');
+      var findOpts = {};
+      
+      if (measurementID) {
+        findOpts = { measurement_id: measurementID };
+      } else if (nodeID) {
+        findOpts = { node_id: nodeID };
+      } else if (reportID) {
+        findOpts = {report_id: reportID };
+      }
+      
+      Placement.find(findOpts)
+      .then(function(data){
+        if (data) {
+            ADCore.comm.success(res, data);
+        } else {
+            ADCore.comm.error(res, new Error("No matching data found"));
+        }
+      })
+      .fail(function(err){
+        ADCore.comm.error(res, err);
+      })
+      .done();
+      
   }
 
 

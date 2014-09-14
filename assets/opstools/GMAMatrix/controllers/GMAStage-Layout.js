@@ -59,9 +59,15 @@ function(){
 
         // Measurement dropped inside an LMI container
 		'handleDropLMIEvent': function( event, ui ) {
-		    
-		    $(this).find('.measurements').append(ui.draggable);
-			
+		    var $target = $(this);
+		    var $source = $(ui.draggable);
+		    var locationKey = $target.attr('key');
+		    var widget = $source.data('LayoutMeasurement');
+            
+            // Move the measurement to the target container
+		    $target.find('.measurements').append($source);
+            // Update the location key on the measurement
+            widget.savePlacement(locationKey);
 		},
 		
      
@@ -111,24 +117,23 @@ function(){
         addMeasurement: function (measurement) {
             // Find the LMI section that will contain this measurement
             var placement = measurement.placement();
+            var keyLMI = placement.location();
 
             // Create the measurement widget
             var $div = $('<div>');
-            this.measurementWidgets.push(
-                new AD.controllers.opstools.GMAMatrix.LayoutMeasurement($div, {
-                    measurement: measurement,
-                    boundaryElement: this.element
-                })
-            );
+            var widget = new AD.controllers.opstools.GMAMatrix.LayoutMeasurement($div, {
+                measurement: measurement,
+                boundaryElement: this.element
+            });
+            this.measurementWidgets.push(widget);
+            $div.data('LayoutMeasurement', widget);
             
-            // Place in one of the LMI containers
-            if (placement) {
-                var keyLMI = placement.location();
-                var $container = this.element.find("div.gmamatrix-container[key='" + keyLMI + "'] .measurements");
-            }
-            // Place in the container at the side
-            else {
-                var $container = this.element.find("div.gmamatrix-cat-container .measurements");
+            // Find the matching LMI container
+            var $container = this.element.find("div.gmamatrix-container[key='" + keyLMI + "'] .measurements");
+            
+            // If no match then place in the container at the side
+            if ($container.length == 0) {
+                $container = this.element.find("div.gmamatrix-cat-container .measurements"); 
             }
             
             $container.append($div);

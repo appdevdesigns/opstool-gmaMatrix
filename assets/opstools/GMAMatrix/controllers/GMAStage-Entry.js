@@ -61,6 +61,9 @@ function(){
         addMeasurement: function (measurement) {
             // Find the LMI section that will contain this measurement
             var placement = measurement.placement();
+            var keyLMI = placement.location();
+
+if (keyLMI) { console.log('keylmi: ', keyLMI, placement); };
 
             // Create the measurement widget
             var $li = $('<li>');
@@ -70,13 +73,11 @@ function(){
                 })
             );
             
-            // Place in one of the LMI containers
-            if (placement) {
-                var keyLMI = placement.location();
-                var $container = this.element.find("div.gmamatrix-container[key='" + keyLMI + "'] ul");
-            }
-            // Place in the "Other" container at the bottom
-            else {
+            // Find the matching LMI container
+            var $container = this.element.find("div.gmamatrix-container[key='" + keyLMI + "'] ul");
+            
+            // If no match then place in the "Other" container at the bottom
+            if ($container.length <  1) {
                 var $container = this.element.find("ul.gmamatrix-li-other");
             }
             

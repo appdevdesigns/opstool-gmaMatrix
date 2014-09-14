@@ -277,28 +277,39 @@ function(){
                 AD.comm.hub.publish('gmamatrix.measurements.clear', {});
 
                 // we load the measurements and placement values
-                var measurementsLoaded = report.measurements();
-                var placementsLoaded = report.placements();
-                $.when(measurementsLoaded, placementsLoaded)
-                .then(function(measurements, placements){
+                async.series([
 
-                    self.measurements = measurements;
-                    self.placements = placements;
-
-                    // compile the strategies for the measurements on this report
-                    // post a 'gmamatrix.strategies.loaded' notification
-                    var strategies = [];
-                    for (var s in measurements){
-                        strategies.push(s);
+                    function(next){
+                        report.measurements()
+                        .fail(console.log)
+                        .done(function(measurements){
+                            self.measurements = measurements;
+                            next();
+                        });
+                    },
+                    
+                    function(next){
+                        report.placements()
+                        .fail(console.log)
+                        .done(function(placements){
+                            self.placements = placements;
+                            next();
+                        });
+                    },
+                    
+                    function(){
+                        // compile the strategies for the measurements on this report
+                        // post a 'gmamatrix.strategies.loaded' notification
+                        var strategies = [];
+                        for (var s in self.measurements){
+                            strategies.push(s);
+                        }
+                        
+                        // This will go to the StrategyList on the sidebar
+                        AD.comm.hub.publish('gmamatrix.strategies.loaded', {strategies:strategies});
                     }
                     
-                    // This will go to the StrategyList on the sidebar
-                    AD.comm.hub.publish('gmamatrix.strategies.loaded', {strategies:strategies});
-                })
-                .fail(function(err){
-                    console.error(err);
-                });
-
+                ]);
 
             } // end if
 
