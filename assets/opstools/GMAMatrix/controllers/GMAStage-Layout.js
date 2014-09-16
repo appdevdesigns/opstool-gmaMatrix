@@ -8,6 +8,17 @@ steal(
         '//opstools/GMAMatrix/controllers/NotPlacedList.js',
         '//opstools/GMAMatrix/controllers/ADAffix.js',
 function(){
+    
+    // Refresh the "categories" panel on the right to prevent empty
+    // spaces from being left after something is dragged out.
+    var refreshCatPanel = function(ui) {
+        var $affix = $(ui.draggable).parents('.affix');
+        $affix.removeClass('affix')
+        setTimeout(function(){
+            $affix.addClass('affix');
+        }, 0);
+    };
+
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
@@ -50,19 +61,31 @@ function(){
 			});
 			
 			this.element.find('.gmamatrix-droppable-cat').droppable({
-				accept: '.gmamatrix-draggable',
+				accept: function(element){
+				    // Accept drops from draggable, reject from cat-container
+				    var isFromCatContainer = ($(element).parents('.gmamatrix-cat-container').length > 0);
+				    var isDroppable = $(element).hasClass('gmamatrix-draggable');
+				    if (isDroppable && !isFromCatContainer) {
+				        return true;
+				    }
+				    else {
+				        return false;
+				    }
+				},
 				drop: this.handleDropReturnEvent,
 				hoverClass: "gmamatrix-container-hover"
 			});
         },
-
-
+        
+        
         // Measurement dropped inside an LMI container
-		'handleDropLMIEvent': function( event, ui ) {
+		handleDropLMIEvent: function( event, ui ) {
 		    var $target = $(this);
 		    var $source = $(ui.draggable);
 		    var locationKey = $target.attr('key');
 		    var widget = $source.data('LayoutMeasurement');
+		    
+		    refreshCatPanel(ui);
             
             // Move the measurement to the target container
 		    $target.find('.measurements').append($source);
@@ -72,15 +95,16 @@ function(){
 		
      
         // Measurement dropped inside the "Categories" box on the right side
-		'handleDropReturnEvent': function( event, ui ) {
-
-		    $(this).find('.measurements').prepend(ui.draggable);
+		handleDropReturnEvent: function( event, ui ) {
+		    
+            $(this).find('.measurements').prepend(ui.draggable);
 
 		},
 		
         // Measurement dropped inside the "Other" container at the bottom
-		'handleDropOtherEvent': function( event, ui ) {
+		handleDropOtherEvent: function( event, ui ) {
 
+		    refreshCatPanel(ui);
 		    $(this).append(ui.draggable);
 
 		},
