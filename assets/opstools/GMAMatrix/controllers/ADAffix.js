@@ -122,13 +122,6 @@ function(){
         },
 
 
-
-        '.ad-item-add click': function ($el, ev) {
-
-            ev.preventDefault();
-        },
-
-
     });
 
 

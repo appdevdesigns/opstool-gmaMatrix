@@ -137,7 +137,7 @@ function(){
         
         
         setType: function(type) {
-            if (this.type != type) {
+            if (type && (this.type != type)) {
                 this.type = type;
                 this.isDirty = true;
             }

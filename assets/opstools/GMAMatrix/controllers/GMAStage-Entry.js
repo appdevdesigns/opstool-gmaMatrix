@@ -42,7 +42,6 @@ function(){
 
             this.element.html(can.view(this.options.templateDOM, {} ));
 
-
         },
         
         
@@ -62,8 +61,6 @@ function(){
             // Find the LMI section that will contain this measurement
             var placement = measurement.placement();
             var keyLMI = placement.location();
-
-if (keyLMI) { console.log('keylmi: ', keyLMI, placement); };
 
             // Create the measurement widget
             var $li = $('<li>');

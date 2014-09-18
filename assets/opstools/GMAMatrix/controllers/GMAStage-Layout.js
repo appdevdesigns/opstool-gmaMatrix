@@ -37,10 +37,6 @@ function(){
 //            AD.classes.UIController.apply(this, arguments);
 
 
-            this.locations = null;
-            this.lmiDefsLoaded = null;
-            this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
-
             this.measurementWidgets = [];
 
             this.initDOM();
@@ -103,10 +99,14 @@ function(){
 		
         // Measurement dropped inside the "Other" container at the bottom
 		handleDropOtherEvent: function( event, ui ) {
+		    var $source = $(ui.draggable);
+		    var widget = $source.data('LayoutMeasurement');
 
 		    refreshCatPanel(ui);
-		    $(this).append(ui.draggable);
+		    $(this).find('.measurements').append($source);
 
+            // Update the location key on the measurement
+            widget.savePlacement('other');
 		},
 
 
@@ -115,8 +115,7 @@ function(){
             this.element.html(can.view(this.options.templateDOM, {} ));
 
 
-            // for testing purposes:
-            // trying to work out bootstrap.affix()
+            // This is the "Categories" panel on the right
             this.notPlacedList = new AD.controllers.opstools.GMAMatrix.ADAffix(this.element.find('#gmamatrix-affix'), {
                 scrollingObj:'.gmamatrix-stage',     // jquery selector of obj on page that will fire the scroll() event
                 offset:10
