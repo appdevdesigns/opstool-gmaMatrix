@@ -15,10 +15,6 @@ function(){
     AD.controllers.opstools.GMAMatrix.ReportList = AD.classes.UIController.extend({
 
         defaults: {
-            busy: function (isBusy) {
-                // This does nothing and is meant to be overidden by passing in
-                // a replacement function.
-            }
         }
 
     }, {
@@ -46,7 +42,9 @@ function(){
 
                 AD.sal.setImmediate( function() {
 
-                    self.options.busy(true);
+                    // we are going to load from the server
+                    can.trigger(self, 'busy');
+
                     data.model.reports()
                         .then(function(list){
                             self.data(list);
@@ -56,7 +54,7 @@ function(){
                             console.log(data.model);
                         })
                         .always(function(){
-                            self.options.busy(false);
+                            can.trigger(self, 'idle');
                         });
 
                 });

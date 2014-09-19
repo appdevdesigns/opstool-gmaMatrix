@@ -48,40 +48,34 @@ function(){
 
             var self = this;
             
-            // Initialize the busy indicator widget to be used by the
-            // sidebar lists.
+            var controls = [
+                // Initialize the sidebar list widgets
+                new AD.controllers.opstools.GMAMatrix.AssignmentList(
+                    this.element.find('.gmamatrix-assignment-chooser')
+                ),
+                new AD.controllers.opstools.GMAMatrix.StrategyList(
+                    this.element.find('.gmamatrix-strategy-chooser')
+                ),
+                new AD.controllers.opstools.GMAMatrix.ReportList(
+                    this.element.find('.gmamatrix-report-chooser')
+                ),
+                // Attach the GMA Stage
+                new AD.controllers.opstools.GMAMatrix.GMAStage( this.element.find('.gmamatrix-stage'))
+            ];
+            
+            // Set up busy indicator response for controls
             this.busyIndicator = new AD.widgets.ad_icon_busy(this.element.find('.busy-indicator'), {
                 style:'circle',
                 color:'grey'
             });
-            var showBusyIndicator = function(isBusy) {
-                if (isBusy) {
+            for (var i=0; i<controls.length; i++) {
+                can.bind.call(controls[i], 'busy', function(){
                     self.busyIndicator.show();
-                } else {
+                });
+                can.bind.call(controls[i], 'idle', function(){
                     self.busyIndicator.hide();
-                }
+                });
             }
-
-            //// Initialize the sidebar list widgets
-            new AD.controllers.opstools.GMAMatrix.AssignmentList(
-                this.element.find('.gmamatrix-assignment-chooser'),
-                { busy: showBusyIndicator }
-            );
-
-            new AD.controllers.opstools.GMAMatrix.StrategyList(
-                this.element.find('.gmamatrix-strategy-chooser'),
-                { busy: showBusyIndicator }
-            );
-
-            new AD.controllers.opstools.GMAMatrix.ReportList(
-                this.element.find('.gmamatrix-report-chooser'),
-                { busy: showBusyIndicator }
-            );
-
-
-
-            //// Attach the GMA Stage
-            new AD.controllers.opstools.GMAMatrix.GMAStage( this.element.find('.gmamatrix-stage'));
 
         }		
 

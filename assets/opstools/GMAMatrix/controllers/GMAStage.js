@@ -210,7 +210,10 @@ function(){
                 // a new report was selected, so notify any existing
                 // Measurements to remove themselves:
                 AD.comm.hub.publish('gmamatrix.measurements.clear', {});
-
+                
+                // We are going to load from the server
+                can.trigger(self, 'busy');
+                
                 // we load the measurements and placement values
                 async.series([
 
@@ -239,6 +242,9 @@ function(){
                         for (var s in self.measurements){
                             strategies.push(s);
                         }
+                        
+                        // Done loading from server
+                        can.trigger(self, 'idle');
                         
                         // This will go to the StrategyList on the sidebar
                         AD.comm.hub.publish('gmamatrix.strategies.loaded', {strategies:strategies});
@@ -275,7 +281,7 @@ function(){
         },
 
 
-
+        // not used
         setupComponents: function() {
 
             this.stageLoading = this.element.find('.gmamatrix-stage-loading');
