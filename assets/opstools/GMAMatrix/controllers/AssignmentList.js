@@ -44,9 +44,15 @@ function(){
             .then(function(list){
                 self.dataSource = list;
                 self.list.data(list);
+                
+                if (list.length == 0) {
+                    alert('No GMA assignments found');
+                }
+                
             })
             .fail(function(err){
                 console.error(err);
+                alert('Unable to load GMA assignments');
             })
             .always(function(){
                 self.options.busy(false);
