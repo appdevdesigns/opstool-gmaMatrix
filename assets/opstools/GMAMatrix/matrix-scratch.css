@@ -91,8 +91,12 @@
 
 .gmamatrix-container-hover { background-color: rgb(220,220,220); }
 
-.gmamatrix-dashboard-container .progress { min-width: 200px !important; }
-.gmamatrix-dashboard-container .gma-progress-content .progress-bar.gma-progress-bar { background-color: #ff0000 !important; }
+.gmamatrix-dashboard-container { font-weight: bold !important; }
+/* .gmamatrix-dashboard-container .progress { min-width: 200px !important; } 
+.gmamatrix-dashboard-container .gma-progress-content .progress-bar.gma-progress-bar { background-color: #ff0000 !important; } */
+.gmamatrix-dashboard-container .progress { max-width: 125px !important; }
+.gmamatrix-dashboard-container span.gma-dashboard-label { margin-top: 3px; float: left; font-weight: bold; min-width: 65px; }
+.gma-highlight { color: #4381B8; }
 
 #gmamatrix-affix { /*position: relative;*/ padding: 0 0 15px; }
 #gmamatrix-affix h4 { border-bottom: 1px solid #e3e3e3; padding: 15px; text-align: center; font-size: 14px; text-transform: uppercase; width: 100%; line-height: 14px; margin: 0; }
@@ -121,8 +125,8 @@
 }
 .triangle-up.triangle-selected { position: absolute; top: -14px; left: 45%; z-index: 101; }
 
-.gma-sparkline, .gma-progressbar { opacity: 1; }
-.gma-sparkline:hover, .gma-progressbar:hover { text-decoration: none; }
+/*.gma-sparkline, .gma-progressbar { opacity: 1; }
+.gma-sparkline:hover, .gma-progressbar:hover { text-decoration: none; } */
 
 /* gmamatrix using bootstrap progress bar plus code from https://github.com/minddust/bootstrap-progressbar */
 .progress .bar {
@@ -132,3 +136,5 @@
     -o-transition: width 2s ease-in-out;
     transition: width 2s ease-in-out;
 }
+
+.gmamatrix-filters-container { margin: 15px; }

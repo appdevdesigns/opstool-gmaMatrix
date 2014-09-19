@@ -83,6 +83,13 @@ function(){
                 notification_selected:'gmamatrix.assignment.selected',
                 onAdd:function() { self.addItem();  }
             });
+        },
+        
+        show: function() {
+            this.element.show();
+        },
+        hide: function() {
+            this.element.hide();
         }
 
 

@@ -50,17 +50,17 @@ function(){
                 '#dashboard': new AD.controllers.opstools.GMAMatrix.GMAStage_Dashboard(this.element.find('#gmamatrix-dashboard'))
             };
 
-            this.loadLMI();
+            //this.loadLMI();
 
             this.listAffix = null;
 
-			
+								
 //            this.setupComponents();
 
             // listen for resize notifications
             AD.comm.hub.subscribe('gmamatrix.resize', function (key, data) {
-                self.element.css("height", data.height + "px");
-
+                //self.element.css("height", data.height + "px");
+				self.element.find(".opsportal-stage-container").css("height", data.height + "px");
             });
 
 
@@ -294,7 +294,7 @@ function(){
         },
 
 
-        // Handle switching tabs between Layout / Entry
+        // Handle switching tabs between Dashboard / Layout / Entry
         '#gmamatrix-stage-tabs ul li a click': function ($el, ev) {
             // toggle active tab state
             this.element.find('#gmamatrix-stage-tabs ul li a.active-btn').removeClass('active-btn');
@@ -312,6 +312,9 @@ function(){
             
             // show the selected panel
             this.panels[target].show();
+            
+            // tell parent controller
+            can.trigger(this, 'panel-active', target);
             
             ev.preventDefault();
         }

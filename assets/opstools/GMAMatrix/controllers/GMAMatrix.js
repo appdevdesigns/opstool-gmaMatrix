@@ -2,12 +2,12 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
-//        'opstools/GMAMatrix/models/Projects.js',
         'appdev/widgets/ad_icon_busy/ad_icon_busy.js',
         '//opstools/GMAMatrix/controllers/AssignmentList.js',
         '//opstools/GMAMatrix/controllers/StrategyList.js',
         '//opstools/GMAMatrix/controllers/ReportList.js',
         '//opstools/GMAMatrix/controllers/GMAStage.js',
+		'//opstools/GMAMatrix/controllers/GMAFilters.js',
 function(){
 
     // Namespacing conventions:
@@ -40,6 +40,8 @@ function(){
 
             this.element.html(can.view(this.options.templateDOM, {} ));
 
+			
+
         },
 
 
@@ -48,27 +50,48 @@ function(){
 
             var self = this;
             
-            var controls = [
+            var controls = {
                 // Initialize the sidebar list widgets
-                new AD.controllers.opstools.GMAMatrix.AssignmentList(
+                assignment: new AD.controllers.opstools.GMAMatrix.AssignmentList(
                     this.element.find('.gmamatrix-assignment-chooser')
                 ),
-                new AD.controllers.opstools.GMAMatrix.StrategyList(
+                strategy: new AD.controllers.opstools.GMAMatrix.StrategyList(
                     this.element.find('.gmamatrix-strategy-chooser')
                 ),
-                new AD.controllers.opstools.GMAMatrix.ReportList(
+                report: new AD.controllers.opstools.GMAMatrix.ReportList(
                     this.element.find('.gmamatrix-report-chooser')
                 ),
+
+                // Filters for Dashboard panel
+    			filters: new AD.controllers.opstools.GMAMatrix.GMAFilters(this.element.find('.gmamatrix-filters')),
+
                 // Attach the GMA Stage
-                new AD.controllers.opstools.GMAMatrix.GMAStage( this.element.find('.gmamatrix-stage'))
-            ];
+                stage: new AD.controllers.opstools.GMAMatrix.GMAStage(this.element.find('.gmamatrix-stage'))
+            };
             
-            // Set up busy indicator response for controls
+            
+            // Toggle the sidebar depending on which Stage panel is active
+            can.bind.call(controls.stage, 'panel-active', function(ev, panelKey){
+                if (panelKey == '#dashboard') {
+                    controls.filters.show();
+                    controls.assignment.hide();
+                    controls.strategy.hide();
+                    controls.report.hide();
+                } else {
+                    controls.filters.hide();
+                    controls.assignment.show();
+                    controls.strategy.show();
+                    controls.report.show();
+                }
+            });
+            
+            
+            // Set up busy indicator to respond to all child controllers
             this.busyIndicator = new AD.widgets.ad_icon_busy(this.element.find('.busy-indicator'), {
                 style:'circle',
                 color:'grey'
             });
-            for (var i=0; i<controls.length; i++) {
+            for (var i in controls) {
                 can.bind.call(controls[i], 'busy', function(){
                     self.busyIndicator.show();
                 });

@@ -133,7 +133,12 @@ function(){
 
         },
 
-
+        show: function() {
+            this.element.show();
+        },
+        hide: function() {
+            this.element.hide();
+        },
 
         'select change': function($el, ev) {
 
