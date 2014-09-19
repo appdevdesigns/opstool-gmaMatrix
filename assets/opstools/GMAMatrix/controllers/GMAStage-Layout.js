@@ -44,7 +44,7 @@ function(){
             
             //// Initialize drag-n-drop
             
-			this.element.find('.gmamatrix-droppable-lmi').droppable({
+			this.element.find('.gmamatrix-droppable-lmi .measurements').droppable({
 				accept: '.gmamatrix-draggable',
 				drop: this.handleDropLMIEvent,
 				hoverClass: "gmamatrix-container-hover"
@@ -80,13 +80,14 @@ function(){
 		    var $source = $(ui.draggable);
 		    var locationKey = $target.attr('key');
 		    var widget = $source.data('LayoutMeasurement');
+		    var type = $target.attr('type');
 		    
 		    refreshCatPanel(ui);
             
             // Move the measurement to the target container
-		    $target.find('.measurements').append($source);
+		    $target.append($source);
             // Update the location key on the measurement
-            widget.savePlacement(locationKey);
+            widget.savePlacement(locationKey, type);
 		},
 		
      
@@ -94,6 +95,7 @@ function(){
 		handleDropReturnEvent: function( event, ui ) {
 		    
             $(this).find('.measurements').prepend(ui.draggable);
+		    refreshCatPanel(ui);
 
 		},
 		
@@ -141,7 +143,7 @@ function(){
             // Find the LMI section that will contain this measurement
             var placement = measurement.placement();
             var keyLMI = placement.location();
-
+            
             // Create the measurement widget
             var $div = $('<div>');
             var widget = new AD.controllers.opstools.GMAMatrix.LayoutMeasurement($div, {
@@ -153,6 +155,9 @@ function(){
             
             // Find the matching LMI container
             var $container = this.element.find("div.gmamatrix-container[key='" + keyLMI + "'] .measurements");
+            if (keyLMI != 'other') {
+                $container = $container.filter("[type='" + placement.type + "']");
+            }
             
             // If no match then place in the container at the side
             if ($container.length == 0) {
