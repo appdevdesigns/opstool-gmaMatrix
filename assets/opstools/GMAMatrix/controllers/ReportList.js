@@ -117,21 +117,11 @@ function(){
 
         data: function(data) {
             this.list.data(data);
-            /*
-            this.dataSource = data;
-            this.clearData();
-            this.createContent();
-            this.chooseDefault();
-            */
         },
 
 
 
         initDOM: function () {
-
-            // this.element.html(can.view(this.options.templateDOM, {} ));
-
-            // this.itemContent = this.element.find('.gmamatrix-report-reportlist-items');
 
             // add in the GenericList to our report list div
             this.list = new AD.controllers.GMAList(this.element, {
@@ -143,13 +133,6 @@ function(){
                 onAdd:function() { self.addItem();  }
             });
 
-        },
-
-
-
-        '.ad-item-add click': function ($el, ev) {
-
-            ev.preventDefault();
         },
 
 

@@ -38,7 +38,6 @@ function(){
             this.strategy = null;
 
 
-            this.locations = null;
             this.lmiDefsLoaded = null;
             this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
 
@@ -100,8 +99,6 @@ function(){
 
             this.element.html(can.view(this.options.templateDOM, {} ));
 
-
-
             // for testing purposes:
             // trying to work out bootstrap.affix()
             this.notPlacedList = new AD.controllers.opstools.GMAMatrix.ADAffix(this.element.find('#gmamatrix-affix'), {
@@ -109,15 +106,11 @@ function(){
                 offset:10
             });
 
-
-//            this.locations = this.element.find('.gmamatrix-measurement-location');
-//            this.locations.droppable({disable:true});
-
-//            this.notPlacedList = new AD.controllers.opstools.GMAMatrix.NotPlacedList(this.element.find('.gmamatrix-stage-notplaced'));
         },
 
 
-
+        
+        // not used
         loadLMI: function() {
             var self = this;
 
@@ -133,13 +126,6 @@ function(){
                     // get the lmi location key
                     var key = definition.key();
 
-                    // append a new definition to the Win-Build-Send chart
-                    /*
-                    var tag = 'gmamatrix-stage-lmi-'+key;
-                    var div = $('<div class="'+tag+'" ></div>');
-                    self.element.find('#'+placement).append(div);
-                    */
-                    
                     var $lmiContainer = self.element.find(".lmi-box[lmikey='" + key + "']");
                     
                     self.lmiDefs[key] = new AD.controllers.opstools.GMAMatrix
@@ -180,57 +166,6 @@ function(){
                         this.panels['#entry'].addMeasurement( measurements[i] );
                     }
                     
-
-                    /*
-                    // if there are any measurements that don't have any
-                    // placements?
-                    var noPlacements = this.report.measurementsWithoutPlacements(strategyID);
-                    if (noPlacements.length > 0) {
-
-                        // oops ... well switch to placement mode:
-
-                        // areas droppable
-                        //this.locations.enable();
-
-                        // list noPlacements in column
-                        AD.comm.hub.publish('gmamatrix.noplacements.list', {list:noPlacements});
-
-                    } 
-                    
-                    else {
-
-
-                        // ok, we are ready to show em:
-                        var measurements = this.measurements[strategyID];
-                        // for each measurement
-                        for (var i=0; i<measurements.length; i++) {
-
-                            var measurement = measurements[i];
-
-                            // get it's placement
-                            var placement = measurement.placement();
-
-                            // get the location
-                            var location = placement.location();
-
-
-                            //// NOTE: location is the key of the LMIDefinition this should be
-                            ////       attached to.
-                            if (this.lmiDefs[location]) {
-                                this.lmiDefs[location].addMeasurement(measurement);
-                            } else {
-
-                                // found a measurement that didn't match an LMI location
-                                // add to not-placed
-
-
-                            }
-
-                        }// next
-
-                    }
-                    */
-
                 } else {
 
                     console.error('selected strategy ['+this.strategy+'] not in our measurements');
@@ -349,7 +284,6 @@ function(){
             this.stageInstructions = this.element.find('.gmamatrix-stage-instructions');
 
             this.stageReport = this.element.find('.gmamatrix-stage-report');
-//            this.stageReport.hide();
 
         },
 
