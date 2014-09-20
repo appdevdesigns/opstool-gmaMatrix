@@ -15,10 +15,6 @@ function(){
     AD.controllers.opstools.GMAMatrix.ReportList = AD.classes.UIController.extend({
 
         defaults: {
-            busy: function (isBusy) {
-                // This does nothing and is meant to be overidden by passing in
-                // a replacement function.
-            }
         }
 
     }, {
@@ -46,7 +42,9 @@ function(){
 
                 AD.sal.setImmediate( function() {
 
-                    self.options.busy(true);
+                    // we are going to load from the server
+                    can.trigger(self, 'busy');
+
                     data.model.reports()
                         .then(function(list){
                             self.data(list);
@@ -56,7 +54,7 @@ function(){
                             console.log(data.model);
                         })
                         .always(function(){
-                            self.options.busy(false);
+                            can.trigger(self, 'idle');
                         });
 
                 });
@@ -117,21 +115,11 @@ function(){
 
         data: function(data) {
             this.list.data(data);
-            /*
-            this.dataSource = data;
-            this.clearData();
-            this.createContent();
-            this.chooseDefault();
-            */
         },
 
 
 
         initDOM: function () {
-
-            // this.element.html(can.view(this.options.templateDOM, {} ));
-
-            // this.itemContent = this.element.find('.gmamatrix-report-reportlist-items');
 
             // add in the GenericList to our report list div
             this.list = new AD.controllers.GMAList(this.element, {
@@ -145,14 +133,12 @@ function(){
 
         },
 
-
-
-        '.ad-item-add click': function ($el, ev) {
-
-            ev.preventDefault();
+        show: function() {
+            this.element.show();
         },
-
-
+        hide: function() {
+            this.element.hide();
+        },
 
         'select change': function($el, ev) {
 

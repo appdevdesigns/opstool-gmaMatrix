@@ -38,7 +38,6 @@ function(){
             this.strategy = null;
 
 
-            this.locations = null;
             this.lmiDefsLoaded = null;
             this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
 
@@ -51,20 +50,11 @@ function(){
                 '#dashboard': new AD.controllers.opstools.GMAMatrix.GMAStage_Dashboard(this.element.find('#gmamatrix-dashboard'))
             };
 
-			this.panels['#layout'].hide();
-			this.panels['#entry'].hide();
-			this.panels['#dashboard'].show();
-
-            this.loadLMI();
+            //this.loadLMI();
 
             this.listAffix = null;
 
-            $(window).scroll(function(){
-                console.log('!! window.scroll() !!');
-            });
-
-			this.element.find('.tt').tooltip(options);
-
+								
 //            this.setupComponents();
 
             // listen for resize notifications
@@ -109,27 +99,11 @@ function(){
 
             this.element.html(can.view(this.options.templateDOM, {} ));
 
-
-
-            // for testing purposes:
-            // trying to work out bootstrap.affix()
-            this.notPlacedList = new AD.controllers.opstools.GMAMatrix.ADAffix(this.element.find('#gmamatrix-affix'), {
-                scrollingObj:'.gmamatrix-stage',     // jquery selector of obj on page that will fire the scroll() event
-                offset:10
-            });
-
-			
-//            this.reportList = new AD.controllers.opstools.GMAMatrix.ReportList(this.element.find('.gmamatrix-report-reportlist'));
-//            this.strategyList = new AD.controllers.opstools.GMAMatrix.StrategyList(this.element.find('.gmamatrix-report-strategylist'));
-
-//            this.locations = this.element.find('.gmamatrix-measurement-location');
-//            this.locations.droppable({disable:true});
-
-//            this.notPlacedList = new AD.controllers.opstools.GMAMatrix.NotPlacedList(this.element.find('.gmamatrix-stage-notplaced'));
         },
 
 
-
+        
+        // not used
         loadLMI: function() {
             var self = this;
 
@@ -145,13 +119,6 @@ function(){
                     // get the lmi location key
                     var key = definition.key();
 
-                    // append a new definition to the Win-Build-Send chart
-                    /*
-                    var tag = 'gmamatrix-stage-lmi-'+key;
-                    var div = $('<div class="'+tag+'" ></div>');
-                    self.element.find('#'+placement).append(div);
-                    */
-                    
                     var $lmiContainer = self.element.find(".lmi-box[lmikey='" + key + "']");
                     
                     self.lmiDefs[key] = new AD.controllers.opstools.GMAMatrix
@@ -192,57 +159,6 @@ function(){
                         this.panels['#entry'].addMeasurement( measurements[i] );
                     }
                     
-
-                    /*
-                    // if there are any measurements that don't have any
-                    // placements?
-                    var noPlacements = this.report.measurementsWithoutPlacements(strategyID);
-                    if (noPlacements.length > 0) {
-
-                        // oops ... well switch to placement mode:
-
-                        // areas droppable
-                        //this.locations.enable();
-
-                        // list noPlacements in column
-                        AD.comm.hub.publish('gmamatrix.noplacements.list', {list:noPlacements});
-
-                    } 
-                    
-                    else {
-
-
-                        // ok, we are ready to show em:
-                        var measurements = this.measurements[strategyID];
-                        // for each measurement
-                        for (var i=0; i<measurements.length; i++) {
-
-                            var measurement = measurements[i];
-
-                            // get it's placement
-                            var placement = measurement.placement();
-
-                            // get the location
-                            var location = placement.location();
-
-
-                            //// NOTE: location is the key of the LMIDefinition this should be
-                            ////       attached to.
-                            if (this.lmiDefs[location]) {
-                                this.lmiDefs[location].addMeasurement(measurement);
-                            } else {
-
-                                // found a measurement that didn't match an LMI location
-                                // add to not-placed
-
-
-                            }
-
-                        }// next
-
-                    }
-                    */
-
                 } else {
 
                     console.error('selected strategy ['+this.strategy+'] not in our measurements');
@@ -287,30 +203,47 @@ function(){
                 // a new report was selected, so notify any existing
                 // Measurements to remove themselves:
                 AD.comm.hub.publish('gmamatrix.measurements.clear', {});
-
+                
+                // We are going to load from the server
+                can.trigger(self, 'busy');
+                
                 // we load the measurements and placement values
-                var measurementsLoaded = report.measurements();
-                var placementsLoaded = report.placements();
-                $.when(measurementsLoaded, placementsLoaded)
-                .then(function(measurements, placements){
+                async.series([
 
-                    self.measurements = measurements;
-                    self.placements = placements;
-
-                    // compile the strategies for the measurements on this report
-                    // post a 'gmamatrix.strategies.loaded' notification
-                    var strategies = [];
-                    for (var s in measurements){
-                        strategies.push(s);
+                    function(next){
+                        report.measurements()
+                        .fail(console.log)
+                        .done(function(measurements){
+                            self.measurements = measurements;
+                            next();
+                        });
+                    },
+                    
+                    function(next){
+                        report.placements()
+                        .fail(console.log)
+                        .done(function(placements){
+                            self.placements = placements;
+                            next();
+                        });
+                    },
+                    
+                    function(){
+                        // compile the strategies for the measurements on this report
+                        // post a 'gmamatrix.strategies.loaded' notification
+                        var strategies = [];
+                        for (var s in self.measurements){
+                            strategies.push(s);
+                        }
+                        
+                        // Done loading from server
+                        can.trigger(self, 'idle');
+                        
+                        // This will go to the StrategyList on the sidebar
+                        AD.comm.hub.publish('gmamatrix.strategies.loaded', {strategies:strategies});
                     }
                     
-                    // This will go to the StrategyList on the sidebar
-                    AD.comm.hub.publish('gmamatrix.strategies.loaded', {strategies:strategies});
-                })
-                .fail(function(err){
-                    console.error(err);
-                });
-
+                ]);
 
             } // end if
 
@@ -341,7 +274,7 @@ function(){
         },
 
 
-
+        // not used
         setupComponents: function() {
 
             this.stageLoading = this.element.find('.gmamatrix-stage-loading');
@@ -350,12 +283,11 @@ function(){
             this.stageInstructions = this.element.find('.gmamatrix-stage-instructions');
 
             this.stageReport = this.element.find('.gmamatrix-stage-report');
-//            this.stageReport.hide();
 
         },
 
 
-        // Handle switching tabs between Layout / Entry / Dashboard
+        // Handle switching tabs between Dashboard / Layout / Entry
         '#gmamatrix-stage-tabs ul li a click': function ($el, ev) {
             // toggle active tab state
             this.element.find('#gmamatrix-stage-tabs ul li a.active-btn').removeClass('active-btn');
@@ -373,6 +305,9 @@ function(){
             
             // show the selected panel
             this.panels[target].show();
+            
+            // tell parent controller
+            can.trigger(this, 'panel-active', target);
             
             ev.preventDefault();
         }

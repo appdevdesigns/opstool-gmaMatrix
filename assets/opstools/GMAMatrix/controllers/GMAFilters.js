@@ -2,11 +2,6 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
-//        'opstools/GMAMatrix/controllers/GMAList.js',
-//        'opstools/GMAMatrix/classes/GMAAssignment.js',
-//        'opstools/GMAMatrix/models/Projects.js',
-//        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
-//        'opstools/GMAMatrix/views/ReportList/ReportList.ejs',
 function(){
 
     // Namespacing conventions:
@@ -47,8 +42,6 @@ function(){
             });
 
 
-
-
         },
 
 
@@ -56,15 +49,18 @@ function(){
         initDOM: function () {
 
             this.element.html(can.view(this.options.templateDOM, {} ));
+            
+			this.element.find(".opsportal-datepicker").datepicker();
 
         },
-
-
-
-        '.ad-item-add click': function ($el, ev) {
-
-            ev.preventDefault();
+        
+        
+        show: function() {
+            this.element.show();
         },
+        hide: function() {
+            this.element.hide();
+        }
 
 
     });

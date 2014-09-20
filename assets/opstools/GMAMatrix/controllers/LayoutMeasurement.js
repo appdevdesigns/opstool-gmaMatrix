@@ -51,6 +51,14 @@ function(){
             this.element.addClass('gmamatrix-draggable');
             this.element.attr('measurementId', this.options.measurement.getID());
             
+            var placement = this.options.measurement.placement();
+            var type = placement.type;
+            if (type == 'staff') {
+                this.element.addClass('staff');
+            } else {
+                this.element.addClass('disciple');
+            }
+            
             this.element.draggable( {
                 stack: '.gmamatrix-draggable',
                 cursor: 'move',
@@ -69,16 +77,28 @@ function(){
             
         },
         
+        
+        // Saves the measurement's placement location to the server
+        savePlacement: function (locationKey, type) {
+            var placement = this.options.measurement.placement();
+            placement
+                .setLocation(locationKey)
+                .setType(type)
+                .save();
+        },
+        
 
         // Remove self from the Layout panel
         clear: function () {
-            this.element.remove();
+            if (this.element) {
+                this.element.remove();
+            }
             // unsubscribe us from any subscriptions
             for (var s=0; s<this.subscriptions.length; s++){
                 AD.comm.hub.unsubscribe(this.subscriptions[s]);
             }
         }
 
-});
+    });
     
 });

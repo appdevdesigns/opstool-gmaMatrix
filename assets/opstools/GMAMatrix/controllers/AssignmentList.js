@@ -16,10 +16,6 @@ function(){
     AD.controllers.opstools.GMAMatrix.AssignmentList = AD.classes.UIController.extend({
 
         defaults: {
-            busy: function (isBusy) {
-                // This does nothing and is meant to be overidden by passing in
-                // a replacement function.
-            }
         }
 
     }, {
@@ -39,17 +35,25 @@ function(){
 
             this.initDOM();
             
-            self.options.busy(true);
+            // we are going to load from the server
+            can.trigger(self, 'busy');
+            
             AD.classes.gmamatrix.GMAAssignment.assignments()
             .then(function(list){
                 self.dataSource = list;
                 self.list.data(list);
+                
+                if (list.length == 0) {
+                    alert('No GMA assignments found');
+                }
+                
             })
             .fail(function(err){
                 console.error(err);
+                alert('Unable to load GMA assignments');
             })
             .always(function(){
-                self.options.busy(false);
+                can.trigger(self, 'idle');
             });
 
 
@@ -79,6 +83,13 @@ function(){
                 notification_selected:'gmamatrix.assignment.selected',
                 onAdd:function() { self.addItem();  }
             });
+        },
+        
+        show: function() {
+            this.element.show();
+        },
+        hide: function() {
+            this.element.hide();
         }
 
 

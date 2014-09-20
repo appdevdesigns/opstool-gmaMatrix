@@ -8,6 +8,17 @@ steal(
         '//opstools/GMAMatrix/controllers/NotPlacedList.js',
         '//opstools/GMAMatrix/controllers/ADAffix.js',
 function(){
+    
+    // Refresh the "categories" panel on the right to prevent empty
+    // spaces from being left after something is dragged out.
+    var refreshCatPanel = function(ui) {
+        var $affix = $(ui.draggable).parents('.affix');
+        $affix.removeClass('affix')
+        setTimeout(function(){
+            $affix.addClass('affix');
+        }, 0);
+    };
+
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
@@ -26,10 +37,6 @@ function(){
 //            AD.classes.UIController.apply(this, arguments);
 
 
-            this.locations = null;
-            this.lmiDefsLoaded = null;
-            this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
-
             this.measurementWidgets = [];
 
             this.initDOM();
@@ -37,7 +44,7 @@ function(){
             
             //// Initialize drag-n-drop
             
-			this.element.find('.gmamatrix-droppable-lmi').droppable({
+			this.element.find('.gmamatrix-droppable-lmi .measurements').droppable({
 				accept: '.gmamatrix-draggable',
 				drop: this.handleDropLMIEvent,
 				hoverClass: "gmamatrix-container-hover"
@@ -50,33 +57,58 @@ function(){
 			});
 			
 			this.element.find('.gmamatrix-droppable-cat').droppable({
-				accept: '.gmamatrix-draggable',
+				accept: function(element){
+				    // Accept drops from draggable, reject from cat-container
+				    var isFromCatContainer = ($(element).parents('.gmamatrix-cat-container').length > 0);
+				    var isDroppable = $(element).hasClass('gmamatrix-draggable');
+				    if (isDroppable && !isFromCatContainer) {
+				        return true;
+				    }
+				    else {
+				        return false;
+				    }
+				},
 				drop: this.handleDropReturnEvent,
 				hoverClass: "gmamatrix-container-hover"
 			});
         },
-
-
+        
+        
         // Measurement dropped inside an LMI container
-		'handleDropLMIEvent': function( event, ui ) {
+		handleDropLMIEvent: function( event, ui ) {
+		    var $target = $(this);
+		    var $source = $(ui.draggable);
+		    var locationKey = $target.attr('key');
+		    var widget = $source.data('LayoutMeasurement');
+		    var type = $target.attr('type');
 		    
-		    $(this).find('.measurements').append(ui.draggable);
-			
+		    refreshCatPanel(ui);
+            
+            // Move the measurement to the target container
+		    $target.append($source);
+            // Update the location key on the measurement
+            widget.savePlacement(locationKey, type);
 		},
 		
      
         // Measurement dropped inside the "Categories" box on the right side
-		'handleDropReturnEvent': function( event, ui ) {
-
-		    $(this).find('.measurements').prepend(ui.draggable);
+		handleDropReturnEvent: function( event, ui ) {
+		    
+            $(this).find('.measurements').prepend(ui.draggable);
+		    refreshCatPanel(ui);
 
 		},
 		
         // Measurement dropped inside the "Other" container at the bottom
-		'handleDropOtherEvent': function( event, ui ) {
+		handleDropOtherEvent: function( event, ui ) {
+		    var $source = $(ui.draggable);
+		    var widget = $source.data('LayoutMeasurement');
 
-		    $(this).append(ui.draggable);
+		    refreshCatPanel(ui);
+		    $(this).find('.measurements').append($source);
 
+            // Update the location key on the measurement
+            widget.savePlacement('other');
 		},
 
 
@@ -84,14 +116,13 @@ function(){
 
             this.element.html(can.view(this.options.templateDOM, {} ));
 
-
-            // for testing purposes:
-            // trying to work out bootstrap.affix()
+            // This is the "Categories" panel on the right
             this.notPlacedList = new AD.controllers.opstools.GMAMatrix.ADAffix(this.element.find('#gmamatrix-affix'), {
-                scrollingObj:'.gmamatrix-stage',     // jquery selector of obj on page that will fire the scroll() event
+                scrollingObj: '.opsportal-stage-container',
+                //scrollingObj:'.gmamatrix-stage',     // jquery selector of obj on page that will fire the scroll() event
                 offset:10
             });
-
+            
         },
 
         
@@ -111,24 +142,26 @@ function(){
         addMeasurement: function (measurement) {
             // Find the LMI section that will contain this measurement
             var placement = measurement.placement();
-
+            var keyLMI = placement.location();
+            
             // Create the measurement widget
             var $div = $('<div>');
-            this.measurementWidgets.push(
-                new AD.controllers.opstools.GMAMatrix.LayoutMeasurement($div, {
-                    measurement: measurement,
-                    boundaryElement: this.element
-                })
-            );
+            var widget = new AD.controllers.opstools.GMAMatrix.LayoutMeasurement($div, {
+                measurement: measurement,
+                boundaryElement: this.element
+            });
+            this.measurementWidgets.push(widget);
+            $div.data('LayoutMeasurement', widget);
             
-            // Place in one of the LMI containers
-            if (placement) {
-                var keyLMI = placement.location();
-                var $container = this.element.find("div.gmamatrix-container[key='" + keyLMI + "'] .measurements");
+            // Find the matching LMI container
+            var $container = this.element.find("div.gmamatrix-container[key='" + keyLMI + "'] .measurements");
+            if (keyLMI != 'other') {
+                $container = $container.filter("[type='" + placement.type + "']");
             }
-            // Place in the container at the side
-            else {
-                var $container = this.element.find("div.gmamatrix-cat-container .measurements");
+            
+            // If no match then place in the container at the side
+            if ($container.length == 0) {
+                $container = this.element.find("div.gmamatrix-cat-container .measurements"); 
             }
             
             $container.append($div);

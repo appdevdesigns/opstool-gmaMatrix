@@ -39,7 +39,7 @@ function(){
             if (this.scrollingObj) {
 
                 // setup our on scroll() handler
-                this.scrollingObj.scroll(function(){
+                this.scrollingObj.on('scroll', function(){
                     self.checkPosition();
                 });
 
@@ -119,13 +119,6 @@ function(){
 
             this.$element.removeClass(reset).addClass('affix' + (affix ? '-' + affix : ''))
 
-        },
-
-
-
-        '.ad-item-add click': function ($el, ev) {
-
-            ev.preventDefault();
         },
 
 

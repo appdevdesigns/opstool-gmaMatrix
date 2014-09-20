@@ -44,6 +44,8 @@ function(){
 
             this.listAffix = null;
 
+			this.element.find('.tt').tooltip(options);
+
 			
 			//var wijmodata = [33, 11, 15, 26, 16, 27, 37, -13, 8, -8, -3, 17, 0, 22, -13, -29, 19, 8];
 			//this.element.find('#chartDiv').wijsparkline({ data: wijmodata });
@@ -60,8 +62,8 @@ function(){
 		        type: "area",
 				seriesStyles: [
 				            {
-								fill: "#999999", //fill: "#4381B8",
-				 				stroke: "#333333" //stroke: "#4381B8"
+								fill: "#999999",
+				 				stroke: "#333333"
 				            }
 				        ]
 		    });
