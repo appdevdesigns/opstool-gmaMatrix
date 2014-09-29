@@ -97,6 +97,7 @@ function(){
             for (var s=0; s<this.subscriptions.length; s++){
                 AD.comm.hub.unsubscribe(this.subscriptions[s]);
             }
+            this.subscriptions = [];
         }
 
     });

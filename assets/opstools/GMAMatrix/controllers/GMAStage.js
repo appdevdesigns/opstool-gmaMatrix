@@ -38,9 +38,6 @@ function(){
             this.strategy = null;
 
 
-            this.lmiDefsLoaded = null;
-            this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
-
             this.initDOM();
             
             // Initialize the three panels
@@ -49,13 +46,9 @@ function(){
                 '#entry': new AD.controllers.opstools.GMAMatrix.GMAStage_Entry(this.element.find('#gmamatrix-entry')),
                 '#dashboard': new AD.controllers.opstools.GMAMatrix.GMAStage_Dashboard(this.element.find('#gmamatrix-dashboard'))
             };
+            this.panels['#layout'].hide();
+            this.panels['#entry'].hide();
 
-            //this.loadLMI();
-
-            this.listAffix = null;
-
-								
-//            this.setupComponents();
 
             // listen for resize notifications
             AD.comm.hub.subscribe('gmamatrix.resize', function (key, data) {
@@ -103,37 +96,6 @@ function(){
 
 
         
-        // not used
-        loadLMI: function() {
-            var self = this;
-
-            this.lmiDefsLoaded = AD.classes.gmamatrix.GMALMIDefinition.definitions()
-            .then(function(list){
-
-                for (var l=0; l<list.length; l++) {
-                    var definition = list[l];
-
-                    // get it's placement
-                    var placement = definition.placement();
-
-                    // get the lmi location key
-                    var key = definition.key();
-
-                    var $lmiContainer = self.element.find(".lmi-box[lmikey='" + key + "']");
-                    
-                    self.lmiDefs[key] = new AD.controllers.opstools.GMAMatrix
-                    .LMIDefinition($lmiContainer, { definition: definition } );
-                    //.LMIDefinition(self.element.find('.'+tag), { definition: definition } );
-                }
-
-            })
-            .fail(function(err){
-                console.error('problem loading LMI definitions:');
-                console.log(err);
-            });
-        },
-
-
         // Adds the measurements onto the page.
         // This should happen after the user has selected a strategy.
         loadMeasurements: function() {

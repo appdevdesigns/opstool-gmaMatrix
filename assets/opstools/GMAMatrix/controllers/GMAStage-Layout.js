@@ -78,7 +78,7 @@ function(){
 		handleDropLMIEvent: function( event, ui ) {
 		    var $target = $(this);
 		    var $source = $(ui.draggable);
-		    var locationKey = $target.attr('key');
+		    var locationKey = $target.parent().attr('key');
 		    var widget = $source.data('LayoutMeasurement');
 		    var type = $target.attr('type');
 		    

@@ -11,7 +11,7 @@
 
 
 .gmamatrix-draggable { 
-
+    cursor: move;
 }
 .gmamatrix-draggable:hover {  }
 .gmamatrix-staff:hover, .gmamatrix-disciple:hover { background-color: rgb(220,220,220); font-weight: bold; }

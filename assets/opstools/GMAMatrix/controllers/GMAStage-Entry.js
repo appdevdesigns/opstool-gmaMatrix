@@ -23,16 +23,9 @@ function(){
             }, options);
 
             
-            /*
-            this.locations = null;
-            this.lmiDefsLoaded = null;
-            this.lmiDefs = { /*  key: { LMIMeasurement }  * / };
-            */
-
             this.initDOM();
             
             this.measurementWidgets = [];
-
 
         },
 

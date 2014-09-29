@@ -40,8 +40,6 @@ function(){
 
             this.element.html(can.view(this.options.templateDOM, {} ));
 
-			
-
         },
 
 
@@ -61,10 +59,10 @@ function(){
                 report: new AD.controllers.opstools.GMAMatrix.ReportList(
                     this.element.find('.gmamatrix-report-chooser')
                 ),
-
+                
                 // Filters for Dashboard panel
     			filters: new AD.controllers.opstools.GMAMatrix.GMAFilters(this.element.find('.gmamatrix-filters')),
-
+                
                 // Attach the GMA Stage
                 stage: new AD.controllers.opstools.GMAMatrix.GMAStage(this.element.find('.gmamatrix-stage'))
             };
@@ -91,6 +89,7 @@ function(){
                 style:'circle',
                 color:'grey'
             });
+            this.busyIndicator.show();
             for (var i in controls) {
                 can.bind.call(controls[i], 'busy', function(){
                     self.busyIndicator.show();
