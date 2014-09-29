@@ -5,6 +5,13 @@
 var GMA = require('gma-api');
 var AD = require('ad-utils');
 
+// User GMA sessions will forcefully expire after this amount of inactive time.
+var sessionTimeLimit = 1000 * 60 * 60; // 60 minutes
+
+// If a new request is made within this time, assume the existing connection
+// to GMA is still valid.
+var softTimeLimit = 1000 * 60 * 5; // 5 minutes
+
 // Memory store of user GMA sessions
 var gmaStore = {
 /*
@@ -16,16 +23,16 @@ var gmaStore = {
 */
 };
 
-// Clear old sessions from memory store every 2 hours 
+// Clear old sessions from memory store periodically
 setInterval(function(){
     var now = new Date();
-    var expiration = 1000 * 60 * 120; // 120 minutes
     for (var sessionID in gmaStore) {
-        if (now - gmaStore[sessionID].time  > expiration) {
+        var sessionTime = gmaStore[sessionID].time;
+        if (now - sessionTime > sessionTimeLimit) {
             delete gmaStore[sessionID];
         }
     }
-}, 60*60*2);
+}, 1000*60); // check once a minute
 
 
 module.exports = {
@@ -39,17 +46,40 @@ module.exports = {
      */
     getSession: function(req) {
         var id = req.sessionID;
+        var self = this;
     
         if (id && gmaStore[id]) {
             var dfd = AD.sal.Deferred();
-            // Refresh timestamp
-            gmaStore[id].time = new Date();
-            // Return the user's old GMA object
-            dfd.resolve( gmaStore[id].gma );
+            var gma = gmaStore[id].gma;
+            var previousTime = gmaStore[id].time;
+            var now = new Date();
+            
+            if (now - previousTime > softTimeLimit) {
+                // Check GMA connection
+                gma.getUser()
+                .done(function(){
+                    // Refresh timestamp
+                    gmaStore[id].time = new Date();
+                    // Deliver the user's old GMA object
+                    dfd.resolve( gma );
+                })
+                .fail(function(){
+                    // Failed check. Make a new GMA session.
+                    delete gmaStore[id];
+                    return self.newSession(req);
+                });
+            } else {
+                // Still within soft time limit. Assume old GMA connection is
+                // valid.
+                dfd.resolve( gma );
+            }
+            
             return dfd;
-        } 
+        
+        }
         else {
-            return this.newSession(req);
+            // No existing session found. Make a new one.
+            return self.newSession(req);
         }
     },
     
@@ -64,7 +94,7 @@ module.exports = {
      */
     newSession: function(req) {
         var dfd = AD.sal.Deferred();
-        var id = req.sessionID;
+        var id = req.sessionID; // <-- from express / sailsJS
         
         var gma = new GMA({
             gmaBase: sails.config.gmaMatrix.gmaBaseURL,

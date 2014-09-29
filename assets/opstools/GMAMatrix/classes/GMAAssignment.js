@@ -27,6 +27,9 @@ function(){
                 dfd.resolve(returnArry);
             })
             .fail(function(err) {
+                if (err.message.match(/Invalid PGTIOU/)) {
+                    AD.comm.hub.publish('ad.auth.reauthenticate', {});
+                }
                 if (cb) cb(err);
                 dfd.reject(err);
             });

@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/appdevdesigns/opstool-gmaMatrix",
   "dependencies": {
+    "cas": "git://github.com/joshchan/node-cas#test",
     "ad-utils": "git://github.com/appdevdesigns/ad-utils",
     "gma-api": "git://github.com/appdevdesigns/gma-api"
   },
