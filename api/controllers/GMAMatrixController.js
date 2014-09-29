@@ -187,6 +187,31 @@ module.exports = {
       });
       
   }
+  
+  
+  // url: post /gmamatrix/measurement/[measurementId]?reportId=x&value=y
+  , "saveMeasurement": function(req, res) {
+      var measurementID = req.param('measurementId');
+      var reportID = req.param('reportId');
+      var value = req.param('value');
+      
+      gmaMatrix_GMA.getSession(req)
+      .fail(function(err){
+        ADCore.comm.error(res, err);
+      })
+      .done(function(gma){
+
+            var report = gma.getMeasurement(measurementID, reportID, role);
+            report.value(value);
+            report.save()
+            .fail(function(err){
+                ADCore.comm.error(res, err);
+            })
+            .done(function(){
+                ADCore.comm.success(res, 'SAVED');
+            });
+      });
+  }
 
   
   // url:put /gmamatrix/placements/[measurementId]?reportId=x&nodeId=y&type=z

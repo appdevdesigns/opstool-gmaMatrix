@@ -81,6 +81,7 @@ function(){
 
             this.reportObj = null;
             this.placementObj = null;
+            this.isDirty = false;
         },
 
 
@@ -127,12 +128,15 @@ function(){
                 reportId: data.reportId,
                 nodeId: data.nodeId
             });
+
+            return this;
         },
         
         
         
         setPlacement: function(obj) {
             this.placementObj = obj;
+            return this;
         },
         
         
@@ -140,13 +144,51 @@ function(){
         setReport:function(report) {
             this.reportObj = report;
             this.reportId = report.getID();
+            return this;
         },
-
+        
+        
+        setValue: function(value) {
+            if (this.measurementValue != value) {
+                this.measurementValue = value;
+                this.isDirty = true;
+            }
+            return this;
+        },
 
 
         value: function() {
 
             return this.measurementValue;
+        },
+        
+        
+        save: function() {
+            var dfd = AD.sal.Deferred();
+            var self = this;
+            
+            if (!this.isDirty) {
+                dfd.resolve();
+            }
+            else {
+                AD.comm.service.post({
+                    url:'/opstool-gmaMatrix/gmamatrix/measurement/' + this.measurementId,
+                    data: {
+                        reportId: this.reportId,
+                        value: this.measurementValue
+                    }
+                })
+                .done(function(data){
+                    self.isDirty = false;
+                    dfd.resolve();
+                })
+                .fail(function(err){
+                    console.log(err);
+                    dfd.reject(err);
+                });
+            }
+            
+            return dfd;
         }
 
 

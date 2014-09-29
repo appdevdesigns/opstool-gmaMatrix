@@ -113,8 +113,9 @@
 .gmamatrix-lmi-input input { width: 100% !important; display: block; margin: 0; border-radius: 0 !important; padding: 6px 10px; }
 .gmamatrix-lmi-input label { line-height: 34px; text-align: left; display: inline-block; white-space: normal; width: 100%; font-weight: normal !important; }
 
-.gmamatrix-li-form li { border: 0 !important; border-bottom: 1px solid #e3e3e3 !important; padding: 5px 0 0 !important; width: 100% !important; }
+.gmamatrix-li-form li { border: 0 !important; border-bottom: 1px solid #e3e3e3 !important; padding: 5px 0 0 !important; width: 100% !important; font-size: .9em; }
 .gmamatrix-li-form li:hover { background-color: rgb(220,220,220) !important; padding: 5px 0 0 !important; }
+.gmamatrix-li-form li input { font-size: .9em; padding: 5px; text-align: center; }
 
 .triangle-up {
 	width: 0;
