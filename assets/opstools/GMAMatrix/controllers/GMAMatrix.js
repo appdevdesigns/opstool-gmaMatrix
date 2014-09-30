@@ -29,7 +29,6 @@ function(){
             AD.classes.opsportal.OpsTool.prototype.init.apply(this, arguments);
 
             this.initDOM();
-
             this.setupPage();
 
         },
@@ -37,17 +36,13 @@ function(){
 
 
         initDOM: function () {
-
             this.element.html(can.view(this.options.templateDOM, {} ));
-
         },
 
 
 
         setupPage: function() {
-
             var self = this;
-            
             var controls = {
                 // Initialize the sidebar list widgets
                 assignment: new AD.controllers.opstools.GMAMatrix.AssignmentList(

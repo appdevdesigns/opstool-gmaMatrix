@@ -2,9 +2,6 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
-//        'opstools/GMAMatrix/models/Projects.js',
-//        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
-//        'opstools/GMAMatrix/views/Measurement/Measurement.ejs',
 function(){
 
     // Namespacing conventions:
@@ -72,7 +69,6 @@ function(){
         value: function(newValue) {
             if (typeof newValue != undefined) {
                 this.options.measurement.setValue(newValue);
-                this.isDirty = true;
             }
             return this.options.measurement.value();
         },

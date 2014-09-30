@@ -34,7 +34,6 @@ function(){
 
             // keep track of the currently selected reports and
             // strategies in order to know what to display.
-            this.report = null;
             this.strategy = null;
 
 

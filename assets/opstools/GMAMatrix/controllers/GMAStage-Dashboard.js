@@ -3,13 +3,7 @@ steal(
         // List your Controller's dependencies here:
         'appdev',
         '//opstools/GMAMatrix/classes/GMALMIDefinition.js',
-        '//opstools/GMAMatrix/controllers/ReportList.js',
-        '//opstools/GMAMatrix/controllers/StrategyList.js',
-        '//opstools/GMAMatrix/controllers/Measurement.js',
-        '//opstools/GMAMatrix/controllers/LayoutMeasurement.js',
         '//opstools/GMAMatrix/controllers/LMIDefinition.js',
-        '//opstools/GMAMatrix/controllers/NotPlacedList.js',
-        '//opstools/GMAMatrix/controllers/ADAffix.js',
 function(){
 
     // Namespacing conventions:
@@ -27,12 +21,6 @@ function(){
 
             // Call parent init
 //            AD.classes.UIController.apply(this, arguments);
-
-
-            // keep track of the currently selected reports and
-            // strategies in order to know what to display.
-//            this.report = null;
-//            this.strategy = null;
 
 
             this.locations = null;
