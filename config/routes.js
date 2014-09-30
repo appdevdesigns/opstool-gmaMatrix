@@ -9,10 +9,10 @@
 module.exports = {
 
     'put /opstool-gmaMatrix/gmamatrix/placements/:measurementId': 
-        'opstool-gmaMAtrix/GMAMatrixController.savePlacements',
+        'opstool-gmaMatrix/GMAMatrixController.savePlacements',
 
     'post /opstool-gmaMatrix/gmamatrix/measurement/:measurementId': 
-        'opstool-gmaMAtrix/GMAMatrixController.saveMeasurement'
+        'opstool-gmaMatrix/GMAMatrixController.saveMeasurement'
 
 
   /*
