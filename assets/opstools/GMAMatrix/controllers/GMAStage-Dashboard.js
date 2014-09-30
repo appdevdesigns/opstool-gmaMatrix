@@ -163,25 +163,7 @@ function(){
             });
         },
 
-
-
-		'.opsportal-filter-tag click':function($el, ev) {
-			var self = this,
-				myFilter = self.element.find($el).data('hris-filter');
-			
-			if (self.element.find($el).hasClass('filter-on')) {
-				self.element.find($el).removeClass('filter-on').children('i').removeClass('fa-minus').addClass('fa-plus');
-				
-				//$('#'+myFilter).hide(2000);
-				$('#'+myFilter).slideUp(1000);
-			} else {
-				self.element.find($el).addClass('filter-on').children('i').removeClass('fa-plus').addClass('fa-minus');
-				//$('#'+myFilter).show();
-				$('#'+myFilter).slideDown(1000);
-			}
-				
-			ev.preventDefault();
-		},
+        
 		
 		'.gmamatrix-lmi-filter-tag click':function($el, ev) {
 			var self = this,

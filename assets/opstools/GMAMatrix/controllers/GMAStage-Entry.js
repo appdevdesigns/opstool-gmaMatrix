@@ -4,9 +4,7 @@ steal(
         'appdev',
         '//opstools/GMAMatrix/classes/GMALMIDefinition.js',
         '//opstools/GMAMatrix/controllers/Measurement.js',
-        '//opstools/GMAMatrix/controllers/LMIDefinition.js',
         '//opstools/GMAMatrix/controllers/NotPlacedList.js',
-        '//opstools/GMAMatrix/controllers/ADAffix.js',
 function(){
 
     // Namespacing conventions:

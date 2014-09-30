@@ -90,6 +90,31 @@ function(){
         },
 
 
+        
+        // Collapse and expand the win/build/send rows
+        // for all three sub panels.
+		'.opsportal-filter-tag click': function($el, ev) {
+			var rowKey = $el.attr('lmikey');
+			
+			// Find the matching LMI row, but only the one in the same panel
+			var $row = $el.parents('.stage-panel').find(".row[lmirow='" + rowKey + "']");
+			
+			if ($el.hasClass('filter-on')) {
+				$el.removeClass('filter-on')
+				    .children('i')
+				        .removeClass('fa-minus')
+    				    .addClass('fa-plus');
+				$row.slideUp(1000);
+			} else {
+				$el.addClass('filter-on')
+				    .children('i')
+				        .removeClass('fa-plus')
+				        .addClass('fa-minus');
+				$row.slideDown(1000);
+			}
+            
+			ev.preventDefault();
+		},
 
 
 
