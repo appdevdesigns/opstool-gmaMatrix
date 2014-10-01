@@ -24,9 +24,8 @@ function(){
 
             // Call parent init
 //            AD.classes.UIController.apply(this, arguments);
-
-
-
+            
+            
             this.initDOM();
             
             // Initialize the three panels
@@ -37,6 +36,11 @@ function(){
             };
             this.panels['#layout'].hide();
             this.panels['#entry'].hide();
+            
+            // Let parent controller know when layout has changed
+            can.bind.call(this.panels['#layout'], 'layout-changed', function(){
+                can.trigger(self, 'layout-changed');
+            });
 
 
             // listen for resize notifications

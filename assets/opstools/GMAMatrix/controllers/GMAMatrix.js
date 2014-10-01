@@ -30,6 +30,7 @@ function(){
             
             this.measurements = null;
             this.placements = null;
+            this.strategy = null;
             
             this.initDOM();
             this.setupPage();
@@ -94,6 +95,11 @@ function(){
                 }
             });
             
+            // Reload the measurements when layout gets changed
+            // self.controls.stage.on('layout-changed', function...
+            can.bind.call(self.controls.stage, 'layout-changed', function(){
+                self.selectedStrategy(self.strategy);
+            });
             
             // Set up busy indicator to respond to all child controllers
             this.busyIndicator = new AD.widgets.ad_icon_busy(this.element.find('.busy-indicator'), {
@@ -181,14 +187,17 @@ function(){
         // Respond to a strategy being selected on the sidebar
         // @param GMAStrategy strategy
         selectedStrategy: function(strategy) {
+            // Save the strategy in case we need to reload after layout
+            // changes are made.
+            this.strategy = strategy;
             
-            // notify any existing Measurement widgets to remove themselves
+            // Notify any existing Measurement widgets to remove themselves
             AD.comm.hub.publish('gmamatrix.measurements.clear', {});
             
             var strategyID = strategy.getID();
             var measurements = this.measurements[strategyID];
             
-            // by this point, we should already have measurements
+            // By this point, we should already have measurements
             // and placements loaded, so now show the Measurements
             this.controls.stage.loadMeasurements(measurements);
             

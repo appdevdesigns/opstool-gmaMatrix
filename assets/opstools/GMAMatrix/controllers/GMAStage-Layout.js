@@ -38,6 +38,7 @@ function(){
 
 
             this.measurementWidgets = [];
+            this.hasLayoutChanged = false;
 
             this.initDOM();
             
@@ -46,13 +47,17 @@ function(){
             
 			this.element.find('.gmamatrix-droppable-lmi .measurements').droppable({
 				accept: '.gmamatrix-draggable',
-				drop: this.handleDropLMIEvent,
+				drop: function(event, ui) {
+				    self.handleDropLMIEvent(event, ui, this);
+				},
 				hoverClass: "gmamatrix-container-hover"
 			});
 			
 			this.element.find('.gmamatrix-droppable-other').droppable({
 				accept: '.gmamatrix-draggable',
-				drop: this.handleDropOtherEvent,
+				drop: function(event, ui) {
+				    self.handleDropOtherEvent(event, ui, this);
+				},
 				hoverClass: "gmamatrix-container-hover"
 			});
 			
@@ -68,15 +73,17 @@ function(){
 				        return false;
 				    }
 				},
-				drop: this.handleDropReturnEvent,
+				drop: function(event, ui) {
+				    self.handleDropReturnEvent(event, ui, this);
+				},
 				hoverClass: "gmamatrix-container-hover"
 			});
         },
         
         
         // Measurement dropped inside an LMI container
-		handleDropLMIEvent: function( event, ui ) {
-		    var $target = $(this);
+		handleDropLMIEvent: function( event, ui, el ) {
+		    var $target = $(el);
 		    var $source = $(ui.draggable);
 		    var locationKey = $target.parent().attr('key');
 		    var widget = $source.data('LayoutMeasurement');
@@ -88,32 +95,37 @@ function(){
 		    $target.append($source);
             // Update the location key on the measurement
             widget.savePlacement(locationKey, type);
+            
+            this.hasLayoutChanged = true;
 		},
 		
      
         // Measurement dropped inside the "Categories" box on the right side
-		handleDropReturnEvent: function( event, ui ) {
+		handleDropReturnEvent: function( event, ui, el ) {
 		    
-            $(this).find('.measurements').prepend(ui.draggable);
+            $(el).find('.measurements').prepend(ui.draggable);
 		    refreshCatPanel(ui);
 
+            this.hasLayoutChanged = true;
 		},
 		
+		
         // Measurement dropped inside the "Other" container at the bottom
-		handleDropOtherEvent: function( event, ui ) {
+		handleDropOtherEvent: function( event, ui, el ) {
 		    var $source = $(ui.draggable);
 		    var widget = $source.data('LayoutMeasurement');
 
 		    refreshCatPanel(ui);
-		    $(this).find('.measurements').append($source);
+		    $(el).find('.measurements').append($source);
 
             // Update the location key on the measurement
             widget.savePlacement('other');
+
+            this.hasLayoutChanged = true;
 		},
 
 
         initDOM: function () {
-
             this.element.html(can.view(this.options.templateDOM, {} ));
 
             // This is the "Categories" panel on the right
@@ -122,19 +134,24 @@ function(){
                 //scrollingObj:'.gmamatrix-stage',     // jquery selector of obj on page that will fire the scroll() event
                 offset:10
             });
-            
         },
 
         
         // Show the Layout panel
         show: function () {
             this.element.show();
+            this.hasLayoutChanged = false;
         },
         
         
         // Hide the Layout panel
         hide: function () {
             this.element.hide();
+            if (this.hasLayoutChanged) {
+                // Let parent controller know if layout has changed
+                can.trigger(this, 'layout-changed');
+                this.hasLayoutChanged = false;
+            }
         },
         
         

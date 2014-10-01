@@ -23,20 +23,11 @@ function(){
 //            AD.classes.UIController.apply(this, arguments);
 
 
-            this.locations = null;
-            this.lmiDefsLoaded = null;
-            this.lmiDefs = { /*  key: { LMIMeasurement }  */ };
-
             this.initDOM();
-            this.loadLMI();
-
-            this.listAffix = null;
 
 			this.element.find('.tt').tooltip(options);
 
 			
-			//var wijmodata = [33, 11, 15, 26, 16, 27, 37, -13, 8, -8, -3, 17, 0, 22, -13, -29, 19, 8];
-			//this.element.find('#chartDiv').wijsparkline({ data: wijmodata });
 			var data = [{ month: "January", score: 73 }, { month: "February", score: 95 }, { month: "March", score: 89 },
 			            { month: "April", score: 66 }, { month: "May", score: 50 }, { month: "June", score: 65 },
 			            { month: "July", score: 70 }, { month: "August", score: 43 }, { month: "September", score: 65 },
@@ -86,31 +77,13 @@ function(){
 			      return self.element.find('.gma-progress-content').html();
 			    }
 			});
-			
-//            this.setupComponents();
-
-
-/*			$('[data-clampedwidth]').each(function () {
-			    var elem = $(this);
-			    var parentPanel = elem.data('clampedwidth');
-			    var resizeFn = function () {
-			        var sideBarNavWidth = $(parentPanel).width() - parseInt(elem.css('paddingLeft')) - parseInt(elem.css('paddingRight')) - parseInt(elem.css('marginLeft')) - parseInt(elem.css('marginRight')) - parseInt(elem.css('borderLeftWidth')) - parseInt(elem.css('borderRightWidth'));
-			        elem.css('width', sideBarNavWidth);
-			    };
-
-			    resizeFn();
-			    $(window).resize(resizeFn);
-			});*/
-
 
         },
 
 
 
         initDOM: function () {
-
             this.element.html(can.view(this.options.templateDOM, {} ));
-
         },
 
         
@@ -127,44 +100,6 @@ function(){
 
 
 
-        loadLMI: function() {
-            var self = this;
-
-            this.lmiDefsLoaded = AD.classes.gmamatrix.GMALMIDefinition.definitions()
-            .then(function(list){
-
-                for (var l=0; l<list.length; l++) {
-                    var definition = list[l];
-
-                    // get it's placement
-                    var placement = definition.placement();
-
-                    // get the lmi location key
-                    var key = definition.key();
-
-                    // append a new definition to the Win-Build-Send chart
-                    /*
-                    var tag = 'gmamatrix-stage-lmi-'+key;
-                    var div = $('<div class="'+tag+'" ></div>');
-                    self.element.find('#'+placement).append(div);
-                    */
-                    
-                    var $lmiContainer = self.element.find(".lmi-box[lmikey='" + key + "']");
-                    
-                    self.lmiDefs[key] = new AD.controllers.opstools.GMAMatrix
-                    .LMIDefinition($lmiContainer, { definition: definition } );
-                    //.LMIDefinition(self.element.find('.'+tag), { definition: definition } );
-                }
-
-            })
-            .fail(function(err){
-                console.error('problem loading LMI definitions:');
-                console.log(err);
-            });
-        },
-
-        
-		
 		'.gmamatrix-lmi-filter-tag click':function($el, ev) {
 			var self = this,
 			activatedFilter = self.element.find($el).data('lmi-filter');
