@@ -115,7 +115,8 @@
 
 .gmamatrix-li-form li { border: 0 !important; border-bottom: 1px solid #e3e3e3 !important; padding: 5px 0 0 !important; width: 100% !important; font-size: .9em; }
 .gmamatrix-li-form li:hover { background-color: rgb(220,220,220) !important; padding: 5px 0 0 !important; }
-.gmamatrix-li-form li input { font-size: .9em; padding: 5px; text-align: center; }
+.gmamatrix-li-form li input { font-size: .9em; padding: 10%; text-align: center; }
+.gmamatrix-li-form li div.col-xs-3 { padding-left: 5px; padding-right: 5px; }
 
 .triangle-up {
 	width: 0;
