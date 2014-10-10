@@ -149,7 +149,7 @@ function(){
             this.element.hide();
             if (this.hasLayoutChanged) {
                 // Let parent controller know if layout has changed
-                can.trigger(this, 'layout-changed');
+                this.element.trigger('layout-changed');
                 this.hasLayoutChanged = false;
             }
         },

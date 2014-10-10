@@ -15,7 +15,20 @@ function(){
     if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
     if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
     AD.controllers.opstools.GMAMatrix.Tool = AD.classes.opsportal.OpsTool.extend({
-
+        
+        // return a more readable date string than what is provided from GMA.
+        formatDate: function(ymd) {
+            return ymd.substr(0, 4) + '-'
+                 + ymd.substr(4, 2) + '-'
+                 + ymd.substr(6, 2);
+        },
+        
+        // parse a "yyyymmdd" date string into a Date object
+        parseYMD: function(ymd) {
+            return new Date(this.formatDate(ymd));
+        }
+    
+    }, {
 
         init: function (element, options) {
             var self = this;
@@ -34,8 +47,9 @@ function(){
             
             this.initDOM();
             this.setupPage();
+            this.loadAssignments();
 
-            //// Respond to the user selecting things on the sidebar
+            // Respond to the user selecting things on the Entry/Layout  sidebar
             AD.comm.hub.subscribe('gmamatrix.assignment.selected', function(key, data){
                 self.selectedAssignment(data.model);
             });
@@ -45,6 +59,7 @@ function(){
             AD.comm.hub.subscribe('gmamatrix.strategy.selected', function(key, data){
                 self.selectedStrategy(data.model);
             });
+            
         },
 
 
@@ -52,11 +67,13 @@ function(){
         initDOM: function () {
             this.element.html(can.view(this.options.templateDOM, {} ));
         },
-
-
-
+        
+        
         setupPage: function() {
             var self = this;
+            var $stage = this.element.find('.gmamatrix-stage');
+            var $filters = this.element.find('.gmamatrix-filters');
+            
             self.controls = {
                 // Sidebar list widgets for Entry / Layout panels
                 assignment: new AD.controllers.opstools.GMAMatrix.AssignmentList(
@@ -70,16 +87,15 @@ function(){
                 ),
                 
                 // Sidebar filters for Dashboard panel
-    			filters: new AD.controllers.opstools.GMAMatrix.GMAFilters(this.element.find('.gmamatrix-filters')),
+    			filters: new AD.controllers.opstools.GMAMatrix.GMAFilters($filters),
                 
                 // Attach the GMA Stage
-                stage: new AD.controllers.opstools.GMAMatrix.GMAStage(this.element.find('.gmamatrix-stage'))
+                stage: new AD.controllers.opstools.GMAMatrix.GMAStage($stage)
             };
             
             
             // Toggle the sidebar depending on which Stage panel is active
-            // self.controls.stage.on('panel-active', function...
-            can.bind.call(self.controls.stage, 'panel-active', function(ev, panelKey){
+            $stage.on('panel-active', function(ev, panelKey){
                 if (panelKey == '#dashboard') {
                     self.controls.filters.show();
 
@@ -96,9 +112,13 @@ function(){
             });
             
             // Reload the measurements when layout gets changed
-            // self.controls.stage.on('layout-changed', function...
-            can.bind.call(self.controls.stage, 'layout-changed', function(){
+            $stage.on('layout-changed', function(){
                 self.selectedStrategy(self.strategy);
+            });
+            
+            // Respond to assignments being selected from the sidebar list
+            $filters.on('assignment-selected', function(ev, data) {
+                self.selectedAssignment(data.model);
             });
             
             // Set up busy indicator to respond to all child controllers
@@ -106,25 +126,87 @@ function(){
                 style:'circle',
                 color:'grey'
             });
-            this.busyIndicator.show();
             for (var i in self.controls) {
-                // self.controls[i].on('busy', function...
-                can.bind.call(self.controls[i], 'busy', function(){
+                self.controls[i].element.on('busy', function(){
                     self.busyIndicator.show();
                 });
-                can.bind.call(self.controls[i], 'idle', function(){
+                self.controls[i].element.on('idle', function(){
                     self.busyIndicator.hide();
                 });
             }
 
         },
         
-
+        
+        // Load the user's GMA assignments from the server, and send the
+        // results to the sidebars.
+        loadAssignments: function() {
+            var self = this;
+            
+            self.busyIndicator.show();
+            AD.classes.gmamatrix.GMAAssignment.assignments()
+            .done(function(list){
+                if (list.length == 0) {
+                    alert('No GMA assignments found');
+                }
+                // Tell the Entry/Layout sidebar
+                self.controls.assignment.setData(list);
+                // Tell the Dashboard sidebar
+                self.controls.filters.loadAssignments(list);
+            })
+            .fail(function(err){
+                console.error(err);
+                alert('Unable to load GMA assignments');
+            })
+            .always(function(){
+                self.busyIndicator.hide();
+            });
+        },
+        
+        
+        
         // User has selected an assignment from the sidebar
         selectedAssignment: function(assignment) {
+            var self = this;
             // a new assignment was selected, so notify any existing
             // Measurements to remove themselves:
             AD.comm.hub.publish('gmamatrix.measurements.clear', {});
+            
+            // Synchronize the selection on Entry/Layout & Dashboard sidebars
+            self.controls.assignment.setSelectedItem(assignment.getID());
+            self.controls.filters.setSelectedAssignment(assignment.getID());
+            
+            self.busyIndicator.show();
+            
+            assignment.reports()
+            .done(function(list){
+                // Tell the Entry/Layout sidebar
+                self.controls.report.data(list);
+
+                // Determine the start and end dates that bracket all the reports
+                var minStartDate, maxEndDate;
+                for (var i=0; i<list.length; i++) {
+                    var startDate = self.constructor.parseYMD(list[i].startDate);
+                    var endDate = self.constructor.parseYMD(list[i].endDate);
+                    if (!minStartDate || startDate < minStartDate) {
+                        minStartDate = startDate;
+                    }
+                    if (!maxEndDate || endDate > maxEndDate) {
+                        maxEndDate = endDate;
+                    }
+                }
+                // Tell the Dashboard sidebar
+                self.controls.filters.setDateRange(minStartDate, maxEndDate);
+            })
+            .fail(function(err){
+                console.error('Error retrieving reports from ');
+                console.log(assignment);
+            })
+            .always(function(){
+                self.busyIndicator.hide();
+            });
+            
+            
         },
 
 

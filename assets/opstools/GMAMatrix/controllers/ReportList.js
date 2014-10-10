@@ -35,31 +35,7 @@ function(){
             this.dataSource = this.options.dataSource; // AD.models.Projects;
 
             this.initDOM();
-
-            // on a new assignment, refresh our report list:
-            AD.comm.hub.subscribe('gmamatrix.assignment.selected',
-                function (key, data) {
-
-                AD.sal.setImmediate( function() {
-
-                    // we are going to load from the server
-                    can.trigger(self, 'busy');
-
-                    data.model.reports()
-                        .then(function(list){
-                            self.data(list);
-                        })
-                        .fail(function(err){
-                            console.error('Error retrieving reports from ');
-                            console.log(data.model);
-                        })
-                        .always(function(){
-                            can.trigger(self, 'idle');
-                        });
-
-                });
-
-            });
+            
         },
 
 

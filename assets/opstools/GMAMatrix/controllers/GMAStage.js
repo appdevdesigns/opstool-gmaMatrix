@@ -29,17 +29,21 @@ function(){
             this.initDOM();
             
             // Initialize the three panels
+            var $layout = this.element.find('#gmamatrix-layout');
+            var $entry = this.element.find('#gmamatrix-entry');
+            var $dashboard = this.element.find('#gmamatrix-dashboard');
             this.panels = {
-                '#layout': new AD.controllers.opstools.GMAMatrix.GMAStage_Layout(this.element.find('#gmamatrix-layout')),
-                '#entry': new AD.controllers.opstools.GMAMatrix.GMAStage_Entry(this.element.find('#gmamatrix-entry')),
-                '#dashboard': new AD.controllers.opstools.GMAMatrix.GMAStage_Dashboard(this.element.find('#gmamatrix-dashboard'))
+                '#layout': new AD.controllers.opstools.GMAMatrix.GMAStage_Layout($layout),
+                '#entry': new AD.controllers.opstools.GMAMatrix.GMAStage_Entry($entry),
+                '#dashboard': new AD.controllers.opstools.GMAMatrix.GMAStage_Dashboard($dashboard)
             };
             this.panels['#layout'].hide();
             this.panels['#entry'].hide();
             
             // Let parent controller know when layout has changed
-            can.bind.call(this.panels['#layout'], 'layout-changed', function(){
-                can.trigger(self, 'layout-changed');
+            $layout.on('layout-changed', function(ev) {
+                self.element.trigger('layout-changed');
+                ev.preventDefault();
             });
 
 
@@ -142,7 +146,7 @@ function(){
             this.panels[target].show();
             
             // tell parent controller
-            can.trigger(this, 'panel-active', target);
+            this.element.trigger('panel-active', [target]);
             
             ev.preventDefault();
         }

@@ -35,41 +35,7 @@ function(){
 
             this.initDOM();
             
-            // we are going to load from the server
-            can.trigger(self, 'busy');
-            
-            AD.classes.gmamatrix.GMAAssignment.assignments()
-            .then(function(list){
-                self.dataSource = list;
-                self.list.data(list);
-                
-                if (list.length == 0) {
-                    alert('No GMA assignments found');
-                }
-                
-            })
-            .fail(function(err){
-                console.error(err);
-                alert('Unable to load GMA assignments');
-            })
-            .always(function(){
-                can.trigger(self, 'idle');
-            });
-
-
-            // listen for resize notifications
-            // Why?
-            /*
-            AD.comm.hub.subscribe('gmamatrix.resize', function (key, data) {
-                self.element.css("height", data.height + "px");
-
-                //self.list.resize(data.height);
-            }); 
-            */
         },
-
-
-
         
         
         // Allow the parent controller to set this list's data
