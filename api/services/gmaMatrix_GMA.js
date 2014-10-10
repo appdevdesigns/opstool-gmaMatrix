@@ -66,7 +66,9 @@ module.exports = {
                 .fail(function(){
                     // Failed check. Make a new GMA session.
                     delete gmaStore[id];
-                    return self.newSession(req);
+                    self.newSession(req)
+                    .fail(dfd.reject)
+                    .done(dfd.resolve);
                 });
             } else {
                 // Still within soft time limit. Assume old GMA connection is
