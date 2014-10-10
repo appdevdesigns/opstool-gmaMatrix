@@ -70,6 +70,22 @@ function(){
 
 
 
+        
+        
+        // Allow the parent controller to set this list's data
+        setData: function(data) {
+            this.dataSource = data;
+            this.list.data(data);
+        },
+        
+        
+        // Allow the parent controller to set the selected list item
+        setSelectedItem: function(id) {
+            // Select item, but suppress sending AD.comm message
+            this.list.setCurrentItemByID(id, true);
+        },
+        
+        
         initDOM: function () {
 
             //this.element.html(can.view(this.options.templateDOM, {} ));

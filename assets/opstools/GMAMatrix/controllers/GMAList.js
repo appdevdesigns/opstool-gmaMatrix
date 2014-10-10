@@ -22,6 +22,7 @@ function(){
             }, options);
 
             this.dataSource = this.options.dataSource; // AD.models.Projects;
+            this.currentItem = null;
 
             this.initDOM();
             this.loadItems();
@@ -37,6 +38,8 @@ function(){
 
 
         clearItemList: function() {
+            this.currentItem = null;
+            
             // Set the default item label
             this.element.find('.gmalist-selected-label').html(this.options.title);
 
@@ -166,11 +169,29 @@ function(){
                 }
             }
         },
-
-
-
-        'li.gmalist-item click': function($el, ev) {
-
+        
+        
+        
+        getCurrentItem: function() {
+            return this.currentItem;
+        },
+        
+        
+        
+        setCurrentItemByID: function(id, shouldSuppressMsg) {
+            // skip if current item has the same ID
+            if (!this.currentItem || this.currentItem.getID() != id) {
+                for (var i=0; i<this.dataSource.length; i++) {
+                    if (this.dataSource[i].getID() == id) {
+                        var $item = this.element.find("li[gma-list-del-id='" + id + "']");
+                        this.setCurrentItem($item, shouldSuppressMsg);
+                    }
+                }
+            }
+        },
+        
+        
+        setCurrentItem: function($el, shouldSuppressMsg) {
             //  hris-active hris-active-object
             this.element.find('.gmalist-active').each(function(index, item) {
                 $(item).removeClass('gmalist-active gmalist-active-object');
@@ -185,14 +206,26 @@ function(){
             // set the new label for the list
             var label = model.label();
             this.element.find('.gmalist-selected-label').html(label);
-
+            
+            this.currentItem = model;
+            
             // send a message
-            if (this.options.notification_selected) {
-                AD.comm.hub.publish(this.options.notification_selected, { model: model });
+            if (!shouldSuppressMsg) {
+                // AD.comm.hub notification
+                if (this.options.notification_selected) {
+                    AD.comm.hub.publish(this.options.notification_selected, { model: model });
+                }
+                // jQuery event
+                this.element.trigger('item-selected', [{ model: model }]);
             }
-
-            ev.preventDefault();
         },
+
+
+
+        'li.gmalist-item click': function($el, ev) {
+            this.setCurrentItem($el, false);
+            ev.preventDefault();
+        }
 
 
     });

@@ -101,10 +101,6 @@ function(){
 
         initDOM: function () {
 
-            //this.element.html(can.view(this.options.templateDOM, {} ));
-
-            // this.itemContent = this.element.find('.gmamatrix-report-strategylist-items');
-
             // add in the GenericList to our report list div
             this.list = new AD.controllers.GMAList(this.element, {
                 title:'Strategy',
@@ -118,6 +114,20 @@ function(){
         },
 
 
+        // Allow the parent controller to set this list's data
+        setData: function(data) {
+            this.dataSource = data;
+            this.list.data(data);
+        },
+        
+        
+        // Allow the parent controller to set the selected list item
+        setSelectedItem: function(id) {
+            // Select item, but suppress sending AD.comm message
+            this.list.setCurrentItemByID(id, true);
+        },
+        
+        
         show: function() {
             this.element.show();
         },
