@@ -56,24 +56,37 @@ function(){
          * @param array dataList
          *      Either an array of model object instances
          *      or an array of strings/numbers
+         *      or a basic object containing the ID -> label values
          */
         data:function(dataList) {
             // Simple constructor for creating objects that resemble models 
-            var liteModel = function (val) {
+            var liteModel = function (id, val) {
+                val = val || id;
+                this.id = id;
                 this.value = val;
             };
-            liteModel.prototype.getID = function() { return this.value; };
+            liteModel.prototype.getID = function() { return this.id; };
             liteModel.prototype.label = function() { return this.value; };
             
-            for (var i=0; i<dataList.length; i++) {
-                // Convert primitve data elements into objects that
-                // can be used by the GMAList.
-                if (typeof dataList[i] != 'object') {
-                    dataList[i] = new liteModel(dataList[i]);
+            // Handle arrays of models / strings / numbers
+            if (Array.isArray(dataList)) {
+                for (var i=0; i<dataList.length; i++) {
+                    // Convert primitve data elements into objects that
+                    // can be used by the GMAList.
+                    if (typeof dataList[i] != 'object') {
+                        dataList[i] = new liteModel(dataList[i]);
+                    }
+                }
+                this.dataSource = dataList;
+            } 
+            // Handle basic objects
+            else {
+                this.dataSource = [];
+                for (var id in dataList) {
+                    this.dataSource.push(new liteModel(id, dataList[id]));
                 }
             }
         
-            this.dataSource = dataList;
             this.loadItems();
         },
 
