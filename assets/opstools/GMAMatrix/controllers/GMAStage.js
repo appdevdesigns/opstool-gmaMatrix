@@ -96,6 +96,13 @@ function(){
             }
 
         },
+        
+        
+        // @param object allData
+        //      Data for all the LMIs
+        renderDashboard: function(allData) {
+            this.panels['#dashboard'].render(allData);
+        },
 
 
         

@@ -8,6 +8,7 @@ steal(
         '//opstools/GMAMatrix/controllers/ReportList.js',
         '//opstools/GMAMatrix/controllers/GMAStage.js',
 		'//opstools/GMAMatrix/controllers/GMAFilters.js',
+		'//opstools/GMAMatrix/classes/GMAGraphData.js',
 function(){
 
     // Namespacing conventions:
@@ -116,9 +117,20 @@ function(){
                 self.selectedStrategy(self.strategy);
             });
             
-            // Respond to assignments being selected from the sidebar list
+            // Respond to assignments being selected from the Dashboard sidebar
             $filters.on('assignment-selected', function(ev, data) {
                 self.selectedAssignment(data.model);
+            });
+            
+            // Respond to Dashboard dates being chosen
+            $filters.on('dates-chosen', function(ev, assignmentID, startDate, endDate) {
+                self.loadDashboardData(assignmentID, startDate, endDate);
+            });
+            
+            // Respond to Dashboard strategy being chosen
+            $filters.on('strategy-selected', function(ev, data) {
+                var strategyID = data.model.getID();
+                self.renderDashboardGraphs(strategyID);
             });
             
             // Set up busy indicator to respond to all child controllers
@@ -266,7 +278,8 @@ function(){
         },
         
         
-        // Respond to a strategy being selected on the sidebar
+        // Respond to a strategy being selected on the Entry/Layout sidebar
+        //
         // @param GMAStrategy strategy
         selectedStrategy: function(strategy) {
             // Save the strategy in case we need to reload after layout
@@ -283,6 +296,48 @@ function(){
             // and placements loaded, so now show the Measurements
             this.controls.stage.loadMeasurements(measurements);
             
+        },
+        
+        
+        // @param int assignmentID
+        // @param string startDate yyyy-mm-dd
+        // @param string endDate yyyy-mm-dd
+        loadDashboardData: function(assignmentID, startDate, endDate) {
+            var strategies = [];
+            var self = this;
+            
+            this.busyIndicator.show();
+            
+            // Clear any old graph data
+            this.graphData = null;
+            
+            var graphData = new AD.classes.gmamatrix.GMAGraphData({
+                nodeId: assignmentID, 
+                startDate: startDate.replace(/-/g, ''), 
+                endDate: endDate.replace(/-/g, '')
+            });
+            
+            graphData.dataReady
+            .fail(function(err){
+                alert(err.message);
+            })
+            .done(function(){
+                var strategies = graphData.strategies();
+                // graph data is now ready
+                self.graphData = graphData;
+                // set the Dashboard filters strategy list
+                self.controls.filters.loadStrategies(strategies);
+            })
+            .always(function(){
+                self.busyIndicator.hide();
+            });
+            
+        },
+        
+        
+        renderDashboardGraphs: function(strategyID) {
+            var data = this.graphData.dataForStrategy(strategyID);
+            this.controls.stage.renderDashboard(data);
         }
         
     
