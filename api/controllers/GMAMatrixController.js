@@ -435,6 +435,55 @@ module.exports = {
 
       ADCore.comm.success(res, data);
   }
+  
+  
+  // url: get /gmamatrix/graphData/?nodeId=x&startDate=y&endDate=z
+  , graphData: function(req, res) {
+      var nodeID = req.param('nodeId');
+      var startDate = req.param('startDate');
+      var endDate = req.param('endDate');
+      
+      var gma = null; // GMA object
+      var measurements = []; // gma-api will fetch all measurements
+      var result = null;
+      
+      async.series([
+          // Get user's GMA session
+          function(next) {
+              gmaMatrix_GMA.getSession(req)
+              .fail(function(err){ next(err); })
+              .done(function(data){
+                  gma = data;
+                  next();
+              });
+          },
+          // Get report data
+          function(next) {
+              gma.getGraphData({
+                  nodeId: nodeID,
+                  startDate: startDate,
+                  endDate: endDate,
+                  measurements: measurements
+                  //strategies: strategies,
+                  
+              })
+              .fail(function(err) { next(err); })
+              .done(function(data) {
+                  result = data;
+                  next();
+              });
+          }
+      
+      ], function(err) {
+      
+          if (err) {
+              ADCore.comm.error(res, err);
+          } else {
+              ADCore.comm.success(res, result);
+          }
+      
+      });
+  }
 
 
 };
