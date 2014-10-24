@@ -84,8 +84,8 @@ function(){
             });
             this.$widgets['assignment'].on('item-selected', function(event, data) {
                 self.values.assignment = data.model;
-                self.evaluate();
                 self.element.trigger('assignment-selected', data);
+                self.setProgress('start-date');
                 event.preventDefault();
             });
 
@@ -95,7 +95,6 @@ function(){
             });
             this.$widgets['strategy'].on('item-selected', function(event, data) {
                 self.values.strategy = data.model;
-                self.evaluate();
                 self.element.trigger('strategy-selected', data);
                 event.preventDefault();
             });
@@ -111,7 +110,8 @@ function(){
                 })
                 .on('change', function() {
                     self.values.startDate = $(this).val();
-                    self.evaluate();
+                    self.setProgress('end-date');
+                    self.checkDates();
                 });
             self.$widgets['endDate']
                 .datepicker({
@@ -120,23 +120,83 @@ function(){
                 })
                 .on('change', function() {
                     self.values.endDate = $(this).val();
-                    self.evaluate();
+                    self.checkDates();
                 });
-        
+                
+            self.setProgress('none');
         },
         
         
+        // Hide/reveal parts of the filters sidebar depending on which step
+        // of the selection process the user is currently at.
+        //
+        // @param string step
+        //    Can be one of the following:
+        //      "none"
+        //      "team"
+        //      "start-date"
+        //      "end-date"
+        //      "strategy"
+        setProgress: function(step) {
+            switch (step) {
+                default:
+                case 'none':
+                    this.$widgets['assignment'].hide();
+                    this.element.find('#gmamatrix-dashboard-dates').hide();
+                    this.$widgets['strategy'].hide();
+                    break;
+                
+                case 'team':
+                    this.$widgets['assignment'].show();
+                    this.element.find('#gmamatrix-dashboard-dates').hide();
+                    this.$widgets['strategy'].hide();
+                    break;
+                
+                case 'start-date':
+                    this.$widgets['assignment'].show();
+                    this.element.find('#gmamatrix-dashboard-dates').show();
+                    this.$widgets['endDate'].attr('disabled', 1);
+                    this.$widgets['strategy'].hide();
+                    break;
+                
+                case 'end-date':
+                    this.$widgets['assignment'].show();
+                    this.element.find('#gmamatrix-dashboard-dates').show();
+                    this.$widgets['endDate'].removeAttr('disabled');
+                    this.$widgets['strategy'].hide();
+                    break;
+                
+                case 'strategy':
+                    this.$widgets['assignment'].show();
+                    this.element.find('#gmamatrix-dashboard-dates').show();
+                    this.$widgets['endDate'].removeAttr('disabled');
+                    this.$widgets['strategy'].show();
+                    break;
+            }
+        },
+        
+        
+        // Populate the assignments list.
+        //
         // @param array data
         //    An Array of GMAAssignment objects
         loadAssignments: function(data) {
             this.assignmentList.data(data);
+            this.setProgress('team');
         },
         
         
-        // @param array data
-        //     An Array of strategy names (string)
+
+        // Populate the strategies list.
+        //
+        // @param object data
+        //     {
+        //          <strategyID>: <strategyName>,
+        //          ...
+        //      }
         loadStrategies: function(data) {
             this.strategyList.data(data)
+            this.setProgress('strategy');
         },
         
         
@@ -163,19 +223,41 @@ function(){
         },
         
         
-        // Check the currently selected values and notify the parent controller
-        // if all fields are set.
-        evaluate: function() {
-            var isReady = true;
-            for (var v in this.values) {
-                if (!this.values[v]) {
-                    isReady = false;
+        
+        checkDates: function() {
+            if (this.values.assignment && this.values.startDate && this.values.endDate) {
+                var startDate = new Date(this.values.startDate);
+                var endDate = new Date(this.values.endDate);
+                
+                if (!startDate.getTime()) {
+                    alert('Start date is not valid');
                 }
-            }
-            
-            if (isReady) {
-                // jQuery event
-                this.element.trigger('updated');
+                else if (!endDate.getTime()) {
+                    alert('End date is not valid');
+                }
+                else if (startDate > endDate) {
+                    alert('The start date must be earlier than the end date');
+                }
+                else {
+                    var valueString = this.values.assignment.getID() + ' '
+                        + this.values.startDate + ' '
+                        + this.values.endDate;
+                    
+                    // Only do this if something has changed since the last
+                    // time we checked.
+                    if (this.oldValueString != valueString) {
+                        // Tell the parent controller
+                        this.element.trigger('dates-chosen', [
+                            // assignment nodeID
+                            this.values.assignment.getID(),
+                            // raw text dates
+                            this.values.startDate,
+                            this.values.endDate
+                        ]);
+                    }
+                    
+                    this.oldValueString = valueString;
+                }
             }
         },
         
