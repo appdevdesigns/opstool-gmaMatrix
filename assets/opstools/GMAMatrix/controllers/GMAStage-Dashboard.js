@@ -4,6 +4,7 @@ steal(
         'appdev',
         '//opstools/GMAMatrix/classes/GMALMIDefinition.js',
         '//opstools/GMAMatrix/controllers/LMIDefinition.js',
+        '//opstools/GMAMatrix/controllers/LMIGraph.js',
 function(){
 
     // Namespacing conventions:
@@ -21,17 +22,95 @@ function(){
 
             // Call parent init
 //            AD.classes.UIController.apply(this, arguments);
-
+            
+            this.graphs = {
+            /*
+                'etmm': <obj>,
+                'npb': <obj>,
+                ...
+            */
+            };
 
             this.initDOM();
+            
+            this.element.find('.lmi-graph').each(function() {
+                var $el = $(this);
+                var title = $el.attr('label');
+                var key = $el.attr('key');
+                var lmiGraph = new AD.controllers.opstools.GMAMatrix.LMIGraph($el, {
+                    titleLMI: title,
+                    key: key
+                });
+
+                self.graphs[key] = lmiGraph;
+            });
 
 			this.element.find('.tt').tooltip(options);
 
 			
-			var data = [{ month: "January", score: 73 }, { month: "February", score: 95 }, { month: "March", score: 89 },
-			            { month: "April", score: 66 }, { month: "May", score: 50 }, { month: "June", score: 65 },
-			            { month: "July", score: 70 }, { month: "August", score: 43 }, { month: "September", score: 65 },
-			            { month: "October", score: 27 }, { month: "November", score: 77 }, { month: "December", score: 58 }];
+			            
+            this.render();
+
+        },
+
+
+
+        initDOM: function () {
+            this.element.html(can.view(this.options.templateDOM, {} ));
+        },
+
+        
+        // Show the Dashboard panel
+        show: function () {
+            this.element.show();
+        },
+        
+        
+        // Hide the Dashboard panel
+        hide: function () {
+            this.element.hide();
+        },
+        
+        
+        // @param object allData
+        //     Data for all the LMIs in this format:
+        //     {
+        //        periods: [ ... ],
+        //        staffLMIs: {
+        //            etmm: [ ... ],
+        //            tfa: [ ... ],
+        //            ...
+        //        },
+        //        discipleLMIs: { 
+        //            etm: [ ... ],
+        //            tfa: [ ... ],
+        //            ... 
+        //        }
+        //     }
+        render: function (allData) {
+            // Dummy data
+            if (!allData) {
+                for (var key in this.graphs) {
+                    this.graphs[key].render({
+                        staff: [2, 4, 6, 8, 10, 12, 25],
+                        disciple: [3, 6, 9, 12, 15, 25, 30],
+                        periods: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+                    });
+                }
+            }
+            // Passed in data
+            else {
+                for (var key in this.graphs) {
+                    this.graphs[key].render({
+                        staff: allData.staffLMIs[key],
+                        disciple: allData.discipleLMIs[key],
+                        periods: allData.periods
+                    });
+                }
+            }
+            return;
+        
+        
 			this.element.find(".gmaSparkline").wijsparkline({
 				data: data,
 				bind: "score",
@@ -77,25 +156,7 @@ function(){
 			      return self.element.find('.gma-progress-content').html();
 			    }
 			});
-
-        },
-
-
-
-        initDOM: function () {
-            this.element.html(can.view(this.options.templateDOM, {} ));
-        },
-
         
-        // Show the Dashboard panel
-        show: function () {
-            this.element.show();
-        },
-        
-        
-        // Hide the Dashboard panel
-        hide: function () {
-            this.element.hide();
         },
 
 
