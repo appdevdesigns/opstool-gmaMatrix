@@ -58,7 +58,7 @@ function(){
 
             // add in the GenericList to our report list div
             this.list = new AD.controllers.GMAList(this.element, {
-                title:'Assignments',
+                title: 'Team',
                 description: 'Choose the GMA nodes you are allowed to report on.',
                 //dataSource: this.dataSource,
                 //templateItem:'//opstools/GMAMatrix/views/AssignmentList/item.ejs',
