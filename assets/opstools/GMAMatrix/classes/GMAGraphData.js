@@ -109,6 +109,10 @@ function(){
         
         
         // fetchData() and fetchPlacements() must have been completed before this.
+        //
+        // @param integer strategyID
+        //      The strategyId value. Or -1 for all strategies combined.
+        // @return object
         dataForStrategy: function(strategyID) {
             var self = this;
             var results = {
@@ -135,7 +139,7 @@ function(){
                         groupKey = 'staffLMIs';
                     }
                     
-                    if (strategyID == self.graphData.measurements[i].strategyId) {
+                    if (strategyID == -1 || strategyID == self.graphData.measurements[i].strategyId) {
                         if (!results[groupKey][keyLMI]) {
                             // Use initial measurement values
                             results[groupKey][keyLMI] = values;

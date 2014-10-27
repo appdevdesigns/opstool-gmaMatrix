@@ -195,6 +195,7 @@ function(){
         //          ...
         //      }
         loadStrategies: function(data) {
+            data[-1] = 'All';
             this.strategyList.data(data)
             this.setProgress('strategy');
         },
