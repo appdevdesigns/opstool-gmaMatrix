@@ -149,7 +149,7 @@ function(){
             var domFrag = can.view(this.options.templateItem, { item: item });
             listArea[0].appendChild(domFrag);
 
-            var itemLI = listArea.find('[gma-list-del-id='+item.getID()+']');
+            var itemLI = listArea.find("[gma-list-del-id='"+item.getID()+"']");
             itemLI.data('ad-model', item);
 
             //// now on each model displayed, listen to it's destroyed event
@@ -159,7 +159,7 @@ function(){
 
                     var delThis = function (ev, attr){
                         if (attr == 'destroyed') {
-                            self.element.find('[gma-list-del-id='+model.id+']').remove();
+                            self.element.find("[gma-list-del-id='"+model.id+"']").remove();
                         }
                     };
                     model.bind('change',delThis);
