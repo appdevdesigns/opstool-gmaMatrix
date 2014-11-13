@@ -130,6 +130,238 @@ module.exports = {
         });
         
         return dfd;
+    },
+    
+    
+    // Map all GMA measurements to their LMI placements.
+    // Requires at least one node to have had its LMI placements already
+    // mapped out.
+    mapAllMeasurements: function() {
+        var dfd = AD.sal.Deferred();
+        var self = this;
+        
+        var groups = [];
+        var measurements = [];
+        
+        async.series([
+            // Get roll up groupings.
+            // GMA measurements that ultimately roll up to the same ancestor
+            // will be grouped together in the same array.
+            function(next){
+                AD.sal.http({
+                    url: sails.config.gmaMatrix.groupsURL,
+                    method: 'GET'
+                })
+                .fail(function(err){
+                    next(err);
+                })
+                .done(function(result){
+                    /*
+                        result == {
+                            success: true,
+                            data: {
+                                measurements: [
+                                    [ 1, 2, 3, ... ],
+                                    [ 8, 9, 10, ... ],
+                                    ...
+                                ]
+                            }
+                        }
+                    */
+                    groups = result.data.measurements;
+                    next();
+                });
+            },
+            
+            // Search local DB for any existing LMI placement within each
+            // group.
+            function(next){
+                async.eachLimit(groups, 10, function(group, ok) {
+                    
+                    // Search for an existing placement match for this group
+                    Placement.find({
+                        where: { 'measurement_id': group },
+                        sort: 'measurement_id ASC',
+                        limit: 1
+                    })
+                    .then(function(result){
+                        if (result.length > 0) {
+                            // All measurements within the group will be
+                            // assigned the same LMI and type.
+                            for (i=0; i<group.length; i++) {
+                                measurements.push({
+                                    measurement_id: group[i],
+                                    location: result[0]['location'],
+                                    type: result[0]['type']
+                                });
+                            }
+                        }
+                        ok();
+                    })
+                    .fail(function(err){
+                        ok(err);
+                    });
+                    
+                }, function(err){
+                    if (err) next(err);
+                    else next();
+                });
+            },
+            
+            // Save measurement placements.
+            function(next){
+                async.eachLimit(measurements, 10, function(m, ok) {
+                    
+                    Placement.find({ 'measurement_id': m.measurement_id })
+                    .then(function(list){
+                        // Don't change existing mappings
+                        if (list && list.length > 0) {
+                            ok();
+                        } 
+                        // Create new mapping
+                        else {
+                            
+                            Placement.create(m)
+                            .then(function(){
+                                ok();
+                            })
+                            .fail(function(err){
+                                ok(err);
+                            });
+                            
+                        }
+                    })
+                    .fail(function(err){
+                        ok(err);
+                    });
+                
+                }, function(err){
+                    if (err) next(err);
+                    else next();
+                });
+            }
+            
+        ], function(err) {
+            if (err) dfd.reject(err);
+            else dfd.resolve();
+        });
+        
+        return dfd;
+    },
+
+
+
+    // Map the measurement placements of nodes that the current user is
+    // assigned to.
+    mapUserMeasurements: function(req) {
+        var dfd = AD.sal.Deferred();
+        var self = this;
+        var gma;
+        
+        var assignments = [];
+        var measurements = [];
+        var placements = [];
+        
+        async.series([
+            // Get user's GMA session
+            function(next){
+                self.getSession(req)
+                .fail(function(err) { next(err); })
+                .done(function(sessionGMA) {
+                    gma = sessionGMA;
+                    next();
+                });
+            },
+            
+            // Get user's assignments
+            function(next){
+                gma.getAssignments()
+                .fail(function(err) { next(err); })
+                .done(function(byID, byName, list) {
+                    assignments = list;
+                    next();
+                });
+            },
+            
+            // Get all assignment measurements
+            function(next){
+                async.eachLimit(assignments, 10, function(assignment, ok) {
+
+                    assignment.getMeasurements()
+                    .fail(function(err) { ok(err); })
+                    .done(function(list) {
+                        measurements = measurements.concat(list);
+                        ok();
+                    });
+
+                }, function(err) {
+                    if (err) next(err);
+                    else next();
+                });
+            },
+            
+            // Get all measurement placements
+            function(next){
+                async.eachLimit(measurements, 10, function(measurement, ok) {
+                    AD.sal.http({
+                        method: 'GET',
+                        url: sails.config.gmaMatrix.traceRollUpURL,
+                        data: { measurementId: measurement.id() }
+                    })
+                    .fail(function(err) { next(err); })
+                    .done(function(result) {
+                        var id = result.rootMeasurementId;
+                        
+                        Placement.find({ measurement_id: id })
+                        .then(function(list) {
+                            for (var i=0; i<list.length; i++) {
+                                placements.push({
+                                    measurement_id: measurement.id(),
+                                    node_id: list[i].node_id,
+                                    location: list[i].location,
+                                    type: list[i].type
+                                });
+                            }
+                            ok();
+                        })
+                        .fail(function(err) {
+                            ok(err);
+                        });
+                        
+                    });
+                }, function(err) {
+                    if (err) next(err);
+                    else next();
+                });
+            },
+            
+            // Save placements
+            function(next){
+                async.eachLimit(placements, 10, function(p, ok) {
+                    
+                    Placement.create(p)
+                    .then(function(){
+                        ok();
+                    })
+                    .fail(function(err){
+                        ok(err);
+                    });
+                    
+                }, function(err) {
+                    if (err) next(err);
+                    else next();
+                });
+            }
+        
+        ], function(err) {
+            if (err) { 
+                dfd.reject(err); 
+            } else {
+                dfd.resolve();
+            }
+        });
+        
+        return dfd;
     }
 
 };

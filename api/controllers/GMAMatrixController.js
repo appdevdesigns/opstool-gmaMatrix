@@ -486,4 +486,19 @@ module.exports = {
   }
 
 
+  // url: GET /gmamatrix/mapAllMeasurements
+  // (ideally this should be POST since it updates the DB, but that would
+  //  prevent it from being manually called via a basic web browser)
+  , mapAllMeasurements: function(req, res) {
+      
+      gmaMatrix_GMA.mapAllMeasurements()
+      .fail(function(err) {
+        ADCore.comm.error(res, err);
+      })
+      .done(function() {
+        ADCore.comm.success(res, {});
+      });
+
+  }
+
 };
