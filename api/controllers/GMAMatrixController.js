@@ -492,7 +492,7 @@ module.exports = {
   //  prevent it from being manually called via a basic web browser)
   , mapAllMeasurements: function(req, res) {
       
-      gmaMatrix_GMA.mapAllMeasurements()
+      Placement.mapAllMeasurements()
       .fail(function(err) {
         ADCore.comm.error(res, err);
       })
