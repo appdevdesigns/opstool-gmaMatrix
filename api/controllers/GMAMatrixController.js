@@ -228,16 +228,17 @@ module.exports = {
         if (data && data.length > 0) {
             // There should only be one record
             var item = data[0];
-            
+
             item.report_id = reportID || item.report_id;
             item.node_id = nodeID || item.node_id;
             item.type = type || item.type;
             item.location = location || item.location;
-
+            
             Placement.update({ id: item.id }, {
                 report_id: item.report_id,
                 node_id: item.node_id,
-                type: item.type
+                type: item.type,
+                location: item.location
             })
             .then(function(){
                 ADCore.comm.success(res, 'UPDATED');
