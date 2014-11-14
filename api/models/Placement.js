@@ -73,6 +73,28 @@ module.exports = {
         
         return dfd;
     },
+    
+    
+    updateDescendants: function(measurementID, properties) {
+        var dfd = AD.sal.Deferred();
+        
+        Placement.traceDescendants(measurementID)
+        .fail(function(err){
+            dfd.reject(err);
+        })
+        .done(function(list) {
+            Placement.update({ measurement_id: list }, properties)
+            .then(function(){
+                dfd.resolve();
+            })
+            .fail(function(err){
+                dfd.reject(err);
+            })
+            .done();
+        });
+
+        return dfd;
+    },
 
 
 

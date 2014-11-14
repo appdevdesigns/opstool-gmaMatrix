@@ -242,6 +242,12 @@ module.exports = {
             })
             .then(function(){
                 ADCore.comm.success(res, 'UPDATED');
+                // Continue on to descendants, but do not give notification
+                // when it completes.
+                Placement.updateDescendants(measurementID, {
+                    location: location,
+                    type: type
+                });
             })
             .fail(function(err){
                 ADCore.comm.error(res, err);
