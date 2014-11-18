@@ -224,6 +224,13 @@ div.loading {
 /*    width: 100%; */
 }
 
+.gmamatrix-stage > .alert {
+    margin: 1em;
+    /* the right side of the page is cut off, so increase the margin here
+       to compensate */
+    margin-right: 2em;
+}
+
 .gmamatrix-stage .navbar-inner .row {
     margin-left: 0px;
     margin-right: 0px;

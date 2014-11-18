@@ -20,6 +20,7 @@ function(){
             var self = this;
             this.options = AD.defaults({
                     templateDOM: '//opstools/GMAMatrix/views/GMAStage/GMAStage.ejs',
+                    templateAlert: '//opstools/GMAMatrix/views/GMAStage/alert.ejs'
             }, options);
 
             // Call parent init
@@ -103,7 +104,22 @@ function(){
         renderDashboard: function(allData) {
             this.panels['#dashboard'].render(allData);
         },
-
+        
+        
+        // Display a dismissable alert notice within the GMA Matrix "stage" area
+        //
+        // @param string messageText
+        // @param string type
+        //      One of the following:
+        //      'info' (default)
+        //      'success'
+        //      'warning'
+        //      'danger'
+        alert: function(messageText, type) {
+            type = type || 'info';
+            var $div = can.view(this.options.templateAlert, { type: type, message: messageText });
+            this.element.prepend($div);
+        },
 
         
         // Collapse and expand the win/build/send rows

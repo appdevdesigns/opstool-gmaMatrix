@@ -159,7 +159,7 @@ function(){
             AD.classes.gmamatrix.GMAAssignment.assignments()
             .done(function(list){
                 if (list.length == 0) {
-                    alert('No GMA assignments found');
+                    self.controls.stage.alert('No GMA assignments found', 'warning');
                 }
                 // Tell the Entry/Layout sidebar
                 self.controls.assignment.setData(list);
