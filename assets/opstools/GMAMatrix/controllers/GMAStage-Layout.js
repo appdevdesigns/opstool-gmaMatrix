@@ -83,20 +83,24 @@ function(){
         
         // Measurement dropped inside an LMI container
 		handleDropLMIEvent: function( event, ui, el ) {
-		    var $target = $(el);
-		    var $source = $(ui.draggable);
-		    var locationKey = $target.parent().attr('key');
-		    var widget = $source.data('LayoutMeasurement');
-		    var type = $target.attr('type');
-		    
-		    refreshCatPanel(ui);
-            
-            // Move the measurement to the target container
-		    $target.append($source);
-            // Update the location key on the measurement
-            widget.savePlacement(locationKey, type);
-            
-            this.hasLayoutChanged = true;
+            if (confirm('This will also affect the measurement in all child nodes. Proceed?')) {
+		
+                var $target = $(el);
+                var $source = $(ui.draggable);
+                var locationKey = $target.parent().attr('key');
+                var widget = $source.data('LayoutMeasurement');
+                var type = $target.attr('type');
+                
+                refreshCatPanel(ui);
+                
+                // Move the measurement to the target container
+                $target.append($source);
+                // Update the location key on the measurement
+                widget.savePlacement(locationKey, type);
+                
+                this.hasLayoutChanged = true;
+                
+            }
 		},
 		
      
