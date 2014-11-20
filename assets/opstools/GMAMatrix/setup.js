@@ -5,7 +5,6 @@ steal(
         '//opstools/GMAMatrix/matrix-scratch.css',
         '//opstools/GMAMatrix/datepicker.css',
 'http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css',
-		'js/dropzone.min.js',
         '/site/labels/opstools/GMAMatrix',
 
         //// Load Wijimo!  The monolithic UI Graphing Library for sweet Eye Candy!
