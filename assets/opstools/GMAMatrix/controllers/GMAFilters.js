@@ -63,6 +63,10 @@ function(){
 
         initDOM: function () {
             this.element.html(can.view(this.options.templateDOM, {} ));
+            this.element.find('[translate]').each(function(){
+                $(this).removeAttr('translate');
+                AD.controllers.Label.keylessCreate($(this));
+            });
         },
         
         

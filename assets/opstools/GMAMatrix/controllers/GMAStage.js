@@ -118,6 +118,7 @@ function(){
         alert: function(messageText, type) {
             type = type || 'info';
             var $div = can.view(this.options.templateAlert, { type: type, message: messageText });
+            AD.controllers.Label.keylessCreate($div);
             this.element.prepend($div);
         },
 

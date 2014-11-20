@@ -41,8 +41,9 @@ function(){
             this.currentItem = null;
             
             // Set the default item label
-            this.element.find('.gmalist-selected-label').html(this.options.title);
-
+            var title = AD.lang.label.getLabel(this.options.title) || this.options.title;
+            this.element.find('.gmalist-selected-label').html(title);
+            
             var items = this.element.find(this.options.dom_listarea);
             items.children().each(function(index, item){
                 item.remove();
@@ -93,29 +94,28 @@ function(){
 
 
         initDOM: function() {
-
+            
             this.element.html(can.view(this.options.templateDOM, {
                 title: this.options.title,
                 description: this.options.description
             } ));
-
-
+            
             this.button = {};
-
+            
             this.button.add = this.element.find('.gmalist-button-add');
             if (this.options.onAdd) {
                 this.button.add.click( this.options.onAdd );
             } else {
                 this.button.add.hide();
             }
-
+            
             this.button.edit = this.element.find('.gmalist-button-edit');
             if (this.options.onEdit) {
                 this.button.edit.click( this.options.onEdit );
             } else {
                 this.button.edit.hide();
             }
-
+            
         },
 
 		resize: function(height) {
@@ -148,6 +148,12 @@ function(){
             }
             var domFrag = can.view(this.options.templateItem, { item: item });
             listArea[0].appendChild(domFrag);
+            
+            // Init labels within the item
+            listArea.find('[translate]').each(function(){
+                $(this).removeAttr('translate');
+                AD.controllers.Label.keylessCreate($(this));
+            });
 
             var itemLI = listArea.find("[gma-list-del-id='"+item.getID()+"']");
             itemLI.data('ad-model', item);

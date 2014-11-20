@@ -49,6 +49,8 @@ function(){
             this.initDOM();
             this.setupPage();
             this.loadAssignments();
+            
+            this.initLabels();
 
             // Respond to the user selecting things on the Entry/Layout  sidebar
             AD.comm.hub.subscribe('gmamatrix.assignment.selected', function(key, data){
@@ -67,6 +69,15 @@ function(){
 
         initDOM: function () {
             this.element.html(can.view(this.options.templateDOM, {} ));
+        },
+        
+        
+        initLabels: function () {
+            this.element.find('[translate]').each(function(){
+                var $label = $(this);
+                $label.removeAttr('translate');
+                AD.controllers.Label.keylessCreate($label);
+            });
         },
         
         
@@ -168,7 +179,7 @@ function(){
             })
             .fail(function(err){
                 console.error(err);
-                alert('Unable to load GMA assignments');
+                self.controls.stage.alert('Unable to load GMA assignments', 'danger');
             })
             .always(function(){
                 self.busyIndicator.hide();
@@ -319,7 +330,7 @@ function(){
             
             graphData.dataReady
             .fail(function(err){
-                alert(err.message);
+                self.controls.stage.alert(err.message, 'danger');
             })
             .done(function(){
                 var strategies = graphData.strategies();

@@ -81,6 +81,10 @@ function(){
         initDOM: function () {
             var html = can.view(this.options.templateDOM, { title: this.options.titleLMI } );
             this.element.html(html);
+            this.element.find('[translate]').each(function(){
+                $(this).removeAttr('translate');
+                AD.controllers.Label.keylessCreate($(this));
+            });
         },
         
 
