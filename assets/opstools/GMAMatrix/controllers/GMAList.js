@@ -2,19 +2,22 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
+        '//opstools/GMAMatrix/views/GMAList/GMAListDOM.ejs',
+        '//opstools/GMAMatrix/views/GMAList/GMAListItem.ejs',
 function(){
 
 
 
-    AD.controllers.GMAList = AD.classes.UIController.extend({
+    // AD.controllers.GMAList = AD.classes.UIController.extend({
+    AD.Control.extend('GMAList', {
 
 
         init: function( element, options ) {
             this.options = AD.defaults({
                     dom_listarea:'.gmalist-list',
                     notification_selected:null,
-                    templateDOM: '/opstools/GMAMatrix/views/GMAList/GMAListDOM.ejs',
-                    templateItem: '/opstools/GMAMatrix/views/GMAList/GMAListItem.ejs',
+                    templateDOM: '//opstools/GMAMatrix/views/GMAList/GMAListDOM.ejs',
+                    templateItem: '//opstools/GMAMatrix/views/GMAList/GMAListItem.ejs',
                     title: 'List',
                     onAdd:null,
                     onEdit:null,

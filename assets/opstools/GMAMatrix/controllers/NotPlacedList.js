@@ -2,22 +2,17 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
-//        'opstools/GMAMatrix/models/Projects.js',
-//        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
-//        'opstools/GMAMatrix/views/NotPlacedList/NotPlacedList.ejs',
+        '//opstools/GMAMatrix/views/NotPlacedList/NotPlacedList.ejs',
 function(){
 
-    // Namespacing conventions:
-    // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.NotPlacedList = AD.classes.UIController.extend({
+
+    AD.Control.extend('opstools.GMAMatrix.NotPlacedList', {
 
 
         init: function (element, options) {
             var self = this;
             options = AD.defaults({
-                    templateDOM: '//opstools/GMAMatrix/views/NotPlacedList/NotPlacedList.ejs',
+                    templateDOM: '//opstools/GMAMatrix/views/NotPlacedList/NotPlacedList.ejs'
             }, options);
             this.options = options;
 
@@ -28,7 +23,6 @@ function(){
             this.dataSource = this.options.dataSource; // AD.models.Projects;
 
             this.initDOM();
-
 
         },
 
@@ -61,7 +55,7 @@ function(){
         '.ad-item-add click': function ($el, ev) {
 
             ev.preventDefault();
-        },
+        }
 
 
     });

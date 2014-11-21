@@ -7,20 +7,25 @@ steal(
         '//opstools/GMAMatrix/controllers/GMAStage-Entry.js',
         '//opstools/GMAMatrix/controllers/GMAStage-Layout.js',
         '//opstools/GMAMatrix/controllers/GMAStage-Dashboard.js',
+        '//opstools/GMAMatrix/views/GMAStage/GMAStage.ejs',
+        '//opstools/GMAMatrix/views/GMAStage/alert.ejs',
 function(){
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.GMAStage = AD.classes.UIController.extend({
+    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
+    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
+    // AD.controllers.opstools.GMAMatrix.GMAStage = AD.classes.UIController.extend({
+    AD.Control.extend('opstools.GMAMatrix.GMAStage', {
 
 
         init: function (element, options) {
             var self = this;
             this.options = AD.defaults({
+
                     templateDOM: '//opstools/GMAMatrix/views/GMAStage/GMAStage.ejs',
                     templateAlert: '//opstools/GMAMatrix/views/GMAStage/alert.ejs'
+
             }, options);
 
             // Call parent init

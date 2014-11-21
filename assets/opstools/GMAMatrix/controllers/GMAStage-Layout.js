@@ -7,6 +7,7 @@ steal(
         '//opstools/GMAMatrix/controllers/LMIDefinition.js',
         '//opstools/GMAMatrix/controllers/NotPlacedList.js',
         '//opstools/GMAMatrix/controllers/ADAffix.js',
+        '//opstools/GMAMatrix/views/GMAStage/GMAStage-Layout.ejs',
 function(){
     
     // Refresh the "categories" panel on the right to prevent empty
@@ -22,15 +23,16 @@ function(){
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.GMAStage_Layout = AD.classes.UIController.extend({
+    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
+    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
+    // AD.controllers.opstools.GMAMatrix.GMAStage_Layout = AD.classes.UIController.extend({
+    AD.Control.extend('opstools.GMAMatrix.GMAStage_Layout', {
 
 
         init: function (element, options) {
             var self = this;
             this.options = AD.defaults({
-                    templateDOM: '//opstools/GMAMatrix/views/GMAStage/GMAStage-Layout.ejs',
+                    templateDOM: '//opstools/GMAMatrix/views/GMAStage/GMAStage-Layout.ejs'
             }, options);
 
             // Call parent init

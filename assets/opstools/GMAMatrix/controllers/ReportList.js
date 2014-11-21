@@ -3,16 +3,11 @@ steal(
         // List your Controller's dependencies here:
         'appdev',
         'opstools/GMAMatrix/classes/GMAReport.js',
-//        'bootstrap/js/bootstrap.min.js',
-//        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
-//        'opstools/GMAMatrix/views/ReportList/ReportList.ejs',
+        '//opstools/GMAMatrix/views/ReportList/ReportList.ejs',
 function(){
 
-    // Namespacing conventions:
-    // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.ReportList = AD.classes.UIController.extend({
+
+    AD.Control.extend('opstools.GMAMatrix.ReportList', {
 
         defaults: {
         }

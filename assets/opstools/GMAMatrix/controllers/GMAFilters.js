@@ -2,19 +2,21 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
+        '//opstools/GMAMatrix/views/GMAFilters/GMAFilters.ejs',
 function(){
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.GMAFilters = AD.classes.UIController.extend({
+    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
+    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
+    // AD.controllers.opstools.GMAMatrix.GMAFilters = AD.classes.UIController.extend({
+    AD.Control.extend('opstools.GMAMatrix.GMAFilters', {
 
 
         init: function (element, options) {
             var self = this;
             options = AD.defaults({
-                    templateDOM: '//opstools/GMAMatrix/views/GMAFilters/GMAFilters.ejs',
+                    templateDOM: '//opstools/GMAMatrix/views/GMAFilters/GMAFilters.ejs'
             }, options);
             this.options = options;
 
@@ -110,7 +112,7 @@ function(){
             self.$widgets['startDate']
                 .datepicker({
                     format: 'yyyy-mm-dd',
-                    autoclose: true,
+                    autoclose: true
                 })
                 .on('change', function() {
                     self.values.startDate = $(this).val();

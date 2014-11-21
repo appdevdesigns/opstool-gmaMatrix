@@ -4,16 +4,16 @@ steal(
         'appdev',
         'opstools/GMAMatrix/controllers/GMAList.js',
         'opstools/GMAMatrix/classes/GMAAssignment.js',
-//        'opstools/GMAMatrix/models/Projects.js',
-//        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
-//        'opstools/GMAMatrix/views/ReportList/ReportList.ejs',
+        '//opstools/GMAMatrix/views/AssignmentList/AssignmentList.ejs',
 function(){
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.AssignmentList = AD.classes.UIController.extend({
+    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
+    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
+    // AD.controllers.opstools.GMAMatrix.AssignmentList = AD.classes.UIController.extend({
+    AD.Control.extend('opstools.GMAMatrix.AssignmentList', {
+
 
         defaults: {
         }

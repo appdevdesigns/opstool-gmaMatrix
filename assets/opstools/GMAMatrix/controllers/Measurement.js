@@ -2,13 +2,11 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
+        '//opstools/GMAMatrix/views/Measurement/Measurement.ejs',
 function(){
 
-    // Namespacing conventions:
-    // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.Measurement = AD.classes.UIController.extend({
+
+    AD.Control.extend('opstools.GMAMatrix.Measurement', {
 
 
         init: function (element, options) {
@@ -21,6 +19,7 @@ function(){
             this.options = options;
 
             // Call parent init
+//// TODO: use the _super() method instead.
             AD.classes.UIController.apply(this, arguments);
 
             this.initDOM();
