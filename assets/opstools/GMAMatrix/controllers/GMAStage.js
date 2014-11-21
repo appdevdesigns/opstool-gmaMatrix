@@ -122,7 +122,10 @@ function(){
         //      'danger'
         alert: function(messageText, type) {
             type = type || 'info';
-            var $div = can.view(this.options.templateAlert, { type: type, message: messageText });
+            
+            //// NOTE:  can.view() returns a document fragement, that doesn't have jQuery attached.
+            //// Label.keylessCreate() expects a jQuery object.  
+            var $div = $(can.view(this.options.templateAlert, { type: type, message: messageText }));
             AD.controllers.Label.keylessCreate($div);
             this.element.prepend($div);
         },
