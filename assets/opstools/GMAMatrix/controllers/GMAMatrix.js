@@ -2,21 +2,25 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
-        'appdev/widgets/ad_icon_busy/ad_icon_busy.js',
+        'appdev/widgets/ad_icon_busy',
         '//opstools/GMAMatrix/controllers/AssignmentList.js',
         '//opstools/GMAMatrix/controllers/StrategyList.js',
         '//opstools/GMAMatrix/controllers/ReportList.js',
         '//opstools/GMAMatrix/controllers/GMAStage.js',
 		'//opstools/GMAMatrix/controllers/GMAFilters.js',
 		'//opstools/GMAMatrix/classes/GMAGraphData.js',
+        '//OpsPortal/classes/OpsTool.js',
+        '//opstools/GMAMatrix/views/GMAMatrix/GMAMatrix.ejs',
 function(){
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.Tool = AD.classes.opsportal.OpsTool.extend({
-        
+    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
+    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
+    // AD.controllers.opstools.GMAMatrix.Tool = AD.classes.opsportal.OpsTool.extend({
+    AD.Control.OpsTool.extend('GMAMatrix', {
+
+
         // return a more readable date string than what is provided from GMA.
         formatDate: function(ymd) {
             return ymd.substr(0, 4) + '-'

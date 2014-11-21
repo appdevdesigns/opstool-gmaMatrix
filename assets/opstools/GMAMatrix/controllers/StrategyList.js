@@ -2,16 +2,16 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
-//        'opstools/GMAMatrix/models/Projects.js',
-//        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
-//        'opstools/GMAMatrix/views/StrategyList/StrategyList.ejs',
+        '//opstools/GMAMatrix/views/StrategyList/StrategyList.ejs',
 function(){
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.StrategyList = AD.classes.UIController.extend({
+    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
+    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
+    // AD.controllers.opstools.GMAMatrix.StrategyList = AD.classes.UIController.extend({
+    AD.Control.extend('opstools.GMAMatrix.StrategyList', {
+
 
         defaults: {
             busy: function (isBusy) {

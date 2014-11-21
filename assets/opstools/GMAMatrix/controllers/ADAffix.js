@@ -9,9 +9,10 @@ function(){
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.ADAffix = AD.classes.UIController.extend({
+    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
+    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
+    // AD.controllers.opstools.GMAMatrix.ADAffix = AD.classes.UIController.extend({
+    AD.Control.extend('opstools.GMAMatrix.ADAffix', {
 
 
         init: function (element, options) {
@@ -119,7 +120,7 @@ function(){
 
             this.$element.removeClass(reset).addClass('affix' + (affix ? '-' + affix : ''))
 
-        },
+        }
 
 
     });

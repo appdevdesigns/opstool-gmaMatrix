@@ -1,13 +1,11 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
+        '//opstools/GMAMatrix/views/Measurement/LayoutMeasurement.ejs',
 function(){
 
-    // Namespacing conventions:
-    // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.LayoutMeasurement = AD.classes.UIController.extend({
+
+    AD.Control.extend('opstools.GMAMatrix.LayoutMeasurement', {
 
 
         init: function (element, options) {

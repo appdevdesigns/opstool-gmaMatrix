@@ -5,19 +5,21 @@ steal(
         '//opstools/GMAMatrix/classes/GMALMIDefinition.js',
         '//opstools/GMAMatrix/controllers/Measurement.js',
         '//opstools/GMAMatrix/controllers/NotPlacedList.js',
+        '//opstools/GMAMatrix/views/GMAStage/GMAStage-Entry.ejs',
 function(){
 
     // Namespacing conventions:
     // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.GMAStage_Entry = AD.classes.UIController.extend({
+    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
+    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
+    // AD.controllers.opstools.GMAMatrix.GMAStage_Entry = AD.classes.UIController.extend({
+    AD.Control.extend('opstools.GMAMatrix.GMAStage_Entry', {
 
 
         init: function (element, options) {
             var self = this;
             this.options = AD.defaults({
-                    templateDOM: '//opstools/GMAMatrix/views/GMAStage/GMAStage-Entry.ejs',
+                    templateDOM: '//opstools/GMAMatrix/views/GMAStage/GMAStage-Entry.ejs'
             }, options);
 
             

@@ -2,16 +2,11 @@
 steal(
         // List your Controller's dependencies here:
         'appdev',
-//        'opstools/GMAMatrix/models/Projects.js',
-//        'appdev/widgets/ad_delete_ios/ad_delete_ios.js',
-//        'opstools/GMAMatrix/views/LMIDefinition/LMIDefinition.ejs',
+        '//opstools/GMAMatrix/views/LMIGraph/LMIGraph.ejs',
 function(){
 
-    // Namespacing conventions:
-    // AD.controllers.[application].[controller]
-    if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    AD.controllers.opstools.GMAMatrix.LMIGraph = AD.classes.UIController.extend({
+
+    AD.Control.extend('opstools.GMAMatrix.LMIGraph', {
         
         // callback function used for graph tooltips
         tooltipCB: function() {
