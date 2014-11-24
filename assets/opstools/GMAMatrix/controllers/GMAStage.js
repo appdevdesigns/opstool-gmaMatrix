@@ -11,11 +11,7 @@ steal(
         '//opstools/GMAMatrix/views/GMAStage/alert.ejs',
 function(){
 
-    // Namespacing conventions:
-    // AD.controllers.[application].[controller]
-    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    // AD.controllers.opstools.GMAMatrix.GMAStage = AD.classes.UIController.extend({
+
     AD.Control.extend('opstools.GMAMatrix.GMAStage', {
 
 
@@ -122,7 +118,7 @@ function(){
         //      'danger'
         alert: function(messageText, type) {
             type = type || 'info';
-            
+
             //// NOTE:  can.view() returns a document fragement, that doesn't have jQuery attached.
             //// Label.keylessCreate() expects a jQuery object.  
             var $div = $(can.view(this.options.templateAlert, { type: type, message: messageText }));
