@@ -24,7 +24,7 @@ module.exports={
 
         // 'dropzone.js' : { packaged:false },
         // 'dropzone.css' : {packaged:false },
-        'site/labels/opstools/GMAMatrix.js' : { packaged:false, ignore:true }
+        'site/labels/opstools-GMAMatrix.js' : { packaged:false, ignore:true }
 
 
     }
