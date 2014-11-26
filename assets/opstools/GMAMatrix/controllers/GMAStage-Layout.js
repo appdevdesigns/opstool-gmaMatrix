@@ -22,10 +22,7 @@ function(){
 
 
     // Namespacing conventions:
-    // AD.controllers.[application].[controller]
-    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    // AD.controllers.opstools.GMAMatrix.GMAStage_Layout = AD.classes.UIController.extend({
+    // AD.Control.extend('[application].[controller]', [{ static },] {instance} );
     AD.Control.extend('opstools.GMAMatrix.GMAStage_Layout', {
 
 

@@ -8,7 +8,7 @@ function(){
 
 
 
-    // AD.controllers.GMAList = AD.classes.UIController.extend({
+    // AD.Control.extend('[application].[controller]', [{ static },] {instance} );
     AD.Control.extend('GMAList', {
 
 

@@ -14,10 +14,7 @@ steal(
 function(){
 
     // Namespacing conventions:
-    // AD.controllers.[application].[controller]
-    // if (typeof AD.controllers.opstools == 'undefined') AD.controllers.opstools = {};
-    // if (typeof AD.controllers.opstools.GMAMatrix == 'undefined') AD.controllers.opstools.GMAMatrix = {};
-    // AD.controllers.opstools.GMAMatrix.Tool = AD.classes.opsportal.OpsTool.extend({
+    // AD.Control.OpsTool.extend('[application].[controller]', [{ static },] {instance} );
     AD.Control.OpsTool.extend('GMAMatrix', {
 
 

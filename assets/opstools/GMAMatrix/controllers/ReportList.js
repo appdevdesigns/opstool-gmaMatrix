@@ -7,6 +7,8 @@ steal(
 function(){
 
 
+    // Namespacing conventions:
+    // AD.Control.extend('[application].[controller]', [{static}], {instance} );
     AD.Control.extend('opstools.GMAMatrix.ReportList', {
 
         defaults: {
