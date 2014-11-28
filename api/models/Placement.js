@@ -62,7 +62,8 @@ module.exports = {
         
         AD.sal.http({
             method: 'GET',
-            url: sails.config.gmaMatrix.traceDescendantsURL
+            url: sails.config.gmaMatrix.traceDescendantsURL,
+            data: { measurementId: measurementID }
         })
         .fail(function(err){
             dfd.reject(err);
