@@ -27,6 +27,10 @@ function(){
             this.dataSource = this.options.dataSource; // AD.models.Projects;
             this.currentItem = null;
 
+            // call parent init()
+            // this._super(element, options);
+            
+
             this.initDOM();
             this.loadItems();
 

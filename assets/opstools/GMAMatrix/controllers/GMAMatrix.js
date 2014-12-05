@@ -41,7 +41,8 @@ function(){
             this.options = options;
 
             // Call parent init
-            AD.classes.opsportal.OpsTool.prototype.init.apply(this, arguments);
+            // AD.classes.opsportal.OpsTool.prototype.init.apply(this, arguments);
+            this._super(element, options);
             
             this.measurements = null;
             this.placements = null;

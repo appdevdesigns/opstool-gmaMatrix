@@ -19,6 +19,9 @@ function(){
                     templateDOM: '//opstools/GMAMatrix/views/GMAStage/GMAStage-Entry.ejs'
             }, options);
 
+            // Call parent init()
+            // this._super(element, options);
+            
             
             this.initDOM();
             

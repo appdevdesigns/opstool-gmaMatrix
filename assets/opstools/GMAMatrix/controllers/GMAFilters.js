@@ -17,8 +17,11 @@ function(){
             }, options);
             this.options = options;
 
+
             // Call parent init
-            AD.classes.UIController.apply(this, arguments);
+            // AD.classes.UIController.apply(this, arguments);
+            this._super(element, options);
+
 
             this.initDOM();
             

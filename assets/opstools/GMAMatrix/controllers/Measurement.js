@@ -19,8 +19,8 @@ function(){
             this.options = options;
 
             // Call parent init
-//// TODO: use the _super() method instead.
-            AD.classes.UIController.apply(this, arguments);
+            // AD.classes.UIController.apply(this, arguments);
+            this._super(element, options);
 
             this.initDOM();
             this.timer = null;
