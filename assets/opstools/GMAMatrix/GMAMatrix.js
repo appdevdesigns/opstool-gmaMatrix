@@ -3,7 +3,6 @@ steal(
         '//opstools/GMAMatrix/controllers/GMAMatrix.js',
         '//opstools/GMAMatrix/matrix.css',
         '//opstools/GMAMatrix/matrix-scratch.css',
-        '//opstools/GMAMatrix/datepicker.css',
 'http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css',
         'site/labels/opstools-GMAMatrix.js',
 
