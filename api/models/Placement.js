@@ -16,7 +16,7 @@ module.exports = {
     migrate:'safe',  // don't update the tables!
 
 
-    connection: ['mysql'],
+    // connection: ['mysql'],
     config:{
         pool:false
     },
