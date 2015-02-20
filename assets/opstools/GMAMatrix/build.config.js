@@ -7,20 +7,20 @@ module.exports={
     // },
     paths: {
         
-        "wijmo-open.js"   : "js/jquery.wijmo-open.all.3.20142.45.min.js",   // 'http://cdn.wijmo.com/jquery.wijmo-open.all.3.20142.45.min.js'
-        "wijmo-pro.css": "styles/jquery.wijmo-pro.all.3.20142.45.min.css",  // 'http://cdn.wijmo.com/jquery.wijmo-pro.all.3.20142.45.min.css'
-        "wijmo-pro.js" : "js/jquery.wijmo-pro.all.3.20142.45.min.js",       // 'http://cdn.wijmo.com/jquery.wijmo-pro.all.3.20142.45.min.js'
-        "jquery-wijmo.css" : "styles/jquery-wijmo.css", // 'http://cdn.wijmo.com/themes/aristo/jquery-wijmo.css'
+        // "wijmo-open.js"   : "js/jquery.wijmo-open.all.3.20142.45.min.js",   // 'http://cdn.wijmo.com/jquery.wijmo-open.all.3.20142.45.min.js'
+        // "wijmo-pro.css": "styles/jquery.wijmo-pro.all.3.20142.45.min.css",  // 'http://cdn.wijmo.com/jquery.wijmo-pro.all.3.20142.45.min.css'
+        // "wijmo-pro.js" : "js/jquery.wijmo-pro.all.3.20142.45.min.js",       // 'http://cdn.wijmo.com/jquery.wijmo-pro.all.3.20142.45.min.js'
+        // "jquery-wijmo.css" : "styles/jquery-wijmo.css", // 'http://cdn.wijmo.com/themes/aristo/jquery-wijmo.css'
 
         // "dropzone.js" : "js/dropzone.min.js",
         // "dropzone.css" : "styles/dropzone.css"
     },
     shim : {
 
-        'wijmo-open.js' : { packaged:false },
-        'wijmo-pro.css' : { packaged:false },
-        'wijmo-pro.js' : { packaged:false },
-        'jquery-wijmo.css' : { packaged:false },
+        // 'wijmo-open.js' : { packaged:false },
+        // 'wijmo-pro.css' : { packaged:false },
+        // 'wijmo-pro.js' : { packaged:false },
+        // 'jquery-wijmo.css' : { packaged:false },
 
         // 'dropzone.js' : { packaged:false },
         // 'dropzone.css' : {packaged:false },

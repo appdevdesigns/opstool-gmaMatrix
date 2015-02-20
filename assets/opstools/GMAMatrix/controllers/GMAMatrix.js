@@ -14,7 +14,7 @@ steal(
 function(){
 
     // Namespacing conventions:
-    // AD.Control.OpsTool.extend('[application].[controller]', [{ static },] {instance} );
+    // AD.Control.OpsTool.extend('[Tool]', [{ static },] {instance} );
     AD.Control.OpsTool.extend('GMAMatrix', {
 
 
