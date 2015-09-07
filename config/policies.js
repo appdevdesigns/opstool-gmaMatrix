@@ -28,7 +28,6 @@ module.exports = {
 //       logout:true
 //    }
     'opstool-gmaMatrix/GMAMatrixController': {
-        '*': ['sessionAuth']
     }
 
 
