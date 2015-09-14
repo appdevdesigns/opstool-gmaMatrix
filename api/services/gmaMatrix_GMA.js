@@ -104,7 +104,8 @@ module.exports = {
             log: AD.log
         });
         
-        CAS.getProxyTicket(req, gma.gmaHome)
+        
+        req.AD.getProxyTicket(gma.gmaHome)
         .fail(function(err){
             AD.log('Unable to obtain CAS proxy ticket');
             AD.log(err);
