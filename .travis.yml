@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- "0.10"
+- "stable"
 
 sudo: false
 
@@ -11,7 +11,6 @@ before_script:
 - cd ad-test/node_modules
 - mv /home/travis/build/appdevdesigns/opstool-gmaMatrix .
 - cd opstool-gmaMatrix
-- npm install mocha chai mocha-phantomjs phantomjs
 - npm install
 
 script:
